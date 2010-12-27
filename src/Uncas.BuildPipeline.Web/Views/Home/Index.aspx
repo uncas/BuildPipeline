@@ -4,21 +4,19 @@
     Builds
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>
-        Builds</h2>
     <table>
         <tr>
             <th>
-                Project name
+                Project
             </th>
             <th>
-                Source revision
+                Activity
             </th>
             <th>
-                Unit
+                Commit
             </th>
             <th>
-                Integration
+                Acceptance
             </th>
         </tr>
         <% foreach (var item in Model)

@@ -14,6 +14,8 @@
         public int Id { get; set; }
         public string ProjectName { get; set; }
         public int SourceRevision { get; set; }
+        public string SourceUrl { get; set; }
+        public string SourceUrlBase { get; set; }
 
         public IEnumerable<BuildStep> Steps
         {

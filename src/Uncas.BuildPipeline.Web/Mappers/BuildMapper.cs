@@ -20,28 +20,29 @@
             var result = new BuildViewModel
             {
                 ProjectName = build.ProjectName,
-                SourceRevision = build.SourceRevision
+                SourceRevision = build.SourceRevision,
+                SourceUrlRelative = build.SourceUrl.Replace(build.SourceUrlBase, "")
             };
             // TODO: Refactor: Not satisfactory:
-            BuildStep stepUnit = build.Steps.ElementAt(0);
-            result.StepUnit = MapToBuildStepViewModel(stepUnit);
+            BuildStep stepCommit = build.Steps.ElementAt(0);
+            result.StepCommit = MapToBuildStepViewModel(stepCommit);
             if (build.Steps.Count() > 1)
             {
-                BuildStep stepIntegration = build.Steps.ElementAt(1);
-                result.StepIntegration =
-                    MapToBuildStepViewModel(stepIntegration);
+                BuildStep stepAcceptance = build.Steps.ElementAt(1);
+                result.StepAcceptance =
+                    MapToBuildStepViewModel(stepAcceptance);
             }
             return result;
         }
 
         private static BuildStepViewModel
-            MapToBuildStepViewModel(BuildStep stepUnit)
+            MapToBuildStepViewModel(BuildStep step)
         {
             return new BuildStepViewModel
             {
-                StatusText = stepUnit.IsSuccessful ? "OK" : "Failed",
-                StepName = stepUnit.StepName,
-                CssClass = stepUnit.IsSuccessful ? "BuildStep BuildGreen" : "BuildStep BuildRed"
+                StatusText = step.IsSuccessful ? "OK" : "Failed",
+                StepName = step.StepName,
+                CssClass = step.IsSuccessful ? "BuildStep BuildGreen" : "BuildStep BuildRed"
             };
         }
     }

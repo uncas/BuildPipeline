@@ -1,16 +1,21 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.BuildViewModel>" %>
-<tr>
+<tr class="BuildListView">
     <td>
         <%: Model.ProjectName %>
     </td>
-    <td>
-        <%: Model.SourceRevision %>
+    <td class="SourceDetails">
+        <div>
+            <%: Model.SourceUrlRelative %>
+        </div>
+        <div>
+            revision <%: Model.SourceRevision %>
+        </div>
     </td>
     <td>
-        <% Html.RenderPartial("BuildStepView", Model.StepUnit); %>
+        <% Html.RenderPartial("BuildStepView", Model.StepCommit); %>
     </td>
     <td>
-        <% if (Model.StepIntegration != null)
-               Html.RenderPartial("BuildStepView", Model.StepIntegration); %>
+        <% if (Model.StepAcceptance != null)
+               Html.RenderPartial("BuildStepView", Model.StepAcceptance); %>
     </td>
 </tr>

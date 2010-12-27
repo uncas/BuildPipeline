@@ -227,7 +227,7 @@ table
 table td
 {
     padding: 5px;
-    border: solid 1px #e8eef4;
+    border: solid 2px #d8dee4;
 }
 
 table th
@@ -356,4 +356,14 @@ div#title
 {
     background-color: Red;
     color: White;
+}
+
+.BuildListView
+{
+    font-size: 90%;
+}
+
+.SourceDetails
+{
+    font-size: 90%;
 }

@@ -15,6 +15,8 @@ SELECT TOP {0}
     P.ProjectName
     , B.SourceRevision
     , B.BuildId
+    , P.SourceUrlBase
+    , B.SourceUrl
 FROM Build AS B
 JOIN Project AS P
     ON B.ProjectId = P.ProjectId
@@ -28,7 +30,9 @@ ORDER BY B.Created DESC",
                     {
                         ProjectName = (string)reader["ProjectName"],
                         SourceRevision = (int)reader["SourceRevision"],
-                        Id = (int)reader["BuildId"]
+                        Id = (int)reader["BuildId"],
+                        SourceUrl = (string)reader["SourceUrl"],
+                        SourceUrlBase = (string)reader["SourceUrlBase"]
                     });
                 }
             }
