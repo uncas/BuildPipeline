@@ -51,7 +51,7 @@ ORDER BY B.Created DESC",
 SELECT IsSuccessful, StepName
 FROM BuildStep
 WHERE BuildId = {0}
-ORDER BY Created DESC",
+ORDER BY Created ASC",
                 build.Id);
             using (DbDataReader reader = GetReader(commandText))
             {

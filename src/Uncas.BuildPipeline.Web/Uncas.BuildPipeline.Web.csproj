@@ -58,6 +58,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\BuildMapper.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Build.cs" />
     <Compile Include="Models\BuildStep.cs" />
@@ -68,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Views\Home\BuildListView.ascx" />
+    <Content Include="Views\Home\BuildStepView.ascx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />

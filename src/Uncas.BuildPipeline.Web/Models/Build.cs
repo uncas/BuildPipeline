@@ -11,6 +11,7 @@
             this.steps = new List<BuildStep>();
         }
 
+        public int Id { get; set; }
         public string ProjectName { get; set; }
         public int SourceRevision { get; set; }
 
@@ -26,7 +27,5 @@
         {
             this.steps.Add(buildStep);
         }
-
-        public int Id { get; set; }
     }
 }

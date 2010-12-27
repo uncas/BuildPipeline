@@ -14,17 +14,14 @@
             <th>
                 Source revision
             </th>
+            <th>
+                Unit
+            </th>
+            <th>
+                Integration
+            </th>
         </tr>
         <% foreach (var item in Model)
-           { %>
-        <tr>
-            <td>
-                <%: item.ProjectName %>
-            </td>
-            <td>
-                <%: item.SourceRevision %>
-            </td>
-        </tr>
-        <% } %>
+           { Html.RenderPartial("BuildListView", item); } %>
     </table>
 </asp:Content>

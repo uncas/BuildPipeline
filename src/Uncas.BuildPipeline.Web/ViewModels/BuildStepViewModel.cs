@@ -2,5 +2,7 @@
 {
     public class BuildStepViewModel
     {
+        public bool IsSuccessful { get; set; }
+        public string StepName { get; set; }
     }
 }
