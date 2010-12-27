@@ -6,7 +6,6 @@
   <property name="version.major" value="0" />
   <property name="version.minor" value="1" />
   <property name="version.build" value="0" />
-  <property name="build.step" value="Unit" />
 
   <!-- External executable locations - depends on environment, can be changed in local.properties.xml -->
   <property name="msbuild" value="C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe" />
@@ -103,6 +102,18 @@
       property="svn.revision"
       failonerror="false" />
     <echo message="Using Subversion revision number: ${svn.revision}" />
+
+    <exec
+      program="${svn}"
+      commandline='info --xml --username buildmaster --password buildmaster123 --no-auth-cache'
+      output="${output.dir}\svninfo.xml"
+      failonerror="false" />
+    <xmlpeek file="${output.dir}\svninfo.xml" xpath="/info/entry/url" property="svn.url" />
+    <echo message="Using Subversion url: ${svn.url}" />
+
+    <if test="${property::exists('CCNetLabel')}">
+      <property name="version.build" value="${CCNetLabel}" />
+    </if>
   </target>
 
   <target name="PrepareCommit" depends="test">
@@ -110,9 +121,6 @@
   </target>
 
   <target name="generateVersionInfoFile" depends="getSubversionRevision">
-    <if test="${property::exists('CCNetLabel')}">
-      <property name="version.build" value="${CCNetLabel}" />
-    </if>
     <property name="version.string" value="${version.major}.${version.minor}.${version.build}.${svn.revision}" />
     <asminfo output="src\VersionInfo.cs" language="CSharp">
       <attributes>
@@ -224,7 +232,9 @@
       <arg value="-v" />
       <arg value="SourceRevision=${svn.revision}" />
       <arg value="-v" />
-      <arg value="IsSuccessful=1" />
+      <arg value="IntegrationStatus=${CCNetIntegrationStatus}" />
+      <arg value="-v" />
+      <arg value="SourceUrl=${svn.url}" />
     </exec>
   </target>
 
