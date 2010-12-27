@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace Uncas.BuildPipeline.Web.Controllers
+﻿namespace Uncas.BuildPipeline.Web.Controllers
 {
-    [HandleError]
+    using System.Web.Mvc;
+    using Uncas.BuildPipeline.Web.Models;
+
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
-
-            return View();
+            var builds = new Repository().GetBuilds(10);
+            return View(builds);
         }
 
         public ActionResult About()

@@ -1,12 +1,30 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Uncas.BuildPipeline.Web.Models.Build>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Home Page
+    Index
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2><%: ViewData["Message"] %></h2>
-    <p>
-        To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-    </p>
+    <h2>
+        Index</h2>
+    <table>
+        <tr>
+            <th>
+                ProjectName
+            </th>
+            <th>
+                SourceRevision
+            </th>
+        </tr>
+        <% foreach (var item in Model)
+           { %>
+        <tr>
+            <td>
+                <%: item.ProjectName %>
+            </td>
+            <td>
+                <%: item.SourceRevision %>
+            </td>
+        </tr>
+        <% } %>
+    </table>
 </asp:Content>
