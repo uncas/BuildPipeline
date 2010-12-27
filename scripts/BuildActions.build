@@ -1,8 +1,15 @@
 <?xml version="1.0"?>
 <project name="BuildPipelineActions" default="test">
 
+  <!-- Variables that can be changed - for example for different environments -->
+  <property name="website.source.path" value="apps\Uncas.BuildPipeline.Web" />
+  <property name="website.destination.path" value="c:\inetpub\wwwroot\Uncas.BuildPipeline.Web" />
+  <property name="website.name" value="BuildPipelineWeb" />
+  <property name="website.port" value="876" />
+
   <!-- Working values and built-in values - need not be changed -->
   <property name="nunit.executable" value="tools\NUnit\nunit-console.exe" />
+  <property name="appcmd" value="c:\Windows\System32\inetsrv\appcmd" />
 
   <!-- Local properties, that overrides the ones from above -->
   <if test="${file::exists('local.properties.xml')}">
@@ -59,6 +66,36 @@
       <copy file="${test.directory}\${TestResultFileName}" 
         todir="${CCNetArtifactDirectory}\testresults" overwrite="true" />
     </if>
+  </target>
+
+  <target name="deploy" depends="setupWebsite">
+  </target>
+
+  <target name="setupWebsite">
+    <exec program="${appcmd}" failonerror="false">
+      <arg value="delete" />
+      <arg value="site" />
+      <arg value="${website.name}" />
+    </exec>
+    <delete dir="${website.destination.path}" />
+    <copy todir="${website.destination.path}">
+      <fileset basedir="${website.source.path}">
+        <include name="**\*.*" />
+      </fileset>
+    </copy>
+    <exec program="${appcmd}">
+      <arg value="add" />
+      <arg value="site" />
+      <arg value="/name:${website.name}" />
+      <arg value="/bindings:http://*:${website.port}" />
+      <arg value="/physicalPath:${website.destination.path}" />
+    </exec>
+    <exec program="${appcmd}">
+      <arg value="set" />
+      <arg value="site" />
+      <arg value="${website.name}" />
+      <arg value="/applicationDefaults.applicationPool:&quot;ASP.NET v4.0&quot;" />
+    </exec>
   </target>
 
 </project>

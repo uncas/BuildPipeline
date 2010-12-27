@@ -193,10 +193,17 @@
     </if>
   </target>
 
-  <target name="testPackage">
+  <target name="testPackageTest">
     <exec program="lib\nant\nant.exe">
       <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
       <arg value="test" />
+    </exec>
+  </target>
+
+  <target name="testPackageDeploy">
+    <exec program="lib\nant\nant.exe">
+      <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
+      <arg value="deploy" />
     </exec>
   </target>
 
