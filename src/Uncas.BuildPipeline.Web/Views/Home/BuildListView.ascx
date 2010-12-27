@@ -10,6 +10,7 @@
         <% Html.RenderPartial("BuildStepView", Model.StepUnit); %>
     </td>
     <td>
-        <% Html.RenderPartial("BuildStepView", Model.StepIntegration); %>
+        <% if (Model.StepIntegration != null)
+               Html.RenderPartial("BuildStepView", Model.StepIntegration); %>
     </td>
 </tr>

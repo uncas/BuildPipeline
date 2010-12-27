@@ -2,7 +2,8 @@
 {
     public class BuildStepViewModel
     {
-        public bool IsSuccessful { get; set; }
+        public string StatusText { get; set; }
         public string StepName { get; set; }
+        public string CssClass { get; set; }
     }
 }

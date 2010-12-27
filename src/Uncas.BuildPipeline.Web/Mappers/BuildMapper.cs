@@ -23,11 +23,14 @@
                 SourceRevision = build.SourceRevision
             };
             // TODO: Refactor: Not satisfactory:
-            var stepUnit = build.Steps.ElementAt(0);
+            BuildStep stepUnit = build.Steps.ElementAt(0);
             result.StepUnit = MapToBuildStepViewModel(stepUnit);
-            var stepIntegration = build.Steps.ElementAt(1);
-            result.StepIntegration =
-                MapToBuildStepViewModel(stepIntegration);
+            if (build.Steps.Count() > 1)
+            {
+                BuildStep stepIntegration = build.Steps.ElementAt(1);
+                result.StepIntegration =
+                    MapToBuildStepViewModel(stepIntegration);
+            }
             return result;
         }
 
@@ -36,8 +39,9 @@
         {
             return new BuildStepViewModel
             {
-                IsSuccessful = stepUnit.IsSuccessful,
-                StepName = stepUnit.StepName
+                StatusText = stepUnit.IsSuccessful ? "OK" : "Failed",
+                StepName = stepUnit.StepName,
+                CssClass = stepUnit.IsSuccessful ? "BuildStep BuildGreen" : "BuildStep BuildRed"
             };
         }
     }

@@ -1,2 +1,4 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.BuildStepViewModel>" %>
-<%: Model.IsSuccessful %>
+<span class="<%=Model.CssClass %>">
+    <%: Model.StatusText %>
+</span>
