@@ -87,7 +87,7 @@
     </if>
   </target>
 
-  <target name="getSubversionRevision" depends="init">
+  <target name="getSubversionRevision">
     <!-- Retrieve subversion revision number -->
     <echo message="Retrieving Subversion revision number" />
     <property name="svn.revision" value="0" />
