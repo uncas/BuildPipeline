@@ -15,7 +15,7 @@
     <mkdir dir="work" />
   </target>
 
-  <target name="test" depends="unitTest" />
+  <target name="test" depends="unitTest,integrationTest" />
 
   <target name="unitTest" depends="unitTestProperties"> 
     <call target="baseTest" />
@@ -24,6 +24,15 @@
     <property
       name="TestProjectName"
       value="Uncas.BuildPipeline.Tests.Unit" />
+  </target>
+
+  <target name="integrationTest" depends="integrationTestProperties"> 
+    <call target="baseTest" />
+  </target>
+  <target name="integrationTestProperties">
+    <property
+      name="TestProjectName"
+      value="Uncas.BuildPipeline.Tests.Integration" />
   </target>
 
   <target name="baseTest">

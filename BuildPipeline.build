@@ -13,6 +13,7 @@
 
   <!-- Working values and built-in values - need not be changed -->
   <property name="nunit.executable" value="lib\NUnit\nunit-console.exe" />
+  <property name="output.dir" value="${project::get-base-directory()}\build" />
 
   <!-- Local properties, that overrides the ones from above -->
   <if test="${file::exists('local.properties.xml')}">
@@ -28,7 +29,7 @@
   </target>
 
   <target name="clean" failonerror="false">
-    <delete dir="build" failonerror="false" />
+    <delete dir="${output.dir}" failonerror="false" />
     <property name="projectFolder" value="src\Uncas.BuildPipeline.Web" />
     <call target="cleanProject" />
     <property name="projectFolder" value="test\Uncas.BuildPipeline.Tests.Unit" />
@@ -38,8 +39,8 @@
   </target>
 
   <target name="init" depends="clean">
-    <delete dir="build" />
-    <mkdir dir="build" />
+    <delete dir="${output.dir}" />
+    <mkdir dir="${output.dir}" />
   </target>
 
   <target name="build"
@@ -64,7 +65,7 @@
     <property name="TestAssemblyDirectoryPath" value="test\${TestProjectName}\bin\${configuration}" />
     <property name="TestAssemblyFileName" value="${TestProjectName}.dll" />
     <property name="TestResultFileName" value="${TestProjectName}.TestResult.xml" />
-    <property name="test.directory" value="build\test" />
+    <property name="test.directory" value="${output.dir}\test" />
     <copy todir="${test.directory}">
       <fileset basedir="${TestAssemblyDirectoryPath}">
         <include name="*.*" />
@@ -93,10 +94,10 @@
     <exec
       program="${svn}"
       commandline='log --xml --limit 1 --username buildmaster --password buildmaster123 --no-auth-cache'
-      output="build\revision.xml"
+      output="${output.dir}\revision.xml"
       failonerror="false" />
     <xmlpeek
-      file="build\revision.xml"
+      file="${output.dir}\revision.xml"
       xpath="/log/logentry/@revision"
       property="svn.revision"
       failonerror="false" />
@@ -133,16 +134,14 @@
   </target>
 
   <target name="package" depends="build,unitTest">
-    <property name="package.dir" value="build\Uncas.BuildPipeline" />
-    <copy todir="${package.dir}\apps\Uncas.BuildPipeline.Web">
-      <fileset basedir="src\Uncas.BuildPipeline.Web">
-        <include name="**\*.*" />
-        <exclude name="bin\*.pdb" />
-        <exclude name="obj\**\*.*" />
-        <exclude name="**\*.cs" />
-        <exclude name="*.csproj" />
-      </fileset>
-    </copy>
+    <property name="package.dir" value="${output.dir}\Uncas.BuildPipeline" />
+
+    <property name="web.outdir" value="${package.dir}\apps\Uncas.BuildPipeline.Web" />
+    <exec program="${msbuild}">
+      <arg value="src\Uncas.BuildPipeline.Web\Uncas.BuildPipeline.Web.csproj" />
+      <arg value="/t:ResolveReferences;_CopyWebApplication" />
+      <arg value="/p:OutDir=${web.outdir}\bin\;WebProjectOutputDir=${web.outdir}\;Configuration=${configuration}" />
+    </exec>
 
     <property name="ProjectName" value="Uncas.BuildPipeline.Tests.Unit" />
     <call target="packageTestProject" />
@@ -159,7 +158,7 @@
     <copy file="scripts\BuildActions.build" todir="${package.dir}" />
 
     <property name="zipfile.name" value="Uncas.BuildPipeline-${version.string}.zip" />
-    <property name="zipfile.path" value="build\${zipfile.name}" />
+    <property name="zipfile.path" value="${output.dir}\${zipfile.name}" />
     <zip zipfile="${zipfile.path}">
       <fileset basedir="${package.dir}">
         <include name="**/*" />
@@ -173,7 +172,7 @@
   </target>
 
   <target name="masterPackage">
-    <property name="package.dir" value="build\MasterPackage" />
+    <property name="package.dir" value="${output.dir}\MasterPackage" />
     <copy todir="${package.dir}\NAnt">
       <fileset basedir="lib\NAnt">
         <include name="**\*.*" />
@@ -183,7 +182,7 @@
     <copy file="scripts\UnzipPackage.build" todir="${package.dir}" />
 
     <property name="zipfile.name" value="MasterPackage.zip" />
-    <property name="zipfile.path" value="build\${zipfile.name}" />
+    <property name="zipfile.path" value="${output.dir}\${zipfile.name}" />
     <zip zipfile="${zipfile.path}">
       <fileset basedir="${package.dir}">
         <include name="**/*" />
