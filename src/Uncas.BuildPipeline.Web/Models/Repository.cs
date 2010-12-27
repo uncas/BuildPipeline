@@ -37,7 +37,7 @@ ORDER BY B.Created DESC",
         public static SqlDataReader GetReader(string commandText)
         {
             string connectionString =
-                @"Server=.\SqlExpress;Database=BuildPipeline;Integrated Security=true;";
+                @"Server=.\SqlExpress;Database=BuildPipeline;User Id=sa;Pwd=ols";
             var connection =
                 new SqlConnection(connectionString);
             using (var command =
