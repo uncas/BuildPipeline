@@ -14,6 +14,7 @@
 SELECT TOP {0}
     P.ProjectName
     , B.SourceRevision
+    , B.BuildId
 FROM Build AS B
 JOIN Project AS P
     ON B.ProjectId = P.ProjectId
@@ -27,14 +28,45 @@ ORDER BY B.Created DESC",
                     {
                         ProjectName = (string)reader["ProjectName"],
                         SourceRevision = (int)reader["SourceRevision"],
+                        Id = (int)reader["BuildId"]
                     });
                 }
             }
 
+            AddSteps(builds);
             return builds;
         }
 
-        public static SqlDataReader GetReader(string commandText)
+        private void AddSteps(IList<Build> builds)
+        {
+            foreach (Build build in builds)
+            {
+                AddSteps(build);
+            }
+        }
+
+        private static void AddSteps(Build build)
+        {
+            string commandText = string.Format(@"
+SELECT IsSuccessful, StepName
+FROM BuildStep
+WHERE BuildId = {0}
+ORDER BY Created DESC",
+                build.Id);
+            using (DbDataReader reader = GetReader(commandText))
+            {
+                while (reader.Read())
+                {
+                    build.AddStep(new BuildStep
+                    {
+                        IsSuccessful = (bool)reader["IsSuccessful"],
+                        StepName = (string)reader["StepName"],
+                    });
+                }
+            }
+        }
+
+        private static SqlDataReader GetReader(string commandText)
         {
             string connectionString =
                 @"Server=.\SqlExpress;Database=BuildPipeline;User Id=sa;Pwd=ols";

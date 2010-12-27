@@ -4,14 +4,29 @@
 
     public class Build
     {
+        private IList<BuildStep> steps;
+
+        public Build()
+        {
+            this.steps = new List<BuildStep>();
+        }
+
         public string ProjectName { get; set; }
         public int SourceRevision { get; set; }
-        public IEnumerable<BuildStep> Steps { get; set; }
-    }
 
-    public class BuildStep
-    {
-        public bool IsSuccessful { get; set; }
-        public string StepName { get; set; }
+        public IEnumerable<BuildStep> Steps
+        {
+            get
+            {
+                return this.steps;
+            }
+        }
+
+        public void AddStep(BuildStep buildStep)
+        {
+            this.steps.Add(buildStep);
+        }
+
+        public int Id { get; set; }
     }
 }
