@@ -6,7 +6,7 @@ ELSE SET @isSuccessful = 0
 EXEC stp_Build_Add
     @ProjectName = 'BuildPipeline'
     , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
-    , @SourceUrl = '$(SourceUrl)'
+    , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/trunk'
     , @SourceRevision = $(SourceRevision)
     , @IsSuccessFul = @isSuccessful
     , @StepName = '$(StepName)'

@@ -233,8 +233,6 @@
       <arg value="SourceRevision=${svn.revision}" />
       <arg value="-v" />
       <arg value="IntegrationStatus=${CCNetIntegrationStatus}" />
-      <arg value="-v" />
-      <arg value="SourceUrl=${svn.url}" />
     </exec>
   </target>
 
