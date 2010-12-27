@@ -13,6 +13,7 @@ CREATE TABLE Project
         CONSTRAINT PK_Project PRIMARY KEY CLUSTERED
     , ProjectName    nvarchar(64)    NOT NULL
         CONSTRAINT UK_Project_ProjectName UNIQUE
+    , SourceUrlBase    nvarchar(256)    NOT NULL
 )
 GO
 CREATE TABLE Build
@@ -51,6 +52,7 @@ GO
 CREATE PROCEDURE stp_Build_Add
 (
     @ProjectName nvarchar(64)
+    , @SourceUrlBase nvarchar(256)
     , @SourceUrl nvarchar(256)
     , @SourceRevision int
     , @IsSuccessful bit
@@ -63,7 +65,7 @@ BEGIN
     SELECT @projectId = ProjectId FROM Project WHERE ProjectName = @ProjectName
     IF @projectId IS NULL
     BEGIN
-        INSERT INTO Project (ProjectName) VALUES (@ProjectName)
+        INSERT INTO Project (ProjectName, SourceUrlBase) VALUES (@ProjectName, @SourceUrlBase)
         
         SET @projectId = @@IDENTITY
     END
@@ -73,9 +75,58 @@ BEGIN
         AND SourceRevision = @SourceRevision AND SourceUrl = @SourceUrl
     IF @buildId IS NULL
     BEGIN
-        INSERT INTO Build ...
+        INSERT INTO Build (ProjectId, SourceUrl, SourceRevision)
+        VALUES (@projectId, @SourceUrl, @SourceRevision)
+        
         SET @buildId = @@IDENTITY
     END
     
-    INSERT INTO BuildStep ...
+    INSERT INTO BuildStep (BuildId, BuildNumber, IsSuccessful, StepName)
+    VALUES (@buildId, @BuildNumber, @IsSuccessful, @StepName)
 END
+
+GO
+
+EXEC stp_Build_Add
+    @ProjectName = 'BuildPipeline'
+    , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
+    , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/trunk'
+    , @SourceRevision = 952
+    , @IsSuccessFul = 1
+    , @StepName = 'Unit'
+    , @BuildNumber = 3
+
+EXEC stp_Build_Add
+    @ProjectName = 'BuildPipeline'
+    , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
+    , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/trunk'
+    , @SourceRevision = 952
+    , @IsSuccessFul = 0
+    , @StepName = 'Integration'
+    , @BuildNumber = 3
+
+EXEC stp_Build_Add
+    @ProjectName = 'BuildPipeline'
+    , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
+    , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/trunk'
+    , @SourceRevision = 954
+    , @IsSuccessFul = 1
+    , @StepName = 'Unit'
+    , @BuildNumber = 4
+
+EXEC stp_Build_Add
+    @ProjectName = 'BuildPipeline'
+    , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
+    , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/branches/Experiment1'
+    , @SourceRevision = 959
+    , @IsSuccessFul = 0
+    , @StepName = 'Unit'
+    , @BuildNumber = 5
+GO
+
+SELECT * FROM Project
+SELECT B.BuildId, B.ProjectId, REPLACE(B.SourceUrl, P.SourceUrlBase, '') AS SourceUrlRelative, B.SourceRevision, B.Created, B.Modified
+FROM Build AS B
+JOIN Project AS P
+    ON B.ProjectId = P.ProjectId
+SELECT * FROM BuildStep
