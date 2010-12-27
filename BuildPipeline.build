@@ -6,6 +6,7 @@
   <property name="version.major" value="0" />
   <property name="version.minor" value="1" />
   <property name="version.build" value="0" />
+  <property name="build.step" value="Unit" />
 
   <!-- External executable locations - depends on environment, can be changed in local.properties.xml -->
   <property name="msbuild" value="C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe" />
@@ -204,6 +205,26 @@
     <exec program="lib\nant\nant.exe">
       <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
       <arg value="deploy" />
+    </exec>
+  </target>
+
+  <target name="logBuild" depends="getSubversionRevision">
+    <exec program="sqlcmd">
+      <arg value="-S" />
+      <arg value=".\SqlExpress" />
+      <arg value="-E" />
+      <arg value="-d" />
+      <arg value="BuildPipeline" />
+      <arg value="-i" />
+      <arg value="LogBuild.sql" />
+      <arg value="-v" />
+      <arg value="StepName=${build.step}" />
+      <arg value="-v" />
+      <arg value="BuildNumber=${version.build}" />
+      <arg value="-v" />
+      <arg value="SourceRevision=${svn.revision}" />
+      <arg value="-v" />
+      <arg value="IsSuccessful=1" />
     </exec>
   </target>
 
