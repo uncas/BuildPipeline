@@ -156,6 +156,8 @@
       </fileset>
     </copy>
 
+    <copy file="scripts\BuildActions.build" todir="${package.dir}" />
+
     <property name="zipfile.name" value="Uncas.BuildPipeline-${version.string}.zip" />
     <property name="zipfile.path" value="build\${zipfile.name}" />
     <zip zipfile="${zipfile.path}">
@@ -166,6 +168,37 @@
     <if test="${property::exists('CCNetArtifactDirectory')}">
       <copy file="${zipfile.path}" todir="${CCNetArtifactDirectory}\packages" overwrite="true" />
     </if>
+
+    <call target="masterPackage" />
+  </target>
+
+  <target name="masterPackage">
+    <property name="package.dir" value="build\MasterPackage" />
+    <copy todir="${package.dir}\NAnt">
+      <fileset basedir="lib\NAnt">
+        <include name="**\*.*" />
+      </fileset>
+    </copy>
+
+    <copy file="scripts\UnzipPackage.build" todir="${package.dir}" />
+
+    <property name="zipfile.name" value="MasterPackage.zip" />
+    <property name="zipfile.path" value="build\${zipfile.name}" />
+    <zip zipfile="${zipfile.path}">
+      <fileset basedir="${package.dir}">
+        <include name="**/*" />
+      </fileset>
+    </zip>
+    <if test="${property::exists('CCNetArtifactDirectory')}">
+      <copy file="${zipfile.path}" todir="${CCNetArtifactDirectory}\packages" overwrite="true" />
+    </if>
+  </target>
+
+  <target name="testPackage">
+    <exec program="lib\nant\nant.exe">
+      <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
+      <arg value="test" />
+    </exec>
   </target>
 
 </project>

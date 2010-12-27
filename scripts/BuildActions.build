@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project name="BuildPipelineActions" default="test">
+
+  <!-- Working values and built-in values - need not be changed -->
+  <property name="nunit.executable" value="tools\NUnit\nunit-console.exe" />
+
+  <!-- Local properties, that overrides the ones from above -->
+  <if test="${file::exists('local.properties.xml')}">
+    <echo message="Loading local.properties.xml" />
+    <include buildfile="local.properties.xml" />
+  </if>
+
+  <target name="init">
+    <delete dir="work" />
+    <mkdir dir="work" />
+  </target>
+
+  <target name="test" depends="unitTest" />
+
+  <target name="unitTest" depends="unitTestProperties"> 
+    <call target="baseTest" />
+  </target>
+  <target name="unitTestProperties">
+    <property
+      name="TestProjectName"
+      value="Uncas.BuildPipeline.Tests.Unit" />
+  </target>
+
+  <target name="baseTest">
+    <property name="TestAssemblyDirectoryPath" value="tests\${TestProjectName}" />
+    <property name="TestAssemblyFileName" value="${TestProjectName}.dll" />
+    <property name="TestResultFileName" value="${TestProjectName}.TestResult.xml" />
+    <property name="test.directory" value="work" />
+    <copy todir="${test.directory}">
+      <fileset basedir="${TestAssemblyDirectoryPath}">
+        <include name="*.*" />
+      </fileset>
+    </copy>
+    <copy todir="${test.directory}">
+      <fileset basedir="tools\NUnit">
+        <include name="**\*.*" />
+      </fileset>
+    </copy>
+    <echo message="Testing ${TestProjectName}" />
+    <exec program="${test.directory}\nunit-console.exe"
+      workingdir="${test.directory}"
+      commandline="${TestAssemblyFileName} /framework=4.0.30319 /xml=${TestResultFileName}">
+    </exec>
+    <if test="${property::exists('CCNetArtifactDirectory')}">
+      <copy file="${test.directory}\${TestResultFileName}" 
+        todir="${CCNetArtifactDirectory}\testresults" overwrite="true" />
+    </if>
+  </target>
+
+</project>
