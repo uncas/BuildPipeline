@@ -77,8 +77,8 @@
       <arg value="site" />
       <arg value="${website.name}" />
     </exec>
-    <delete dir="${website.destination.path}" />
-    <copy todir="${website.destination.path}">
+    <delete dir="${website.destination.path}" failonerror="false" />
+    <copy todir="${website.destination.path}" overwrite="true">
       <fileset basedir="${website.source.path}">
         <include name="**\*.*" />
       </fileset>
