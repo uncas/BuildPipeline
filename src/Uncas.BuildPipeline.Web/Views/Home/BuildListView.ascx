@@ -1,14 +1,20 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.BuildViewModel>" %>
 <tr class="BuildListView">
     <td>
-        <%: Model.ProjectName %>
-    </td>
-    <td class="SourceDetails">
+        <div>
+            <%: Model.ProjectName %>
+        </div>
         <div>
             <%: Model.SourceUrlRelative %>
         </div>
+    </td>
+    <td class="SourceDetails">
         <div>
-            revision <%: Model.SourceRevision %>
+            revision
+            <%: Model.SourceRevision %>
+        </div>
+        <div>
+            <%: Model.CreatedDisplay %>
         </div>
     </td>
     <td>

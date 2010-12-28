@@ -1,5 +1,6 @@
 ﻿namespace Uncas.BuildPipeline.Web.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
@@ -17,6 +18,7 @@ SELECT TOP {0}
     , B.BuildId
     , P.SourceUrlBase
     , B.SourceUrl
+    , B.Created
 FROM Build AS B
 JOIN Project AS P
     ON B.ProjectId = P.ProjectId
@@ -32,7 +34,8 @@ ORDER BY B.Created DESC",
                         SourceRevision = (int)reader["SourceRevision"],
                         Id = (int)reader["BuildId"],
                         SourceUrl = (string)reader["SourceUrl"],
-                        SourceUrlBase = (string)reader["SourceUrlBase"]
+                        SourceUrlBase = (string)reader["SourceUrlBase"],
+                        Created = (DateTime)reader["Created"]
                     });
                 }
             }

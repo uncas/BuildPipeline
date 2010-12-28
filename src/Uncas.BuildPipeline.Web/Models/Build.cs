@@ -1,5 +1,6 @@
 ﻿namespace Uncas.BuildPipeline.Web.Models
 {
+    using System;
     using System.Collections.Generic;
 
     public class Build
@@ -16,6 +17,7 @@
         public int SourceRevision { get; set; }
         public string SourceUrl { get; set; }
         public string SourceUrlBase { get; set; }
+        public DateTime Created { get; set; }
 
         public IEnumerable<BuildStep> Steps
         {
