@@ -6,9 +6,11 @@
 
     public class HomeController : Controller
     {
+        private const int BuildPageSize = 10;
+
         public ActionResult Index()
         {
-            var builds = new Repository().GetBuilds(10);
+            var builds = new Repository().GetBuilds(BuildPageSize);
             var viewModels = BuildMapper.MapToBuildViewModels(builds);
             return View(viewModels);
         }
