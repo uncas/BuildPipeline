@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Build
+    public class Pipeline
     {
         private IList<BuildStep> steps;
 
-        public Build()
+        public Pipeline()
         {
             this.steps = new List<BuildStep>();
         }

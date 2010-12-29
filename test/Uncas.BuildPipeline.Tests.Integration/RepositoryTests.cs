@@ -11,28 +11,28 @@
         private readonly Repository repository = new Repository();
 
         [Test]
-        public void GetBuilds_PageSize2_GetsMax2()
+        public void GetPipelines_PageSize2_GetsMax2()
         {
             const int pageSize = 2;
 
-            IEnumerable<Build> builds =
-                this.repository.GetBuilds(pageSize);
+            IEnumerable<Pipeline> pipelines =
+                this.repository.GetPipelines(pageSize);
 
-            Assert.True(builds.Count() <= pageSize);
+            Assert.True(pipelines.Count() <= pageSize);
         }
 
         [Test]
-        public void GetBuilds_PageSize1_StepsAreIncluded()
+        public void GetPipelines_PageSize1_StepsAreIncluded()
         {
             const int pageSize = 1;
 
-            Build build =
-                this.repository.GetBuilds(pageSize).FirstOrDefault();
+            Pipeline pipeline =
+                this.repository.GetPipelines(pageSize).FirstOrDefault();
 
-            Assert.NotNull(build);
-            Assert.NotNull(build.ProjectName);
-            Assert.Greater(build.SourceRevision, 0);
-            Assert.True(build.Steps.Count() > 0);
+            Assert.NotNull(pipeline);
+            Assert.NotNull(pipeline.ProjectName);
+            Assert.Greater(pipeline.SourceRevision, 0);
+            Assert.True(pipeline.Steps.Count() > 0);
         }
     }
 }

@@ -8,9 +8,9 @@
 
     public class Repository
     {
-        public IEnumerable<Build> GetBuilds(int pageSize)
+        public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {
-            var builds = new List<Build>();
+            var pipelines = new List<Pipeline>();
             string commandText = string.Format(@"
 SELECT TOP {0}
     P.ProjectName
@@ -28,7 +28,7 @@ ORDER BY B.Created DESC",
             {
                 while (reader.Read())
                 {
-                    builds.Add(new Build
+                    pipelines.Add(new Pipeline
                     {
                         ProjectName = (string)reader["ProjectName"],
                         SourceRevision = (int)reader["SourceRevision"],
@@ -40,31 +40,31 @@ ORDER BY B.Created DESC",
                 }
             }
 
-            AddSteps(builds);
-            return builds;
+            AddSteps(pipelines);
+            return pipelines;
         }
 
-        private void AddSteps(IList<Build> builds)
+        private void AddSteps(IList<Pipeline> pipelines)
         {
-            foreach (Build build in builds)
+            foreach (Pipeline pipeline in pipelines)
             {
-                AddSteps(build);
+                AddSteps(pipeline);
             }
         }
 
-        private static void AddSteps(Build build)
+        private static void AddSteps(Pipeline pipeline)
         {
             string commandText = string.Format(@"
 SELECT IsSuccessful, StepName, Created
 FROM BuildStep
 WHERE BuildId = {0}
 ORDER BY Created ASC",
-                build.Id);
+                pipeline.Id);
             using (DbDataReader reader = GetReader(commandText))
             {
                 while (reader.Read())
                 {
-                    build.AddStep(new BuildStep
+                    pipeline.AddStep(new BuildStep
                     {
                         IsSuccessful = (bool)reader["IsSuccessful"],
                         StepName = (string)reader["StepName"],

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class BuildViewModel
+    public class PipelineViewModel
     {
         public string ProjectName { get; set; }
         public int SourceRevision { get; set; }

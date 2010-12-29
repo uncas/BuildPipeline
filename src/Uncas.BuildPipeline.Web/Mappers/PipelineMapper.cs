@@ -6,28 +6,28 @@
     using Uncas.BuildPipeline.Web.Models;
     using Uncas.BuildPipeline.Web.ViewModels;
 
-    public static class BuildMapper
+    public static class PipelineMapper
     {
-        public static IEnumerable<BuildViewModel>
-           MapToBuildViewModels(IEnumerable<Build> builds)
+        public static IEnumerable<PipelineViewModel>
+           MapToPipelineViewModels(IEnumerable<Pipeline> pipelines)
         {
-            var viewModels = builds.Select(
-                b => MapToBuildViewModel(b));
+            var viewModels = pipelines.Select(
+                p => MapToPipelineViewModel(p));
             return viewModels;
         }
 
-        private static BuildViewModel MapToBuildViewModel(Build build)
+        private static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
-            string createdDisplay = GetDateTimeDisplay(build.Created);
+            string createdDisplay = GetDateTimeDisplay(pipeline.Created);
 
-            var result = new BuildViewModel
+            var result = new PipelineViewModel
             {
-                ProjectName = build.ProjectName,
-                SourceRevision = build.SourceRevision,
-                SourceUrlRelative = build.SourceUrl.Replace(build.SourceUrlBase, ""),
+                ProjectName = pipeline.ProjectName,
+                SourceRevision = pipeline.SourceRevision,
+                SourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, ""),
                 CreatedDisplay = createdDisplay
             };
-            result.Steps = build.Steps.Select(MapToBuildStepViewModel);
+            result.Steps = pipeline.Steps.Select(MapToBuildStepViewModel);
             return result;
         }
 

@@ -10,8 +10,8 @@
 
         public ActionResult Index()
         {
-            var builds = new Repository().GetBuilds(BuildPageSize);
-            var viewModels = BuildMapper.MapToBuildViewModels(builds);
+            var pipelines = new Repository().GetPipelines(BuildPageSize);
+            var viewModels = PipelineMapper.MapToPipelineViewModels(pipelines);
             return View(viewModels);
         }
 

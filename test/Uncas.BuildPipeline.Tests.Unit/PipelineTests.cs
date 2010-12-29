@@ -4,12 +4,12 @@
     using Uncas.BuildPipeline.Web.Models;
 
     [TestFixture]
-    public class BuildTests
+    public class PipelineTests
     {
         [Test]
         public void Construct()
         {
-            var build = new Build();
+            var pipeline = new Pipeline();
         }
     }
 }
