@@ -4,7 +4,7 @@
     using Uncas.BuildPipeline.Web.Mappers;
     using Uncas.BuildPipeline.Web.Models;
 
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private const int BuildPageSize = 10;
 
