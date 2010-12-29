@@ -25,7 +25,9 @@
                 ProjectName = pipeline.ProjectName,
                 SourceRevision = pipeline.SourceRevision,
                 SourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, ""),
-                CreatedDisplay = createdDisplay
+                CreatedDisplay = createdDisplay,
+                StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
+                CssClass = pipeline.IsSuccessful ? "BuildGreen" : "BuildRed"
             };
             result.Steps = pipeline.Steps.Select(MapToBuildStepViewModel);
             return result;

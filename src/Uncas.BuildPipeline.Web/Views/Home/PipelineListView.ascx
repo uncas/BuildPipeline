@@ -9,7 +9,7 @@
         </div>
     </td>
     <td class="SourceDetails">
-        <div>
+        <div class="<%: Model.CssClass %>" title="<%: Model.StatusText %>">
             revision
             <%: Model.SourceRevision %>
         </div>

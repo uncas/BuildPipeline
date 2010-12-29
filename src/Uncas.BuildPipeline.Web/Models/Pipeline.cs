@@ -28,6 +28,14 @@
             }
         }
 
+        public bool IsSuccessful
+        {
+            get
+            {
+                return !Steps.Any(s => !s.IsSuccessful);
+            }
+        }
+
         public void AddStep(BuildStep buildStep)
         {
             // Removing any existing steps with the same name:
