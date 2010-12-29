@@ -55,7 +55,7 @@ ORDER BY B.Created DESC",
         private static void AddSteps(Build build)
         {
             string commandText = string.Format(@"
-SELECT IsSuccessful, StepName
+SELECT IsSuccessful, StepName, Created
 FROM BuildStep
 WHERE BuildId = {0}
 ORDER BY Created ASC",
@@ -68,6 +68,7 @@ ORDER BY Created ASC",
                     {
                         IsSuccessful = (bool)reader["IsSuccessful"],
                         StepName = (string)reader["StepName"],
+                        Created = (DateTime)reader["Created"]
                     });
                 }
             }

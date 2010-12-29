@@ -27,15 +27,7 @@
                 SourceUrlRelative = build.SourceUrl.Replace(build.SourceUrlBase, ""),
                 CreatedDisplay = createdDisplay
             };
-            // TODO: Refactor: Not satisfactory:
-            BuildStep stepCommit = build.Steps.ElementAt(0);
-            result.StepCommit = MapToBuildStepViewModel(stepCommit);
-            if (build.Steps.Count() > 1)
-            {
-                BuildStep stepAcceptance = build.Steps.ElementAt(1);
-                result.StepAcceptance =
-                    MapToBuildStepViewModel(stepAcceptance);
-            }
+            result.Steps = build.Steps.Select(MapToBuildStepViewModel);
             return result;
         }
 

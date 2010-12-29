@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Build
     {
@@ -29,6 +30,13 @@
 
         public void AddStep(BuildStep buildStep)
         {
+            // Removing any existing steps with the same name:
+            var existing = this.steps.FirstOrDefault(
+                s => s.StepName == buildStep.StepName);
+            if (existing != null)
+                this.steps.Remove(existing);
+
+            // Adding the new step:
             this.steps.Add(buildStep);
         }
     }

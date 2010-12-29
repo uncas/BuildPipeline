@@ -18,10 +18,7 @@
         </div>
     </td>
     <td>
-        <% Html.RenderPartial("BuildStepView", Model.StepCommit); %>
-    </td>
-    <td>
-        <% if (Model.StepAcceptance != null)
-               Html.RenderPartial("BuildStepView", Model.StepAcceptance); %>
+        <% foreach (var step in Model.Steps)
+               Html.RenderPartial("BuildStepView", step); %>
     </td>
 </tr>

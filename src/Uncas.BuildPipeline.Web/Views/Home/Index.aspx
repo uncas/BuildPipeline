@@ -13,10 +13,7 @@
                 Activity
             </th>
             <th>
-                Commit
-            </th>
-            <th>
-                Acceptance
+                Build stages
             </th>
         </tr>
         <% foreach (var item in Model)
