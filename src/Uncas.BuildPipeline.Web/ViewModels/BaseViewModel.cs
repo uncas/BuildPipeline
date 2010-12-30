@@ -2,6 +2,5 @@
 {
     public class BaseViewModel
     {
-        public bool ShowDeployment { get; set; }
     }
 }

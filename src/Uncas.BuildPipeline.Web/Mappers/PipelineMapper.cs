@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using Uncas.BuildPipeline.Web.Models;
     using Uncas.BuildPipeline.Web.ViewModels;
 
@@ -28,8 +27,7 @@
         private static void PopulateBaseViewModel(BaseViewModel baseViewModel)
         {
             //bool showDeployment = bool.Parse(ConfigurationManager.AppSettings["showDeployment"]);
-            bool showDeployment = HttpContext.Current.Request.Url.AbsoluteUri.Contains("51743");
-            baseViewModel.ShowDeployment = showDeployment;
+            //bool showDeployment = HttpContext.Current.Request.Url.AbsoluteUri.Contains("51743");
         }
 
         private static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)

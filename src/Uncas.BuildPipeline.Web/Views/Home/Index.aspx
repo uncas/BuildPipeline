@@ -15,14 +15,12 @@
             <th>
                 Build stages
             </th>
-            <% if (Model.ShowDeployment)
-               { %>
             <th>
                 Deployment
             </th>
-            <%} %>
         </tr>
         <% foreach (var pipeline in Model.Pipelines)
            { Html.RenderPartial("PipelineListView", pipeline); } %>
     </table>
+    TODO: Show current deployment in list
 </asp:Content>

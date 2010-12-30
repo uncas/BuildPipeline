@@ -22,11 +22,7 @@
         <% foreach (var step in Model.Steps)
                Html.RenderPartial("BuildStepView", step); %>
     </td>
-    <% if (Model.ShowDeployment)
-       { %>
     <td>
-        QA1
         <%: Html.ActionLink("Deploy", "Deploy", new { pipelineId = Model.PipelineId })%>
     </td>
-    <%} %>
 </tr>
