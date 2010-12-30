@@ -7,6 +7,7 @@ ALTER PROCEDURE stp_Build_Add
     , @IsSuccessful bit
     , @StepName nvarchar(64)
     , @BuildNumber int
+    , @SourceAuthor nvarchar(64)
 )
 AS
 BEGIN
@@ -15,17 +16,17 @@ BEGIN
     IF @projectId IS NULL
     BEGIN
         INSERT INTO Project (ProjectName, SourceUrlBase) VALUES (@ProjectName, @SourceUrlBase)
-        
+
         SET @projectId = @@IDENTITY
     END
-    
+
     DECLARE @pipelineId int
     SELECT @pipelineId = PipelineId FROM Pipeline WHERE ProjectId = @projectId
         AND SourceRevision = @SourceRevision AND SourceUrl = @SourceUrl
     IF @pipelineId IS NULL
     BEGIN
-        INSERT INTO Pipeline (ProjectId, SourceUrl, SourceRevision)
-        VALUES (@projectId, @SourceUrl, @SourceRevision)
+        INSERT INTO Pipeline (ProjectId, SourceUrl, SourceRevision, SourceAuthor)
+        VALUES (@projectId, @SourceUrl, @SourceRevision, @SourceAuthor)
         
         SET @pipelineId = @@IDENTITY
     END

@@ -241,6 +241,7 @@ EXEC stp_Build_Add
     , @IsSuccessFul = @isSuccessful
     , @StepName = '${build.step}'
     , @BuildNumber = ${version.build}
+    , @SourceAuthor = '${svn.author}'
     </echo>
     <exec program="sqlcmd">
       <arg value="-S" />
