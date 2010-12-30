@@ -229,8 +229,11 @@
 
   <target name="logBuild" depends="getSubversionRevision"
     if="${property::exists('CCNetIntegrationStatus')}">
-    <if test="${not property::exists('package.path)}">
+    <if test="${not property::exists('package.path')}">
       <property name="package.path" value="" />
+    </if>
+    <if test="${not property::exists('CCNetIntegrationStatus')}">
+      <property name="CCNetIntegrationStatus" value="" />
     </if>
     <echo file="LogBuild.sql">
 DECLARE @isSuccessful bit
