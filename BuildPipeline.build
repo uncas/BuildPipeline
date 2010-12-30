@@ -22,9 +22,6 @@
   </if>
 
   <!-- Default values for properties that have not been assigned a value: --> 
-  <if test="${not property::exists('CCNetIntegrationStatus')}">
-    <property name="CCNetIntegrationStatus" value="" />
-  </if>
   <if test="${not property::exists('build.step')}">
     <property name="build.step" value="" />
   </if>
@@ -225,7 +222,8 @@
     </exec>
   </target>
 
-  <target name="logBuild" depends="getSubversionRevision">
+  <target name="logBuild" depends="getSubversionRevision"
+    if="${property::exists('CCNetIntegrationStatus')}">
     <echo file="LogBuild.sql">
 DECLARE @isSuccessful bit
 

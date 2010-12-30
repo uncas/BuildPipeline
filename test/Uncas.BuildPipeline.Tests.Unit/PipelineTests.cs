@@ -1,6 +1,7 @@
 ﻿namespace Uncas.BuildPipeline.Tests.Unit
 {
     using System;
+    using System.Threading;
     using NUnit.Framework;
     using Uncas.BuildPipeline.Web.Models;
 
@@ -47,6 +48,18 @@
             pipeline.AddStep(GetBuildStep(true, "B"));
 
             Assert.False(pipeline.IsSuccessful);
+        }
+
+        [Test]
+        public void IsSuccessful_PipelineWithMixedSuccessThatWasFixed_IsSuccessful()
+        {
+            var pipeline = GetPipeline();
+            pipeline.AddStep(GetBuildStep(false, "A"));
+            Thread.Sleep(10);
+            pipeline.AddStep(GetBuildStep(true, "A"));
+            pipeline.AddStep(GetBuildStep(true, "B"));
+
+            Assert.True(pipeline.IsSuccessful);
         }
 
         private static Pipeline GetPipeline()
