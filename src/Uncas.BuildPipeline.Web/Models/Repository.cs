@@ -13,16 +13,16 @@
             var pipelines = new List<Pipeline>();
             string commandText = string.Format(@"
 SELECT TOP {0}
-    P.ProjectName
-    , B.SourceRevision
-    , B.BuildId
-    , P.SourceUrlBase
-    , B.SourceUrl
-    , B.Created
-FROM Build AS B
-JOIN Project AS P
-    ON B.ProjectId = P.ProjectId
-ORDER BY B.Created DESC",
+    Pr.ProjectName
+    , Pi.SourceRevision
+    , Pi.PipelineId
+    , Pr.SourceUrlBase
+    , Pi.SourceUrl
+    , Pi.Created
+FROM Pipeline AS Pi
+JOIN Project AS Pr
+    ON Pi.ProjectId = Pr.ProjectId
+ORDER BY Pi.Created DESC",
                 pageSize);
             using (DbDataReader reader = GetReader(commandText))
             {
@@ -32,7 +32,7 @@ ORDER BY B.Created DESC",
                     {
                         ProjectName = (string)reader["ProjectName"],
                         SourceRevision = (int)reader["SourceRevision"],
-                        Id = (int)reader["BuildId"],
+                        Id = (int)reader["PipelineId"],
                         SourceUrl = (string)reader["SourceUrl"],
                         SourceUrlBase = (string)reader["SourceUrlBase"],
                         Created = (DateTime)reader["Created"]
@@ -57,7 +57,7 @@ ORDER BY B.Created DESC",
             string commandText = string.Format(@"
 SELECT IsSuccessful, StepName, Created
 FROM BuildStep
-WHERE BuildId = {0}
+WHERE PipelineId = {0}
 ORDER BY Created ASC",
                 pipeline.Id);
             using (DbDataReader reader = GetReader(commandText))

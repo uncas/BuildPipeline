@@ -2,9 +2,9 @@
 GO
 USE BuildPipeline
 GO
-DROP TABLE BuildStep
+/*DROP TABLE BuildStep
 DROP TABLE Build
-DROP TABLE Project
+DROP TABLE Project*/
 GO
 CREATE TABLE Project
 (
@@ -87,7 +87,7 @@ END
 
 GO
 
-EXEC stp_Build_Add
+/*EXEC stp_Build_Add
     @ProjectName = 'BuildPipeline'
     , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
     , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/trunk'
@@ -129,4 +129,4 @@ SELECT B.BuildId, B.ProjectId, REPLACE(B.SourceUrl, P.SourceUrlBase, '') AS Sour
 FROM Build AS B
 JOIN Project AS P
     ON B.ProjectId = P.ProjectId
-SELECT * FROM BuildStep
+SELECT * FROM BuildStep*/
