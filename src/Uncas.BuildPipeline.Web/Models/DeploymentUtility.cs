@@ -9,9 +9,11 @@
     {
         public void Deploy(
             string packagePath,
-            string workingDirectory)
+            string workingDirectory,
+            int environmentId)
         {
             ExtractZipFile(packagePath, workingDirectory);
+            WriteEnvironmentProperties(environmentId, workingDirectory);
             DeployPackage(workingDirectory);
         }
 
@@ -26,6 +28,42 @@
                 "Deploy.cmd");
             startInfo.WorkingDirectory = workingDirectory;
             Process.Start(startInfo);
+        }
+
+        private void WriteEnvironmentProperties(
+            int environmentId,
+            string workingDirectory)
+        {
+            // TODO: Store the names of the properties in a list for each project.
+            string websiteDestinationPath =
+                @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web";
+            string websiteName = "BuildPipelineWeb";
+            int websitePort = 876;
+            if (environmentId == 2)
+            {
+                websiteDestinationPath =
+                    @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web.QA";
+                websiteName = "BuildPipelineWeb-QA";
+                websitePort = 872;
+            }
+
+            // TODO: Allow editing values of properties for each separate environment.
+            string format = @"<?xml version=""1.0""?>
+<properties>
+
+  <property name=""website.destination.path"" value=""{0}"" />
+  <property name=""website.name"" value=""{1}"" />
+  <property name=""website.port"" value=""{2}"" />
+
+</properties>";
+            string properties = string.Format(
+                format,
+                websiteDestinationPath,
+                websiteName,
+                websitePort);
+            string filePath =
+                Path.Combine(workingDirectory, "local.properties.xml");
+            File.WriteAllText(filePath, properties);
         }
 
         private void ExtractZipFile(

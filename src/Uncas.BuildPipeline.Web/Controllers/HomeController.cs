@@ -51,39 +51,12 @@
             string packagePath = pipeline.PackagePath;
             // TODO: Give proper feed back to user...
             var deploymentUtility = new DeploymentUtility();
-            deploymentUtility.Deploy(packagePath, @"C:\temp\deploytest");
+            string workingDirectory = @"C:\temp\deploytest";
+            deploymentUtility.Deploy(
+                packagePath,
+                workingDirectory,
+                environmentId);
             return RedirectToAction("Deploy", new { PipelineId = pipelineId });
-        }
-
-        private void WriteEnvironmentProperties(int environmentId)
-        {
-            string websiteDestinationPath =
-                @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web";
-            string websiteName = "BuildPipelineWeb";
-            int websitePort = 876;
-            if (environmentId == 2)
-            {
-                websiteDestinationPath =
-                    @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web.QA";
-                websiteName = "BuildPipelineWeb-QA";
-                websitePort = 872;
-            }
-
-            string format = @"
-<?xml version=""1.0""?>
-<properties>
-
-  <property name=""website.destination.path"" value=""{0}"" />
-  <property name=""website.name"" value=""{1}"" />
-  <property name=""website.port"" value=""{2}"" />
-
-</properties>
-";
-            string properties = string.Format(
-                format,
-                websiteDestinationPath,
-                websiteName,
-                websitePort);
         }
 
         [HttpGet]
