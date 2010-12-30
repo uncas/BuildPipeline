@@ -7,17 +7,17 @@
 
     public class DeploymentUtility
     {
-        public void Deploy(string packagePath)
+        public void Deploy(
+            string packagePath, 
+            string workingDirectory)
         {
-            string workingDirectory = @"C:\temp\ziptest";
-
             // 1) Extract package to some working directory
             ExtractZipFile(packagePath, workingDirectory);
 
             // 2) Run command on package:
-            ProcessStartInfo startInfo = new ProcessStartInfo(
-                @"C:\program files (x86)\Nant\nant.exe",
-                "-buildfile:BuildActions.build deploy");
+            ProcessStartInfo startInfo =
+                new ProcessStartInfo(
+                "Deploy.cmd");
             startInfo.WorkingDirectory = workingDirectory;
             Process.Start(startInfo);
         }
