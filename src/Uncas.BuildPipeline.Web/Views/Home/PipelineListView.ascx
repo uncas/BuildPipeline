@@ -22,4 +22,10 @@
         <% foreach (var step in Model.Steps)
                Html.RenderPartial("BuildStepView", step); %>
     </td>
+    <% if (Model.ShowDeployment)
+       { %>
+    <td>
+        QA1 <a href="#">Deploy</a>
+    </td>
+    <%} %>
 </tr>

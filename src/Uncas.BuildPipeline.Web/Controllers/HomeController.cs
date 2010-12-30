@@ -11,8 +11,8 @@
         public ActionResult Index()
         {
             var pipelines = new Repository().GetPipelines(BuildPageSize);
-            var viewModels = PipelineMapper.MapToPipelineViewModels(pipelines);
-            return View(viewModels);
+            var viewModel = PipelineMapper.MapToPipelineIndexViewModel(pipelines);
+            return View(viewModel);
         }
 
         public ActionResult About()

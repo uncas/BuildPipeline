@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PipelineViewModel
+    public class PipelineViewModel : BaseViewModel
     {
         public string CreatedDisplay { get; set; }
         public string CssClass { get; set; }

@@ -356,13 +356,13 @@ div#title
 {
     background-color: Red;
     color: White;
-    font-size: 130%;
+    font-size: 120%;
     font-weight: bolder;
 }
 
 .BuildListView
 {
-    font-size: 90%;
+    font-size: 87%;
 }
 
 .SourceDetails

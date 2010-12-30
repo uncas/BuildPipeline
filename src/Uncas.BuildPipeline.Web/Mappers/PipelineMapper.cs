@@ -3,17 +3,33 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web;
     using Uncas.BuildPipeline.Web.Models;
     using Uncas.BuildPipeline.Web.ViewModels;
 
     public static class PipelineMapper
     {
-        public static IEnumerable<PipelineViewModel>
+        public static PipelineIndexViewModel MapToPipelineIndexViewModel(IEnumerable<Pipeline> pipelines)
+        {
+            var result = new PipelineIndexViewModel();
+            result.Pipelines = MapToPipelineViewModels(pipelines);
+            PopulateBaseViewModel(result);
+            return result;
+        }
+
+        private static IEnumerable<PipelineViewModel>
            MapToPipelineViewModels(IEnumerable<Pipeline> pipelines)
         {
             var viewModels = pipelines.Select(
                 p => MapToPipelineViewModel(p));
             return viewModels;
+        }
+
+        private static void PopulateBaseViewModel(BaseViewModel baseViewModel)
+        {
+            //bool showDeployment = bool.Parse(ConfigurationManager.AppSettings["showDeployment"]);
+            bool showDeployment = HttpContext.Current.Request.Url.AbsoluteUri.Contains("51743");
+            baseViewModel.ShowDeployment = showDeployment;
         }
 
         private static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
@@ -31,6 +47,7 @@
                 CssClass = pipeline.IsSuccessful ? "BuildGreen" : "BuildRed"
             };
             result.Steps = pipeline.Steps.Select(MapToBuildStepViewModel);
+            PopulateBaseViewModel(result);
             return result;
         }
 
