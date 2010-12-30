@@ -29,7 +29,7 @@ ORDER BY Pi.Created DESC",
             {
                 while (reader.Read())
                 {
-                    // TODO: Read proper package url here:
+                    // TODO: High Priority: Read proper package url here:
                     pipelines.Add(new Pipeline(
                         (int)reader["PipelineId"],
                         (string)reader["ProjectName"],

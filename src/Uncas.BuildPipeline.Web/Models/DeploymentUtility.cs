@@ -8,13 +8,16 @@
     public class DeploymentUtility
     {
         public void Deploy(
-            string packagePath, 
+            string packagePath,
             string workingDirectory)
         {
-            // 1) Extract package to some working directory
+            // Extracts package to some working directory:
             ExtractZipFile(packagePath, workingDirectory);
 
-            // 2) Run command on package:
+            // TODO: Low Priority: Consider fallback to use the following command if Deploy.cmd is not found:
+            // "C:\Program Files (x86)\NAnt\nant.exe" -buildfile:BuildActions.build deploy
+
+            // Runs command on package:
             ProcessStartInfo startInfo =
                 new ProcessStartInfo(
                 "Deploy.cmd");
