@@ -71,7 +71,8 @@
                 "https://svn/test/trunk",
                 "https://svn/test/",
                 DateTime.Now,
-                "N.N.");
+                "N.N.",
+                @"C:\temp.zip");
         }
 
         private static BuildStep GetBuildStep(bool isSuccessful)

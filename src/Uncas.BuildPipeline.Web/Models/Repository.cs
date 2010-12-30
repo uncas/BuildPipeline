@@ -29,6 +29,7 @@ ORDER BY Pi.Created DESC",
             {
                 while (reader.Read())
                 {
+                    // TODO: Read proper package url here:
                     pipelines.Add(new Pipeline(
                         (int)reader["PipelineId"],
                         (string)reader["ProjectName"],
@@ -36,7 +37,8 @@ ORDER BY Pi.Created DESC",
                         (string)reader["SourceUrl"],
                         (string)reader["SourceUrlBase"],
                         (DateTime)reader["Created"],
-                        (string)reader["SourceAuthor"]));
+                        (string)reader["SourceAuthor"],
+                        @"C:\Builds\BuildPipeline\Artifacts\Unit\packages\Uncas.BuildPipeline-0.1.36.967.zip"));
                 }
             }
 

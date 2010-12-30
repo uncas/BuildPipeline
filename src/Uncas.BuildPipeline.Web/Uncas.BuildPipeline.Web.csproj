@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -64,6 +67,7 @@
     </Compile>
     <Compile Include="Mappers\PipelineMapper.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\DeploymentUtility.cs" />
     <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Models\BuildStep.cs" />
     <Compile Include="Models\Repository.cs" />
