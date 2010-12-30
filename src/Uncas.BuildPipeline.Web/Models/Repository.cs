@@ -30,20 +30,54 @@ ORDER BY Pi.Created DESC",
             {
                 while (reader.Read())
                 {
-                    pipelines.Add(new Pipeline(
-                        (int)reader["PipelineId"],
-                        (string)reader["ProjectName"],
-                        (int)reader["SourceRevision"],
-                        (string)reader["SourceUrl"],
-                        (string)reader["SourceUrlBase"],
-                        (DateTime)reader["Created"],
-                        (string)reader["SourceAuthor"],
-                        GetStringValue(reader["PackagePath"])));
+                    pipelines.Add(MapDataToPipeline(reader));
                 }
             }
 
             AddSteps(pipelines);
             return pipelines;
+        }
+
+        private static Pipeline MapDataToPipeline(DbDataReader reader)
+        {
+            return new Pipeline(
+                (int)reader["PipelineId"],
+                (string)reader["ProjectName"],
+                (int)reader["SourceRevision"],
+                (string)reader["SourceUrl"],
+                (string)reader["SourceUrlBase"],
+                (DateTime)reader["Created"],
+                (string)reader["SourceAuthor"],
+                GetStringValue(reader["PackagePath"]));
+        }
+
+        public Pipeline GetPipeline(int pipelineId)
+        {
+            Pipeline pipeline=null;
+            string commandText = string.Format(@"
+SELECT Pr.ProjectName
+    , Pi.SourceRevision
+    , Pi.PipelineId
+    , Pr.SourceUrlBase
+    , Pi.SourceUrl
+    , Pi.Created
+    , Pi.SourceAuthor
+    , Pi.PackagePath
+FROM Pipeline AS Pi
+JOIN Project AS Pr
+    ON Pi.ProjectId = Pr.ProjectId
+WHERE Pi.PipelineId = {0}",
+                pipelineId);
+            using (DbDataReader reader = GetReader(commandText))
+            {
+                if (reader.Read())
+                {
+                    pipeline = MapDataToPipeline(reader);
+                }
+            }
+
+            AddSteps(pipeline);
+            return pipeline;
         }
 
         private static string GetStringValue(object dbValue)

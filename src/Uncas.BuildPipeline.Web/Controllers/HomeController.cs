@@ -8,13 +8,34 @@
     {
         private const int BuildPageSize = 10;
 
+        private readonly Repository pipelineRepository;
+
+        public HomeController()
+        {
+            this.pipelineRepository = new Repository();
+        }
+
+        [HttpGet]
         public ActionResult Index()
         {
-            var pipelines = new Repository().GetPipelines(BuildPageSize);
+            var pipelines = this.pipelineRepository.GetPipelines(BuildPageSize);
             var viewModel = PipelineMapper.MapToPipelineIndexViewModel(pipelines);
             return View(viewModel);
         }
 
+        [HttpPost]
+        public ActionResult Deploy(int pipelineId)
+        {
+            // TODO: Put this in application service:
+            var pipeline = this.pipelineRepository.GetPipeline(pipelineId);
+            string packagePath = pipeline.PackagePath;
+            // TODO: Give proper feed back to user...
+            var deploymentUtility = new DeploymentUtility();
+            deploymentUtility.Deploy(packagePath, @"C:\temp\deploytest");
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
         public ActionResult About()
         {
             return View();

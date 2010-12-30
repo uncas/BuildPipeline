@@ -25,7 +25,11 @@
     <% if (Model.ShowDeployment)
        { %>
     <td>
-        QA1 <a href="#">Deploy</a>
+        QA1
+        <% using (Html.BeginForm("Deploy", "Home", new { pipelineId = Model.PipelineId }))
+           { %>
+        <input type="submit" value="Deploy" />
+        <%} %>
     </td>
     <%} %>
 </tr>

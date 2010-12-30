@@ -6,6 +6,7 @@
     {
         public string CreatedDisplay { get; set; }
         public string CssClass { get; set; }
+        public int PipelineId { get; set; }
         public string ProjectName { get; set; }
         public string SourceAuthor { get; set; }
         public int SourceRevision { get; set; }

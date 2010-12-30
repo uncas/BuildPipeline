@@ -40,6 +40,7 @@
                 sourceUrlRelative = sourceUrlRelative.Split('/').Last();
             var result = new PipelineViewModel
             {
+                PipelineId = pipeline.Id,
                 ProjectName = pipeline.ProjectName,
                 SourceAuthor = pipeline.SourceAuthor,
                 SourceRevision = pipeline.SourceRevision,

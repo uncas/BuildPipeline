@@ -26,7 +26,7 @@
             this.SourceUrlBase = sourceUrlBase;
             this.Created = created;
             this.SourceAuthor = sourceAuthor;
-            this.PackageUrl = packageUrl;
+            this.PackagePath = packageUrl;
         }
 
         public int Id { get; private set; }
@@ -36,7 +36,7 @@
         public string SourceUrl { get; private set; }
         public string SourceUrlBase { get; private set; }
         public DateTime Created { get; private set; }
-        public string PackageUrl { get; private set; }
+        public string PackagePath { get; private set; }
 
         public IEnumerable<BuildStep> Steps
         {
