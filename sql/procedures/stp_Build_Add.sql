@@ -8,6 +8,7 @@ ALTER PROCEDURE stp_Build_Add
     , @StepName nvarchar(64)
     , @BuildNumber int
     , @SourceAuthor nvarchar(64)
+    , @PackagePath nvarchar(256)
 )
 AS
 BEGIN
@@ -25,8 +26,8 @@ BEGIN
         AND SourceRevision = @SourceRevision AND SourceUrl = @SourceUrl
     IF @pipelineId IS NULL
     BEGIN
-        INSERT INTO Pipeline (ProjectId, SourceUrl, SourceRevision, SourceAuthor)
-        VALUES (@projectId, @SourceUrl, @SourceRevision, @SourceAuthor)
+        INSERT INTO Pipeline (ProjectId, SourceUrl, SourceRevision, SourceAuthor, PackagePath)
+        VALUES (@projectId, @SourceUrl, @SourceRevision, @SourceAuthor, @PackagePath)
         
         SET @pipelineId = @@IDENTITY
     END

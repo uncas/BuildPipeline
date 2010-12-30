@@ -184,6 +184,7 @@
       </fileset>
     </zip>
     <if test="${property::exists('CCNetArtifactDirectory')}">
+      <property name="package.path" value="${CCNetArtifactDirectory}\packages\${zipfile.name}" />
       <copy file="${zipfile.path}" todir="${CCNetArtifactDirectory}\packages" overwrite="true" />
     </if>
 
@@ -228,6 +229,9 @@
 
   <target name="logBuild" depends="getSubversionRevision"
     if="${property::exists('CCNetIntegrationStatus')}">
+    <if test="${not property::exists('package.path)}">
+      <property name="package.path" value="" />
+    </if>
     <echo file="LogBuild.sql">
 DECLARE @isSuccessful bit
 
@@ -243,6 +247,7 @@ EXEC stp_Build_Add
     , @StepName = '${build.step}'
     , @BuildNumber = ${version.build}
     , @SourceAuthor = '${svn.author}'
+    , @PackagePath = '${package.path}'
     </echo>
     <exec program="sqlcmd">
       <arg value="-S" />
