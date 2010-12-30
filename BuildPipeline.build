@@ -123,6 +123,12 @@
     <if test="${property::exists('CCNetLabel')}">
       <property name="version.build" value="${CCNetLabel}" />
     </if>
+
+    <property name="version.string" value="${version.major}.${version.minor}.${version.build}.${svn.revision}" />
+    <property name="zipfile.name" value="Uncas.BuildPipeline-${version.string}.zip" />
+    <if test="${property::exists('CCNetArtifactDirectory')}">
+      <property name="package.path" value="${CCNetArtifactDirectory}\packages\${zipfile.name}" />
+    </if>
   </target>
 
   <target name="PrepareCommit" depends="test">
@@ -130,7 +136,6 @@
   </target>
 
   <target name="generateVersionInfoFile" depends="getSubversionRevision">
-    <property name="version.string" value="${version.major}.${version.minor}.${version.build}.${svn.revision}" />
     <asminfo output="src\VersionInfo.cs" language="CSharp">
       <attributes>
         <attribute type="System.Reflection.AssemblyCompanyAttribute" value="Uncas" />
@@ -176,7 +181,6 @@
     <copy file="scripts\BuildActions.build" todir="${package.dir}" />
     <copy file="scripts\Deploy.cmd" todir="${package.dir}" />
 
-    <property name="zipfile.name" value="Uncas.BuildPipeline-${version.string}.zip" />
     <property name="zipfile.path" value="${output.dir}\${zipfile.name}" />
     <zip zipfile="${zipfile.path}">
       <fileset basedir="${package.dir}">
@@ -184,7 +188,6 @@
       </fileset>
     </zip>
     <if test="${property::exists('CCNetArtifactDirectory')}">
-      <property name="package.path" value="${CCNetArtifactDirectory}\packages\${zipfile.name}" />
       <copy file="${zipfile.path}" todir="${CCNetArtifactDirectory}\packages" overwrite="true" />
     </if>
 
