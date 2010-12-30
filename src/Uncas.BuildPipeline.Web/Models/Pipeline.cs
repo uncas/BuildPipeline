@@ -14,7 +14,8 @@
             int sourceRevision,
             string sourceUrl,
             string sourceUrlBase,
-            DateTime created)
+            DateTime created,
+            string sourceAuthor)
         {
             this.steps = new List<BuildStep>();
             this.Id = id;
@@ -23,10 +24,12 @@
             this.SourceUrl = sourceUrl;
             this.SourceUrlBase = sourceUrlBase;
             this.Created = created;
+            this.SourceAuthor = sourceAuthor;
         }
 
         public int Id { get; private set; }
         public string ProjectName { get; private set; }
+        public string SourceAuthor { get; private set; }
         public int SourceRevision { get; private set; }
         public string SourceUrl { get; private set; }
         public string SourceUrlBase { get; private set; }

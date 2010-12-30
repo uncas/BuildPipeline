@@ -11,7 +11,8 @@
     <td class="SourceDetails">
         <div class="<%: Model.CssClass %>" title="<%: Model.StatusText %>">
             revision
-            <%: Model.SourceRevision %>
+            <%: Model.SourceRevision %>, by
+            <%: Model.SourceAuthor %>
         </div>
         <div>
             <%: Model.CreatedDisplay %>

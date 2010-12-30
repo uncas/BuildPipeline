@@ -23,6 +23,7 @@
             var result = new PipelineViewModel
             {
                 ProjectName = pipeline.ProjectName,
+                SourceAuthor = pipeline.SourceAuthor,
                 SourceRevision = pipeline.SourceRevision,
                 SourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, ""),
                 CreatedDisplay = createdDisplay,

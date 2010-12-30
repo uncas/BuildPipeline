@@ -19,6 +19,7 @@ SELECT TOP {0}
     , Pr.SourceUrlBase
     , Pi.SourceUrl
     , Pi.Created
+    , Pi.SourceAuthor
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
@@ -34,7 +35,8 @@ ORDER BY Pi.Created DESC",
                         (int)reader["SourceRevision"],
                         (string)reader["SourceUrl"],
                         (string)reader["SourceUrlBase"],
-                        (DateTime)reader["Created"]));
+                        (DateTime)reader["Created"],
+                        (string)reader["SourceAuthor"]));
                 }
             }
 

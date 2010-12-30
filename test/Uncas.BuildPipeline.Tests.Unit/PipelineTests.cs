@@ -70,7 +70,8 @@
                 12,
                 "https://svn/test/trunk",
                 "https://svn/test/",
-                DateTime.Now);
+                DateTime.Now,
+                "N.N.");
         }
 
         private static BuildStep GetBuildStep(bool isSuccessful)
