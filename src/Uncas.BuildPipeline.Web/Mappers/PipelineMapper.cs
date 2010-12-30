@@ -35,13 +35,15 @@
         private static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
-
+            string sourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, "");
+            if (sourceUrlRelative.Contains("/"))
+                sourceUrlRelative = sourceUrlRelative.Split('/').Last();
             var result = new PipelineViewModel
             {
                 ProjectName = pipeline.ProjectName,
                 SourceAuthor = pipeline.SourceAuthor,
                 SourceRevision = pipeline.SourceRevision,
-                SourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, ""),
+                SourceUrlRelative = sourceUrlRelative,
                 CreatedDisplay = createdDisplay,
                 StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
                 CssClass = pipeline.IsSuccessful ? "BuildGreen" : "BuildRed"
