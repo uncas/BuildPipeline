@@ -47,45 +47,6 @@ CREATE TABLE BuildStep
 )
 
 GO
-DROP PROCEDURE stp_Build_Add
-GO
-CREATE PROCEDURE stp_Build_Add
-(
-    @ProjectName nvarchar(64)
-    , @SourceUrlBase nvarchar(256)
-    , @SourceUrl nvarchar(256)
-    , @SourceRevision int
-    , @IsSuccessful bit
-    , @StepName nvarchar(64)
-    , @BuildNumber int
-)
-AS
-BEGIN
-    DECLARE @projectId int
-    SELECT @projectId = ProjectId FROM Project WHERE ProjectName = @ProjectName
-    IF @projectId IS NULL
-    BEGIN
-        INSERT INTO Project (ProjectName, SourceUrlBase) VALUES (@ProjectName, @SourceUrlBase)
-        
-        SET @projectId = @@IDENTITY
-    END
-    
-    DECLARE @buildId int
-    SELECT @buildId = BuildId FROM Build WHERE ProjectId = @projectId
-        AND SourceRevision = @SourceRevision AND SourceUrl = @SourceUrl
-    IF @buildId IS NULL
-    BEGIN
-        INSERT INTO Build (ProjectId, SourceUrl, SourceRevision)
-        VALUES (@projectId, @SourceUrl, @SourceRevision)
-        
-        SET @buildId = @@IDENTITY
-    END
-    
-    INSERT INTO BuildStep (BuildId, BuildNumber, IsSuccessful, StepName)
-    VALUES (@buildId, @BuildNumber, @IsSuccessful, @StepName)
-END
-
-GO
 
 /*EXEC stp_Build_Add
     @ProjectName = 'BuildPipeline'

@@ -117,6 +117,9 @@
     <xmlpeek file="${output.dir}\svninfo.xml" xpath="/info/entry/url" property="svn.url" />
     <echo message="Using Subversion url: ${svn.url}" />
 
+    <xmlpeek file="${output.dir}\svninfo.xml" xpath="/info/entry/commit/author" property="svn.author" />
+    <echo message="Last commit by: ${svn.author}" />
+
     <if test="${property::exists('CCNetLabel')}">
       <property name="version.build" value="${CCNetLabel}" />
     </if>
@@ -233,7 +236,7 @@ ELSE SET @isSuccessful = 0
 EXEC stp_Build_Add
     @ProjectName = 'BuildPipeline'
     , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
-    , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/trunk'
+    , @SourceUrl = '${svn.url}'
     , @SourceRevision = ${svn.revision}
     , @IsSuccessFul = @isSuccessful
     , @StepName = '${build.step}'
