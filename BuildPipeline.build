@@ -21,6 +21,15 @@
     <include buildfile="local.properties.xml" />
   </if>
 
+  <!-- Default values for properties that have not been assigned a value: --> 
+  <if test="${not property::exists('CCNetIntegrationStatus')}">
+    <property name="CCNetIntegrationStatus" value="" />
+  </if>
+  <if test="${not property::exists('build.step')}">
+    <property name="build.step" value="" />
+  </if>
+
+
   <target name="all" />
 
   <target name="cleanProject">
@@ -217,6 +226,21 @@
   </target>
 
   <target name="logBuild" depends="getSubversionRevision">
+    <echo file="LogBuild.sql">
+DECLARE @isSuccessful bit
+
+IF '${CCNetIntegrationStatus}' = 'Success' SET @isSuccessful = 1
+ELSE SET @isSuccessful = 0
+
+EXEC stp_Build_Add
+    @ProjectName = 'BuildPipeline'
+    , @SourceUrlBase = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/'
+    , @SourceUrl = 'http://aragorn:81/svn/dev/projects/Uncas.BuildPipeline/trunk'
+    , @SourceRevision = ${svn.revision}
+    , @IsSuccessFul = @isSuccessful
+    , @StepName = '${build.step}'
+    , @BuildNumber = ${version.build}
+    </echo>
     <exec program="sqlcmd">
       <arg value="-S" />
       <arg value=".\SqlExpress" />
@@ -225,14 +249,6 @@
       <arg value="BuildPipeline" />
       <arg value="-i" />
       <arg value="LogBuild.sql" />
-      <arg value="-v" />
-      <arg value="StepName=${build.step}" />
-      <arg value="-v" />
-      <arg value="BuildNumber=${version.build}" />
-      <arg value="-v" />
-      <arg value="SourceRevision=${svn.revision}" />
-      <arg value="-v" />
-      <arg value="IntegrationStatus=${CCNetIntegrationStatus}" />
     </exec>
   </target>
 
