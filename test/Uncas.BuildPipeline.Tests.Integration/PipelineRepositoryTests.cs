@@ -6,9 +6,10 @@
     using Uncas.BuildPipeline.Web.Models;
 
     [TestFixture]
-    public class RepositoryTests
+    public class PipelineRepositoryTests
     {
-        private readonly Repository repository = new Repository();
+        private readonly PipelineRepository pipelineRepository = 
+            new PipelineRepository();
 
         [Test]
         public void GetPipelines_PageSize2_GetsMax2()
@@ -16,7 +17,7 @@
             const int pageSize = 2;
 
             IEnumerable<Pipeline> pipelines =
-                this.repository.GetPipelines(pageSize);
+                this.pipelineRepository.GetPipelines(pageSize);
 
             Assert.True(pipelines.Count() <= pageSize);
         }
@@ -27,7 +28,7 @@
             const int pageSize = 1;
 
             Pipeline pipeline =
-                this.repository.GetPipelines(pageSize).FirstOrDefault();
+                this.pipelineRepository.GetPipelines(pageSize).FirstOrDefault();
 
             Assert.NotNull(pipeline);
             Assert.NotNull(pipeline.ProjectName);

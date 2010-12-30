@@ -6,7 +6,7 @@
     using System.Data.Common;
     using System.Data.SqlClient;
 
-    public class Repository
+    public class PipelineRepository
     {
         public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {

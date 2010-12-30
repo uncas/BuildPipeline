@@ -1,6 +1,6 @@
 ﻿namespace Uncas.BuildPipeline.Web.Controllers
 {
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
     using Uncas.BuildPipeline.Web.Mappers;
     using Uncas.BuildPipeline.Web.Models;
@@ -10,11 +10,13 @@
     {
         private const int BuildPageSize = 10;
 
-        private readonly Repository pipelineRepository;
+        private readonly EnvironmentRepository environmentRepository;
+        private readonly PipelineRepository pipelineRepository;
 
         public HomeController()
         {
-            this.pipelineRepository = new Repository();
+            this.environmentRepository = new EnvironmentRepository();
+            this.pipelineRepository = new PipelineRepository();
         }
 
         [HttpGet]
@@ -28,17 +30,12 @@
         [HttpGet]
         public ActionResult Deploy(int pipelineId)
         {
-            var viewModel = new List<EnvironmentViewModel>();
-            // TODO: Fetch these data from repository:
-            viewModel.Add(new EnvironmentViewModel
+            var environments = this.environmentRepository.GetEnvironments();
+            var viewModel = environments.Select(
+                e => new EnvironmentViewModel
             {
-                EnvironmentId = 1,
-                EnvironmentName = "Integration"
-            });
-            viewModel.Add(new EnvironmentViewModel
-            {
-                EnvironmentId = 2,
-                EnvironmentName = "QA"
+                EnvironmentId = e.Id,
+                EnvironmentName = e.EnvironmentName
             });
             return View(viewModel);
         }

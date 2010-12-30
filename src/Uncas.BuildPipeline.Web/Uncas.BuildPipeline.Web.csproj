@@ -68,9 +68,11 @@
     <Compile Include="Mappers\PipelineMapper.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DeploymentUtility.cs" />
+    <Compile Include="Models\Environment.cs" />
+    <Compile Include="Models\EnvironmentRepository.cs" />
     <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Models\BuildStep.cs" />
-    <Compile Include="Models\Repository.cs" />
+    <Compile Include="Models\PipelineRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BuildStepViewModel.cs" />
