@@ -74,11 +74,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BuildStepViewModel.cs" />
+    <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\PipelineIndexViewModel.cs" />
     <Compile Include="ViewModels\PipelineViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Views\Home\Deploy.aspx" />
     <Content Include="Views\Home\PipelineListView.ascx" />
     <Content Include="Views\Home\BuildStepView.ascx" />
     <Content Include="Views\Home\Index.aspx" />

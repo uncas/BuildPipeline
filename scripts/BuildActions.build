@@ -2,7 +2,6 @@
 <project name="BuildPipelineActions" default="test">
 
   <!-- Variables that can be changed - for example for different environments -->
-  <property name="website.source.path" value="apps\Uncas.BuildPipeline.Web" />
   <property name="website.destination.path" value="c:\inetpub\wwwroot\Uncas.BuildPipeline.Web" />
   <property name="website.name" value="BuildPipelineWeb" />
   <property name="website.port" value="876" />
@@ -10,6 +9,7 @@
   <!-- Working values and built-in values - need not be changed -->
   <property name="nunit.executable" value="tools\NUnit\nunit-console.exe" />
   <property name="appcmd" value="c:\Windows\System32\inetsrv\appcmd" />
+  <property name="website.source.path" value="apps\Uncas.BuildPipeline.Web" />
 
   <!-- Local properties, that overrides the ones from above -->
   <if test="${file::exists('local.properties.xml')}">

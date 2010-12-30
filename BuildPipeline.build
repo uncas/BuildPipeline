@@ -191,7 +191,9 @@
       <copy file="${zipfile.path}" todir="${CCNetArtifactDirectory}\packages" overwrite="true" />
     </if>
 
-    <call target="masterPackage" />
+    <!--
+      <call target="masterPackage" />
+    -->
   </target>
 
   <target name="masterPackage">

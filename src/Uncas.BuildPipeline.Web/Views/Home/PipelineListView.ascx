@@ -26,10 +26,7 @@
        { %>
     <td>
         QA1
-        <% using (Html.BeginForm("Deploy", "Home", new { pipelineId = Model.PipelineId }))
-           { %>
-        <input type="submit" value="Deploy" />
-        <%} %>
+        <%: Html.ActionLink("Deploy", "Deploy", new { pipelineId = Model.PipelineId })%>
     </td>
     <%} %>
 </tr>
