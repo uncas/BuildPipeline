@@ -1,5 +1,6 @@
 ﻿namespace Uncas.BuildPipeline.Tests.Unit
 {
+    using System;
     using NUnit.Framework;
     using Uncas.BuildPipeline.Web.Models;
 
@@ -9,17 +10,14 @@
         [Test]
         public void Construct()
         {
-            var pipeline = new Pipeline();
+            var pipeline = GetPipeline();
         }
 
         [Test]
         public void IsSuccessful_PipelineWithSuccessfulStep_IsSuccessful()
         {
-            var pipeline = new Pipeline();
-            pipeline.AddStep(new BuildStep
-            {
-                IsSuccessful = true
-            });
+            var pipeline = GetPipeline();
+            pipeline.AddStep(GetBuildStep(true));
 
             Assert.True(pipeline.IsSuccessful);
         }
@@ -27,7 +25,7 @@
         [Test]
         public void IsSuccessful_PipelineWithoutSteps_IsSuccessful()
         {
-            var pipeline = new Pipeline();
+            var pipeline = GetPipeline();
 
             Assert.True(pipeline.IsSuccessful);
         }
@@ -35,11 +33,8 @@
         [Test]
         public void IsSuccessful_PipelineWithUnsuccessfulStep_IsNotSuccessful()
         {
-            var pipeline = new Pipeline();
-            pipeline.AddStep(new BuildStep
-            {
-                IsSuccessful = false
-            });
+            var pipeline = GetPipeline();
+            pipeline.AddStep(GetBuildStep(false));
 
             Assert.False(pipeline.IsSuccessful);
         }
@@ -47,19 +42,34 @@
         [Test]
         public void IsSuccessful_PipelineWithMixedSuccess_IsNotSuccessful()
         {
-            var pipeline = new Pipeline();
-            pipeline.AddStep(new BuildStep
-            {
-                IsSuccessful = false,
-                StepName = "A"
-            });
-            pipeline.AddStep(new BuildStep
-            {
-                IsSuccessful = true,
-                StepName = "B"
-            });
+            var pipeline = GetPipeline();
+            pipeline.AddStep(GetBuildStep(false, "A"));
+            pipeline.AddStep(GetBuildStep(true, "B"));
 
             Assert.False(pipeline.IsSuccessful);
+        }
+
+        private static Pipeline GetPipeline()
+        {
+            return new Pipeline(
+                1,
+                "My project",
+                12,
+                "https://svn/test/trunk",
+                "https://svn/test/",
+                DateTime.Now);
+        }
+
+        private static BuildStep GetBuildStep(bool isSuccessful)
+        {
+            return GetBuildStep(isSuccessful, "A");
+        }
+
+        private static BuildStep GetBuildStep(
+            bool isSuccessful,
+            string stepName)
+        {
+            return new BuildStep(isSuccessful, stepName, DateTime.Now);
         }
     }
 }

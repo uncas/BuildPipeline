@@ -8,17 +8,29 @@
     {
         private IList<BuildStep> steps;
 
-        public Pipeline()
+        public Pipeline(
+            int id,
+            string projectName,
+            int sourceRevision,
+            string sourceUrl,
+            string sourceUrlBase,
+            DateTime created)
         {
             this.steps = new List<BuildStep>();
+            this.Id = id;
+            this.ProjectName = projectName;
+            this.SourceRevision = sourceRevision;
+            this.SourceUrl = sourceUrl;
+            this.SourceUrlBase = sourceUrlBase;
+            this.Created = created;
         }
 
-        public int Id { get; set; }
-        public string ProjectName { get; set; }
-        public int SourceRevision { get; set; }
-        public string SourceUrl { get; set; }
-        public string SourceUrlBase { get; set; }
-        public DateTime Created { get; set; }
+        public int Id { get; private set; }
+        public string ProjectName { get; private set; }
+        public int SourceRevision { get; private set; }
+        public string SourceUrl { get; private set; }
+        public string SourceUrlBase { get; private set; }
+        public DateTime Created { get; private set; }
 
         public IEnumerable<BuildStep> Steps
         {

@@ -28,15 +28,13 @@ ORDER BY Pi.Created DESC",
             {
                 while (reader.Read())
                 {
-                    pipelines.Add(new Pipeline
-                    {
-                        ProjectName = (string)reader["ProjectName"],
-                        SourceRevision = (int)reader["SourceRevision"],
-                        Id = (int)reader["PipelineId"],
-                        SourceUrl = (string)reader["SourceUrl"],
-                        SourceUrlBase = (string)reader["SourceUrlBase"],
-                        Created = (DateTime)reader["Created"]
-                    });
+                    pipelines.Add(new Pipeline(
+                        (int)reader["PipelineId"],
+                        (string)reader["ProjectName"],
+                        (int)reader["SourceRevision"],
+                        (string)reader["SourceUrl"],
+                        (string)reader["SourceUrlBase"],
+                        (DateTime)reader["Created"]));
                 }
             }
 
@@ -64,12 +62,10 @@ ORDER BY Created ASC",
             {
                 while (reader.Read())
                 {
-                    pipeline.AddStep(new BuildStep
-                    {
-                        IsSuccessful = (bool)reader["IsSuccessful"],
-                        StepName = (string)reader["StepName"],
-                        Created = (DateTime)reader["Created"]
-                    });
+                    pipeline.AddStep(new BuildStep(
+                        (bool)reader["IsSuccessful"],
+                        (string)reader["StepName"],
+                        (DateTime)reader["Created"]));
                 }
             }
         }
