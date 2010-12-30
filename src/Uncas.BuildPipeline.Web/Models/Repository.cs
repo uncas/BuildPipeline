@@ -20,6 +20,7 @@ SELECT TOP {0}
     , Pi.SourceUrl
     , Pi.Created
     , Pi.SourceAuthor
+    , Pi.PackagePath
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
@@ -29,7 +30,6 @@ ORDER BY Pi.Created DESC",
             {
                 while (reader.Read())
                 {
-                    // TODO: High Priority: Read proper package url here:
                     pipelines.Add(new Pipeline(
                         (int)reader["PipelineId"],
                         (string)reader["ProjectName"],
@@ -38,7 +38,7 @@ ORDER BY Pi.Created DESC",
                         (string)reader["SourceUrlBase"],
                         (DateTime)reader["Created"],
                         (string)reader["SourceAuthor"],
-                        @"C:\Builds\BuildPipeline\Artifacts\Unit\packages\Uncas.BuildPipeline-0.1.36.967.zip"));
+                        GetStringValue(reader["PackagePath"])));
                 }
             }
 
@@ -46,7 +46,14 @@ ORDER BY Pi.Created DESC",
             return pipelines;
         }
 
-        private void AddSteps(IList<Pipeline> pipelines)
+        private static string GetStringValue(object dbValue)
+        {
+            if (dbValue == null || dbValue is DBNull)
+                return string.Empty;
+            return (string)dbValue;
+        }
+
+        private static void AddSteps(IList<Pipeline> pipelines)
         {
             foreach (Pipeline pipeline in pipelines)
             {

@@ -11,9 +11,12 @@
             string packagePath,
             string workingDirectory)
         {
-            // Extracts package to some working directory:
             ExtractZipFile(packagePath, workingDirectory);
+            DeployPackage(workingDirectory);
+        }
 
+        private static void DeployPackage(string workingDirectory)
+        {
             // TODO: Low Priority: Consider fallback to use the following command if Deploy.cmd is not found:
             // "C:\Program Files (x86)\NAnt\nant.exe" -buildfile:BuildActions.build deploy
 
