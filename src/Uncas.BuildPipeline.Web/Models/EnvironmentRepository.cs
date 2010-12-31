@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace Uncas.BuildPipeline.Web.Models
+﻿namespace Uncas.BuildPipeline.Web.Models
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class EnvironmentRepository
     {
         public IEnumerable<Environment> GetEnvironments()
@@ -9,7 +10,7 @@ namespace Uncas.BuildPipeline.Web.Models
             // TODO: Make environments dependent on project:
             // TODO: Store environments in database:
             var result = new List<Environment>();
-            
+
             var integrationEnvironment = new Environment
             {
                 Id = 1,
@@ -25,7 +26,7 @@ namespace Uncas.BuildPipeline.Web.Models
                 "website.port",
                 "876");
             result.Add(integrationEnvironment);
-            
+
             var qaEnvironment = new Environment
             {
                 Id = 2,
@@ -42,6 +43,12 @@ namespace Uncas.BuildPipeline.Web.Models
                 "872");
             result.Add(qaEnvironment);
             return result;
+        }
+
+        public Environment GetEnvironment(int environmentId)
+        {
+            return GetEnvironments().SingleOrDefault(
+                e => e.Id == environmentId);
         }
     }
 }

@@ -15,7 +15,7 @@
             const string packagePath =
                 @"C:\Builds\BuildPipeline\Artifacts\Unit\packages\Uncas.BuildPipeline-0.1.35.966.zip";
 
-            utility.Deploy(packagePath, workingDirectory, 1);
+            utility.Deploy(packagePath, workingDirectory, new Environment());
         }
     }
 }

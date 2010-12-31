@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Text;
     using ICSharpCode.SharpZipLib.Zip;
 
     public class DeploymentUtility
@@ -10,10 +11,10 @@
         public void Deploy(
             string packagePath,
             string workingDirectory,
-            int environmentId)
+            Environment environment)
         {
             ExtractZipFile(packagePath, workingDirectory);
-            WriteEnvironmentProperties(environmentId, workingDirectory);
+            WriteEnvironmentProperties(environment, workingDirectory);
             DeployPackage(workingDirectory);
         }
 
@@ -31,36 +32,23 @@
         }
 
         private void WriteEnvironmentProperties(
-            int environmentId,
+            Environment environment,
             string workingDirectory)
         {
-            // TODO: Store the names of the properties in a list for each project.
-            string websiteDestinationPath =
-                @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web";
-            string websiteName = "BuildPipelineWeb";
-            int websitePort = 876;
-            if (environmentId == 2)
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\"?>");
+            sb.AppendLine("<properties>");
+            foreach (var property in environment.Properties)
             {
-                websiteDestinationPath =
-                    @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web.QA";
-                websiteName = "BuildPipelineWeb-QA";
-                websitePort = 872;
+                sb.AppendFormat(
+                    "  <property name=\"{0}\" value=\"{1}\" />",
+                    property.Key,
+                    property.Value);
+                sb.AppendLine();
             }
 
-            // TODO: Allow editing values of properties for each separate environment.
-            string format = @"<?xml version=""1.0""?>
-<properties>
-
-  <property name=""website.destination.path"" value=""{0}"" />
-  <property name=""website.name"" value=""{1}"" />
-  <property name=""website.port"" value=""{2}"" />
-
-</properties>";
-            string properties = string.Format(
-                format,
-                websiteDestinationPath,
-                websiteName,
-                websitePort);
+            sb.AppendLine("</properties>");
+            string properties = sb.ToString();
             string filePath =
                 Path.Combine(workingDirectory, "local.properties.xml");
             File.WriteAllText(filePath, properties);

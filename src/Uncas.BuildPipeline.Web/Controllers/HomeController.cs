@@ -45,6 +45,7 @@
         {
             // TODO: Put this in application service:
             var pipeline = this.pipelineRepository.GetPipeline(pipelineId);
+            Environment environment = this.environmentRepository.GetEnvironment(environmentId);
             string packagePath = pipeline.PackagePath;
             // TODO: Give proper feed back to user...
             var deploymentUtility = new DeploymentUtility();
@@ -52,7 +53,7 @@
             deploymentUtility.Deploy(
                 packagePath,
                 workingDirectory,
-                environmentId);
+                environment);
             return RedirectToAction("Deploy", new { PipelineId = pipelineId });
         }
 
