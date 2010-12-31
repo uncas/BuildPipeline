@@ -48,6 +48,10 @@
       <Project>{DB341F51-D746-46C5-B160-359306739736}</Project>
       <Name>Uncas.BuildPipeline.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Uncas.BuildPipeline\Uncas.BuildPipeline.csproj">
+      <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
+      <Name>Uncas.BuildPipeline</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

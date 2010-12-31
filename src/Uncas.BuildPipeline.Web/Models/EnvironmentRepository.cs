@@ -8,7 +8,7 @@
         public IEnumerable<Environment> GetEnvironments()
         {
             // TODO: Make environments dependent on project:
-            // TODO: Store environments in database:
+            // TODO: Store environment information in database:
             var result = new List<Environment>();
 
             var integrationEnvironment = new Environment

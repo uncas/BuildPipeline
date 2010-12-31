@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C0066A3B-97D4-4E46-88B1-44F2F1FABB3A}</ProjectGuid>
+    <ProjectGuid>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Uncas.BuildPipeline.Tests.Unit</RootNamespace>
-    <AssemblyName>Uncas.BuildPipeline.Tests.Unit</AssemblyName>
+    <RootNamespace>Uncas.BuildPipeline</RootNamespace>
+    <AssemblyName>Uncas.BuildPipeline</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,26 +31,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\NUnit\framework\nunit.framework.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PipelineTests.cs" />
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Models\BuildStep.cs" />
+    <Compile Include="Models\Environment.cs" />
+    <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Uncas.BuildPipeline.Web\Uncas.BuildPipeline.Web.csproj">
-      <Project>{DB341F51-D746-46C5-B160-359306739736}</Project>
-      <Name>Uncas.BuildPipeline.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Uncas.BuildPipeline\Uncas.BuildPipeline.csproj">
-      <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
-      <Name>Uncas.BuildPipeline</Name>
-    </ProjectReference>
+    <Folder Include="ApplicationServices\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
