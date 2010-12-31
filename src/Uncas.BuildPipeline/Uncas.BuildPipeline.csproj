@@ -42,6 +42,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="ApplicationServices\DeploymentService.cs" />
     <Compile Include="Models\BuildStep.cs" />
     <Compile Include="Models\Environment.cs" />
     <Compile Include="Models\Pipeline.cs" />
@@ -50,9 +51,7 @@
     <Compile Include="Repositories\PipelineRepository.cs" />
     <Compile Include="Utilities\DeploymentUtility.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ApplicationServices\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

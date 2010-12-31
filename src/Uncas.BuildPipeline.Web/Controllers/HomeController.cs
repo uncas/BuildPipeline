@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Web.Mvc;
-    using Uncas.BuildPipeline.Models;
+    using Uncas.BuildPipeline.ApplicationServices;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
     using Uncas.BuildPipeline.Web.Mappers;
@@ -14,11 +14,16 @@
 
         private readonly EnvironmentRepository environmentRepository;
         private readonly PipelineRepository pipelineRepository;
+        private readonly DeploymentService deploymentService;
 
         public HomeController()
         {
             this.environmentRepository = new EnvironmentRepository();
             this.pipelineRepository = new PipelineRepository();
+            this.deploymentService = new DeploymentService(
+                this.environmentRepository,
+                this.pipelineRepository,
+                new DeploymentUtility());
         }
 
         [HttpGet]
@@ -45,17 +50,9 @@
         [HttpPost]
         public ActionResult Deploy(int environmentId, int pipelineId)
         {
-            // TODO: Put this in application service:
-            var pipeline = this.pipelineRepository.GetPipeline(pipelineId);
-            Environment environment = this.environmentRepository.GetEnvironment(environmentId);
-            string packagePath = pipeline.PackagePath;
-            // TODO: Give proper feed back to user...
-            var deploymentUtility = new DeploymentUtility();
-            string workingDirectory = @"C:\temp\deploytest";
-            deploymentUtility.Deploy(
-                packagePath,
-                workingDirectory,
-                environment);
+            this.deploymentService.Deploy(pipelineId, environmentId);
+
+            // TODO: Give proper feed back to user:
             return RedirectToAction("Deploy", new { PipelineId = pipelineId });
         }
 
