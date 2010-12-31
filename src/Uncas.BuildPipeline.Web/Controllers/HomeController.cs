@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Web.Mvc;
+    using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Web.Mappers;
     using Uncas.BuildPipeline.Web.Models;
     using Uncas.BuildPipeline.Web.ViewModels;

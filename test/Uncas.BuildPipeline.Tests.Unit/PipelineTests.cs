@@ -3,7 +3,7 @@
     using System;
     using System.Threading;
     using NUnit.Framework;
-    using Uncas.BuildPipeline.Web.Models;
+    using Uncas.BuildPipeline.Models;
 
     [TestFixture]
     public class PipelineTests

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Uncas.BuildPipeline.Web.Models;
+    using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Web.ViewModels;
 
     public static class PipelineMapper

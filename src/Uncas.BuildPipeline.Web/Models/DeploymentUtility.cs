@@ -1,10 +1,10 @@
 ﻿namespace Uncas.BuildPipeline.Web.Models
 {
-    using System;
     using System.Diagnostics;
     using System.IO;
     using System.Text;
     using ICSharpCode.SharpZipLib.Zip;
+    using Uncas.BuildPipeline.Models;
 
     public class DeploymentUtility
     {
@@ -60,7 +60,6 @@
         {
             if (!File.Exists(sourcePackagePath))
             {
-                Console.WriteLine("Cannot find file '{0}'", sourcePackagePath);
                 return;
             }
 
@@ -74,13 +73,12 @@
                 {
                     string directoryName = Path.GetDirectoryName(theEntry.Name);
                     string fileName = Path.GetFileName(theEntry.Name);
-                    Console.WriteLine(theEntry.Name);
 
                     // create directory
                     string destinationFolderPath = Path.Combine(destinationRootFolderPath, directoryName);
                     Directory.CreateDirectory(destinationFolderPath);
 
-                    if (fileName != String.Empty)
+                    if (fileName != string.Empty)
                     {
                         string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
                         using (FileStream streamWriter = File.Create(destinationFilePath))

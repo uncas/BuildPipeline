@@ -5,6 +5,7 @@
     using System.Data;
     using System.Data.Common;
     using System.Data.SqlClient;
+    using Uncas.BuildPipeline.Models;
 
     public class PipelineRepository
     {

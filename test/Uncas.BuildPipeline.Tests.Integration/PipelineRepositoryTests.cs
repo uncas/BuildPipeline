@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using NUnit.Framework;
+    using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Web.Models;
 
     [TestFixture]

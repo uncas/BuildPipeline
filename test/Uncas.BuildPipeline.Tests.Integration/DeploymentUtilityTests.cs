@@ -1,6 +1,7 @@
 ﻿namespace Uncas.BuildPipeline.Tests.Integration
 {
     using NUnit.Framework;
+    using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Web.Models;
 
     [TestFixture]
