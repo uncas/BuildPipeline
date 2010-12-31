@@ -1,4 +1,4 @@
-﻿namespace Uncas.BuildPipeline.Web.Models
+﻿namespace Uncas.BuildPipeline.Utilities
 {
     using System.Diagnostics;
     using System.IO;

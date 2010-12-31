@@ -2,7 +2,7 @@
 {
     using NUnit.Framework;
     using Uncas.BuildPipeline.Models;
-    using Uncas.BuildPipeline.Web.Models;
+    using Uncas.BuildPipeline.Utilities;
 
     [TestFixture]
     public class DeploymentUtilityTests
