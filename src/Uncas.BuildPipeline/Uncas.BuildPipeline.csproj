@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\VersionInfo.cs">
@@ -45,10 +46,11 @@
     <Compile Include="Models\Environment.cs" />
     <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EnvironmentRepository.cs" />
+    <Compile Include="Repositories\PipelineRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ApplicationServices\" />
-    <Folder Include="Repositories\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
