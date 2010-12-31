@@ -1,4 +1,4 @@
-﻿namespace Uncas.BuildPipeline.Web.Models
+﻿namespace Uncas.BuildPipeline.Repositories
 {
     using System.Collections.Generic;
     using System.Linq;

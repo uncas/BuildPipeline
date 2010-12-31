@@ -4,7 +4,7 @@
     using System.Linq;
     using NUnit.Framework;
     using Uncas.BuildPipeline.Models;
-    using Uncas.BuildPipeline.Web.Models;
+    using Uncas.BuildPipeline.Repositories;
 
     [TestFixture]
     public class PipelineRepositoryTests
