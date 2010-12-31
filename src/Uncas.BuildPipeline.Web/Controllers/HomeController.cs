@@ -12,9 +12,9 @@
     {
         private const int BuildPageSize = 10;
 
-        private readonly EnvironmentRepository environmentRepository;
-        private readonly PipelineRepository pipelineRepository;
-        private readonly DeploymentService deploymentService;
+        private readonly IEnvironmentRepository environmentRepository;
+        private readonly IPipelineRepository pipelineRepository;
+        private readonly IDeploymentService deploymentService;
 
         public HomeController()
         {

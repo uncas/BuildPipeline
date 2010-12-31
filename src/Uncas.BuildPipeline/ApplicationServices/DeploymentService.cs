@@ -4,16 +4,16 @@
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
 
-    public class DeploymentService
+    public class DeploymentService : IDeploymentService
     {
-        private readonly EnvironmentRepository environmentRepository;
-        private readonly PipelineRepository pipelineRepository;
-        private readonly DeploymentUtility deploymentUtility;
+        private readonly IEnvironmentRepository environmentRepository;
+        private readonly IPipelineRepository pipelineRepository;
+        private readonly IDeploymentUtility deploymentUtility;
 
         public DeploymentService(
-            EnvironmentRepository environmentRepository,
-            PipelineRepository pipelineRepository,
-            DeploymentUtility deploymentUtility)
+            IEnvironmentRepository environmentRepository,
+            IPipelineRepository pipelineRepository,
+            IDeploymentUtility deploymentUtility)
         {
             this.environmentRepository = environmentRepository;
             this.pipelineRepository = pipelineRepository;

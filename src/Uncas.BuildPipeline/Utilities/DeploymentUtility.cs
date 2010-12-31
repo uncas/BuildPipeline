@@ -6,7 +6,7 @@
     using ICSharpCode.SharpZipLib.Zip;
     using Uncas.BuildPipeline.Models;
 
-    public class DeploymentUtility
+    public class DeploymentUtility : IDeploymentUtility
     {
         public void Deploy(
             string packagePath,

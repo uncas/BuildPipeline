@@ -22,5 +22,4 @@
         <% foreach (var pipeline in Model.Pipelines)
            { Html.RenderPartial("PipelineListView", pipeline); } %>
     </table>
-    TODO: Show current deployment in list
 </asp:Content>

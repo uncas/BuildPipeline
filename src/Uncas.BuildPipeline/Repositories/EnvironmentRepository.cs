@@ -4,7 +4,7 @@
     using System.Linq;
     using Uncas.BuildPipeline.Models;
 
-    public class EnvironmentRepository
+    public class EnvironmentRepository : IEnvironmentRepository
     {
         public IEnumerable<Environment> GetEnvironments()
         {

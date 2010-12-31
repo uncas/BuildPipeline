@@ -7,7 +7,7 @@
     using System.Data.SqlClient;
     using Uncas.BuildPipeline.Models;
 
-    public class PipelineRepository
+    public class PipelineRepository : IPipelineRepository
     {
         public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {
