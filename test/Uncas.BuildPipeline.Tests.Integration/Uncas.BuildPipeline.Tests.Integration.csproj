@@ -39,9 +39,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeploymentUtilityTests.cs" />
+    <Compile Include="Utilities\DeploymentUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PipelineRepositoryTests.cs" />
+    <Compile Include="Repositories\PipelineRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Uncas.BuildPipeline.Web\Uncas.BuildPipeline.Web.csproj">

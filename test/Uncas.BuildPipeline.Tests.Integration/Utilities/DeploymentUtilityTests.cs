@@ -1,4 +1,4 @@
-﻿namespace Uncas.BuildPipeline.Tests.Integration
+﻿namespace Uncas.BuildPipeline.Tests.Integration.Utilities
 {
     using NUnit.Framework;
     using Uncas.BuildPipeline.Models;

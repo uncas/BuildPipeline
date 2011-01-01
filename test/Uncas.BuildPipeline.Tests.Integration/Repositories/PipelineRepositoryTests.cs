@@ -1,4 +1,4 @@
-﻿namespace Uncas.BuildPipeline.Tests.Integration
+﻿namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 {
     using System.Collections.Generic;
     using System.Linq;

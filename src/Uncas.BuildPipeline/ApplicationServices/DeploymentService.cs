@@ -9,8 +9,8 @@
 
     public class DeploymentService : IDeploymentService
     {
-        private const string workingDirectory = @"C:\temp\working";
-        
+        private const string WorkingDirectory = @"C:\temp\DeploymentWork";
+
         private readonly IEnvironmentRepository environmentRepository;
         private readonly IPipelineRepository pipelineRepository;
         private readonly IDeploymentRepository deploymentRepository;
@@ -51,11 +51,22 @@
             }
 
             string packagePath = pipeline.PackagePath;
-            string workingDirectory = @"C:\temp\deploytest";
             this.deploymentUtility.Deploy(
                 packagePath,
-                workingDirectory,
+                WorkingDirectory,
                 environment);
+        }
+
+        public void DeployDueDeployments()
+        {
+            var dueDeployments =
+                this.deploymentRepository.GetDueDeployments();
+            foreach (var deployment in dueDeployments)
+            {
+                this.Deploy(
+                    deployment.PipelineId,
+                    deployment.EnvironmentId);
+            }
         }
 
         public ScheduleDeploymentResult ScheduleDeployment(
@@ -101,19 +112,6 @@
         {
             return this.deploymentRepository.GetDeployments(
                 pipelineId);
-        }
-
-        public void DeployDueDeployments()
-        {
-            var dueDeployments =
-                this.deploymentRepository.GetDueDeployments();
-            foreach (var deployment in dueDeployments)
-            {
-                var pipeline = this.pipelineRepository.GetPipeline(deployment.PipelineId);
-                var environment = this.environmentRepository.GetEnvironment(deployment.EnvironmentId);
-                this.deploymentUtility.Deploy(
-                    pipeline.PackagePath, workingDirectory, environment);
-            }
         }
     }
 }
