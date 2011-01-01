@@ -137,7 +137,7 @@
         }
 
         [Test]
-        public void GetDeployments_AllWhenScheduledNew_ContainsTheScheduled()
+        public void GetScheduledDeployments_WhenScheduledNew_ContainsTheScheduled()
         {
             // Arrange:
             int pipelineId = 1;
@@ -154,12 +154,12 @@
                 environmentId,
                 scheduledStart);
             this.deploymentRepositoryMock.Setup(
-                dr => dr.GetDeployments()).
+                dr => dr.GetScheduledDeployments()).
                 Returns(new List<Deployment> { deployment });
 
             // Act:
             IEnumerable<Deployment> scheduledDeployments =
-                this.deploymentService.GetDeployments();
+                this.deploymentService.GetScheduledDeployments();
 
             // Assert:
             Assert.NotNull(scheduledDeployments);

@@ -9,7 +9,7 @@
         {
         }
 
-        public IEnumerable<Deployment> GetDeployments()
+        public IEnumerable<Deployment> GetScheduledDeployments()
         {
             return null;
         }
