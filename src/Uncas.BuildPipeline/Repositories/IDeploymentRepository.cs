@@ -6,7 +6,7 @@
     public interface IDeploymentRepository
     {
         void AddDeployment(Deployment deployment);
-        IEnumerable<Deployment> GetScheduledDeployments();
+        IEnumerable<Deployment> GetDueDeployments();
         IEnumerable<Deployment> GetDeployments(int pipelineId);
     }
 }
