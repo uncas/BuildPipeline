@@ -136,6 +136,37 @@
             Assert.True(scheduledDeployments.Any(d => d.ScheduledStart == scheduledStart));
         }
 
+        [Test]
+        public void GetDeployments_AllWhenScheduledNew_ContainsTheScheduled()
+        {
+            // Arrange:
+            int pipelineId = 1;
+            int environmentId = 1;
+            DateTime scheduledStart = DateTime.Now.AddMinutes(5d);
+            SetupRepositories(pipelineId, environmentId);
+            ScheduleDeploymentResult result =
+                this.deploymentService.ScheduleDeployment(
+                pipelineId,
+                environmentId,
+                scheduledStart);
+            var deployment = new Deployment(
+                pipelineId,
+                environmentId,
+                scheduledStart);
+            this.deploymentRepositoryMock.Setup(
+                dr => dr.GetDeployments()).
+                Returns(new List<Deployment> { deployment });
+
+            // Act:
+            IEnumerable<Deployment> scheduledDeployments =
+                this.deploymentService.GetDeployments();
+
+            // Assert:
+            Assert.NotNull(scheduledDeployments);
+            Assert.True(scheduledDeployments.Count() > 0);
+            Assert.True(scheduledDeployments.Any(d => d.ScheduledStart == scheduledStart));
+        }
+
         private void SetupRepositories(
             int pipelineId,
             int environmentId)

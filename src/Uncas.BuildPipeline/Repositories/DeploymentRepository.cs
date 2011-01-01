@@ -9,6 +9,11 @@
         {
         }
 
+        public IEnumerable<Deployment> GetDeployments()
+        {
+            return null;
+        }
+
         public IEnumerable<Deployment> GetDeployments(int pipelineId)
         {
             return null;

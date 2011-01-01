@@ -90,6 +90,11 @@
             return new ScheduleDeploymentResult(deployment);
         }
 
+        public IEnumerable<Deployment> GetDeployments()
+        {
+            return this.deploymentRepository.GetDeployments();
+        }
+
         public IEnumerable<Deployment> GetDeployments(int pipelineId)
         {
             return this.deploymentRepository.GetDeployments(
