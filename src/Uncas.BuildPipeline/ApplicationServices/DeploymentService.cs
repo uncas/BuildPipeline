@@ -1,6 +1,7 @@
 ﻿namespace Uncas.BuildPipeline.ApplicationServices
 {
     using System;
+    using System.Collections.Generic;
     using Uncas.BuildPipeline.ApplicationServices.Results;
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
@@ -87,6 +88,12 @@
                 scheduledStart);
             this.deploymentRepository.AddDeployment(deployment);
             return new ScheduleDeploymentResult(deployment);
+        }
+
+        public IEnumerable<Deployment> GetDeployments(int pipelineId)
+        {
+            return this.deploymentRepository.GetDeployments(
+                pipelineId);
         }
     }
 }

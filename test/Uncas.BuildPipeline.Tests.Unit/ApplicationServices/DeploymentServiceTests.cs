@@ -1,6 +1,7 @@
 ﻿namespace Uncas.BuildPipeline.Tests.Unit.ApplicationServices
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Moq;
     using NUnit.Framework;
@@ -72,7 +73,7 @@
             Assert.Null(result.Deployment);
             Assert.AreEqual(2, result.Errors.Count());
             this.deploymentRepositoryMock.Verify(
-                dr => dr.AddDeployment(It.IsAny<Deployment>()), 
+                dr => dr.AddDeployment(It.IsAny<Deployment>()),
                 Times.Never());
         }
 
@@ -103,17 +104,37 @@
                 Times.Once());
         }
 
-        /*[Test]
+        [Test]
         public void GetDeployments_WhenScheduledNew_ContainsTheScheduled()
         {
+            // Arrange:
+            int pipelineId = 1;
+            int environmentId = 1;
+            DateTime scheduledStart = DateTime.Now.AddMinutes(5d);
+            SetupRepositories(pipelineId, environmentId);
+            ScheduleDeploymentResult result =
+                this.deploymentService.ScheduleDeployment(
+                pipelineId,
+                environmentId,
+                scheduledStart);
+            var deployment = new Deployment(
+                pipelineId, 
+                environmentId, 
+                scheduledStart);
+            this.deploymentRepositoryMock.Setup(
+                dr => dr.GetDeployments(pipelineId)).
+                Returns(new List<Deployment> { deployment });
+
+            // Act:
             IEnumerable<Deployment> scheduledDeployments =
                 this.deploymentService.GetDeployments(
                 pipelineId);
 
+            // Assert:
             Assert.NotNull(scheduledDeployments);
             Assert.True(scheduledDeployments.Count() > 0);
-            Assert.True(scheduledDeployments.Any(sd => sd.ScheduledStart = scheduledStart));
-        }*/
+            Assert.True(scheduledDeployments.Any(d => d.ScheduledStart == scheduledStart));
+        }
 
         private void SetupRepositories(
             int pipelineId,
