@@ -61,14 +61,12 @@
             // Arrange:
             int pipelineId = 1;
             int environmentId = 1;
-            DateTime scheduledStart = DateTime.Now.AddMinutes(5d);
 
             // Act:
             ScheduleDeploymentResult result =
                 this.deploymentService.ScheduleDeployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
 
             // Assert:
             Assert.False(result.Success);
@@ -85,22 +83,19 @@
             // Arrange:
             int pipelineId = 1;
             int environmentId = 1;
-            DateTime scheduledStart = DateTime.Now.AddMinutes(5d);
             SetupRepositories(pipelineId, environmentId);
 
             // Act:
             ScheduleDeploymentResult result =
                 this.deploymentService.ScheduleDeployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
 
             // Assert:
             Assert.True(result.Success);
             Assert.NotNull(result.Deployment);
             Assert.AreEqual(pipelineId, result.Deployment.PipelineId);
             Assert.AreEqual(environmentId, result.Deployment.EnvironmentId);
-            Assert.AreEqual(scheduledStart, result.Deployment.ScheduledStart);
             this.deploymentRepositoryMock.Verify(
                 dr => dr.AddDeployment(It.IsAny<Deployment>()),
                 Times.Once());
@@ -112,17 +107,14 @@
             // Arrange:
             int pipelineId = 1;
             int environmentId = 1;
-            DateTime scheduledStart = DateTime.Now.AddMinutes(5d);
             SetupRepositories(pipelineId, environmentId);
             ScheduleDeploymentResult result =
                 this.deploymentService.ScheduleDeployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
             var deployment = new Deployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
             this.deploymentRepositoryMock.Setup(
                 dr => dr.GetDeployments(pipelineId)).
                 Returns(new List<Deployment> { deployment });
@@ -135,7 +127,7 @@
             // Assert:
             Assert.NotNull(scheduledDeployments);
             Assert.True(scheduledDeployments.Count() > 0);
-            Assert.True(scheduledDeployments.Any(d => d.ScheduledStart == scheduledStart));
+            Assert.True(scheduledDeployments.Any(d => d.PipelineId == pipelineId));
         }
 
         [Test]
@@ -149,12 +141,10 @@
             ScheduleDeploymentResult result =
                 this.deploymentService.ScheduleDeployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
             var deployment = new Deployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
             this.deploymentRepositoryMock.Setup(
                 dr => dr.GetDueDeployments()).
                 Returns(new List<Deployment> { deployment });
@@ -166,7 +156,7 @@
             // Assert:
             Assert.NotNull(scheduledDeployments);
             Assert.True(scheduledDeployments.Count() > 0);
-            Assert.True(scheduledDeployments.Any(d => d.ScheduledStart == scheduledStart));
+            Assert.True(scheduledDeployments.Any(d => d.PipelineId == pipelineId));
         }
 
         [Test]
@@ -187,11 +177,9 @@
             // Arrange:
             int pipelineId = 1;
             int environmentId = 1;
-            DateTime scheduledStart = DateTime.Now;
             var deployment = new Deployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
             SetupRepositories(pipelineId, environmentId);
             this.deploymentRepositoryMock.Setup(
                 dr => dr.GetDueDeployments()).

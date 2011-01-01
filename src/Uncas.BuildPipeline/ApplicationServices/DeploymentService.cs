@@ -71,8 +71,7 @@
 
         public ScheduleDeploymentResult ScheduleDeployment(
             int pipelineId,
-            int environmentId,
-            DateTime scheduledStart)
+            int environmentId)
         {
             var result = new ScheduleDeploymentResult();
 
@@ -97,8 +96,7 @@
 
             var deployment = new Deployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
             this.deploymentRepository.AddDeployment(deployment);
             return new ScheduleDeploymentResult(deployment);
         }

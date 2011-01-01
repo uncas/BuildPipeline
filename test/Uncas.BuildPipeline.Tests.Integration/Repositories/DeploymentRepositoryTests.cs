@@ -1,6 +1,5 @@
 ﻿namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 {
-    using System;
     using System.Linq;
     using NUnit.Framework;
     using Uncas.BuildPipeline.Models;
@@ -23,11 +22,9 @@
         {
             const int pipelineId=1;
             const int environmentId=1;
-            DateTime scheduledStart = DateTime.Now.AddMinutes(3d);
             var deployment = new Deployment(
                 pipelineId,
-                environmentId,
-                scheduledStart);
+                environmentId);
             this.deploymentRepository.AddDeployment(deployment);
 
             var result = 
