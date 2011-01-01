@@ -13,21 +13,20 @@
         [SetUp]
         public void BeforeEach()
         {
-            this.deploymentRepository = new DeploymentRepository();
+            this.deploymentRepository = new FakeDeploymentRepository();
         }
 
         [Test]
-        [Ignore]
         public void AddDeployment_WhenAdded_CanBeRetrieved()
         {
-            const int pipelineId=1;
-            const int environmentId=1;
+            const int pipelineId = 1;
+            const int environmentId = 1;
             var deployment = new Deployment(
                 pipelineId,
                 environmentId);
             this.deploymentRepository.AddDeployment(deployment);
 
-            var result = 
+            var result =
                 this.deploymentRepository.GetDeployments(pipelineId);
 
             Assert.AreEqual(1, result.Count());
