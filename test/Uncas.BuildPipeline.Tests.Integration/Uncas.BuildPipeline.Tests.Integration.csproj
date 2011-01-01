@@ -39,6 +39,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repositories\DeploymentRepositoryTests.cs" />
     <Compile Include="Utilities\DeploymentUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\PipelineRepositoryTests.cs" />
