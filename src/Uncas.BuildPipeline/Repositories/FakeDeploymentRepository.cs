@@ -17,7 +17,7 @@
                 newId = deployments.Max(d => d.Id.Value) + 1;
             }
 
-            deployment.Id = newId;
+            deployment.ChangeId(newId);
             deployments.Add(deployment);
         }
 
