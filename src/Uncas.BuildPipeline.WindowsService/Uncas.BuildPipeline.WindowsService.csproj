@@ -47,6 +47,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="DeployService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -67,6 +68,12 @@
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Uncas.BuildPipeline\Uncas.BuildPipeline.csproj">
+      <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
+      <Name>Uncas.BuildPipeline</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

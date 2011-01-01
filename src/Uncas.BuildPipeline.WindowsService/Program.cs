@@ -51,7 +51,7 @@
                 if (command == ServiceManagerCommand.Application)
                 {
                     Console.WriteLine("Running in console mode.");
-                    // TODO: Call service method here.
+                    Bootstrapper.GetDeploymentService().DeployDueDeployments();
                     Console.Read();
                 }
                 else
