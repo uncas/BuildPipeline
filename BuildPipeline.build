@@ -166,6 +166,15 @@
       <arg value="/p:OutDir=${web.outdir}\bin\;WebProjectOutputDir=${web.outdir}\;Configuration=${configuration}" />
     </exec>
 
+    <property name="windowsService.outdir" value="${package.dir}\apps\Uncas.BuildPipeline.WindowsService" />
+    <copy todir="${windowsService.outdir}">
+      <fileset basedir="src\Uncas.BuildPipeline.WindowsService\bin\${configuration}">
+        <include name="*.*" />
+        <exclude name="*.pdb" />
+        <exclude name="*.xml" />
+      </fileset>
+    </copy>
+
     <property name="ProjectName" value="Uncas.BuildPipeline.Tests.Unit" />
     <call target="packageTestProject" />
 
@@ -218,14 +227,14 @@
     </if>
   </target>
 
-  <target name="testPackageTest">
+  <target name="testPackageTest" depends="package">
     <exec program="lib\nant\nant.exe">
       <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
       <arg value="test" />
     </exec>
   </target>
 
-  <target name="testPackageDeploy">
+  <target name="deploy" depends="package">
     <exec program="lib\nant\nant.exe">
       <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
       <arg value="deploy" />

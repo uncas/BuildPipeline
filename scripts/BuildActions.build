@@ -5,11 +5,13 @@
   <property name="website.destination.path" value="c:\inetpub\wwwroot\Uncas.BuildPipeline.Web" />
   <property name="website.name" value="BuildPipelineWeb" />
   <property name="website.port" value="876" />
+  <property name="windowsservice.destination.path" value="c:\temp\Uncas.BuildPipeline.WindowsService" />
 
   <!-- Working values and built-in values - need not be changed -->
   <property name="nunit.executable" value="tools\NUnit\nunit-console.exe" />
   <property name="appcmd" value="c:\Windows\System32\inetsrv\appcmd" />
   <property name="website.source.path" value="apps\Uncas.BuildPipeline.Web" />
+  <property name="windowsservice.source.path" value="apps\Uncas.BuildPipeline.WindowsService" />
 
   <!-- Local properties, that overrides the ones from above -->
   <if test="${file::exists('local.properties.xml')}">
@@ -68,7 +70,7 @@
     </if>
   </target>
 
-  <target name="deploy" depends="setupWebsite">
+  <target name="deploy" depends="setupWebsite,setupWindowsService">
   </target>
 
   <target name="setupWebsite">
@@ -95,6 +97,34 @@
       <arg value="site" />
       <arg value="${website.name}" />
       <arg value="/applicationDefaults.applicationPool:&quot;ASP.NET v4.0&quot;" />
+    </exec>
+  </target>
+
+  <target name="setupWindowsService">
+    <property name="windowsservice.executable" value="${windowsservice.destination.path}\Uncas.BuildPipeline.WindowsService.exe" />
+
+    <exec program="${windowsservice.executable}">
+      <arg value="-stop" />
+    </exec>
+
+    <exec program="${windowsservice.executable}">
+      <arg value="-uninstall" />
+    </exec>
+
+    <delete dir="${windowsservice.destination.path}" />
+
+    <copy todir="${windowsservice.destination.path}" overwrite="true">
+      <fileset basedir="${windowsservice.source.path}">
+        <include name="**\*.*" />
+      </fileset>
+    </copy>
+
+    <exec program="${windowsservice.executable}">
+      <arg value="-install" />
+    </exec>
+
+    <exec program="${windowsservice.executable}">
+      <arg value="-start" />
     </exec>
   </target>
 
