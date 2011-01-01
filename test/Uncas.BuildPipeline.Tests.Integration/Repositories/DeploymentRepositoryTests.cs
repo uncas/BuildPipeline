@@ -30,7 +30,7 @@
             var result =
                 this.deploymentRepository.GetDeployments(pipelineId);
 
-            Assert.AreEqual(1, result.Count());
+            Assert.True(result.Count() >= 1);
         }
 
         [Test]
@@ -48,6 +48,7 @@
 
             // Assert:
             var updated = this.deploymentRepository.GetDeployment(deploymentId);
+            Assert.NotNull(updated.Started);
             Assert.True(updated.Started > added.Created);
         }
 

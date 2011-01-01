@@ -194,6 +194,36 @@
                 Times.Once());
         }
 
+        [Test]
+        public void DeployDueDeployments_WhenCalledSecondTime_DeploysNoneSecondTime()
+        {
+            // Arrange:
+            int pipelineId = 1;
+            int environmentId = 1;
+            var deployment = new Deployment(
+                pipelineId,
+                environmentId);
+            SetupRepositories(pipelineId, environmentId);
+            this.deploymentRepositoryMock.Setup(
+                dr => dr.GetDueDeployments()).
+                Returns(new List<Deployment> { deployment });
+            this.deploymentService.DeployDueDeployments();
+            this.deploymentUtilityMock.Verify(
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BuildPipeline.Models.Environment>()),
+                Times.Once());
+            this.deploymentRepositoryMock.Setup(
+                dr => dr.GetDueDeployments()).
+                Returns(new List<Deployment> { });
+
+            // Act:
+            this.deploymentService.DeployDueDeployments();
+
+            // Assert:
+            this.deploymentUtilityMock.Verify(
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BuildPipeline.Models.Environment>()),
+                Times.Once());
+        }
+
         private void SetupRepositories(
             int pipelineId,
             int environmentId)

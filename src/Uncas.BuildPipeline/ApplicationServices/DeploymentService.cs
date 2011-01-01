@@ -63,9 +63,13 @@
                 this.deploymentRepository.GetDueDeployments();
             foreach (var deployment in dueDeployments)
             {
+                deployment.Start();
+                this.deploymentRepository.UpdateDeployment(deployment);
                 this.Deploy(
                     deployment.PipelineId,
                     deployment.EnvironmentId);
+                deployment.Complete();
+                this.deploymentRepository.UpdateDeployment(deployment);
             }
         }
 
