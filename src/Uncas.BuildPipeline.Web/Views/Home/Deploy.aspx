@@ -26,7 +26,10 @@
     <table>
         <tr>
             <th>
-                Created
+                Environment
+            </th>
+            <th>
+                Scheduled
             </th>
             <th>
                 Started
@@ -38,6 +41,9 @@
         <% foreach (var item in Model.Deployments)
            { %>
         <tr>
+            <td>
+                <%: item.EnvironmentName %>
+            </td>
             <td>
                 <%: item.Created %>
             </td>

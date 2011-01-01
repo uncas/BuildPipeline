@@ -54,7 +54,9 @@
                     {
                         Created = d.Created,
                         Started = d.Started,
-                        Completed = d.Completed
+                        Completed = d.Completed,
+                        EnvironmentName = environments.FirstOrDefault(
+                            e => e.Id == d.EnvironmentId).EnvironmentName
                     })
             };
             return View(deployViewModel);
