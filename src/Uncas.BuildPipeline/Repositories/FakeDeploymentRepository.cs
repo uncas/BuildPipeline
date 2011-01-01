@@ -11,7 +11,24 @@
 
         public void AddDeployment(Deployment deployment)
         {
+            int newId = 1;
+            if (deployments.Count > 0)
+            {
+                newId = deployments.Max(d => d.Id.Value) + 1;
+            }
+
+            deployment.Id = newId;
             deployments.Add(deployment);
+        }
+
+        public Deployment GetDeployment(int id)
+        {
+            return deployments.SingleOrDefault(d => d.Id == id);
+        }
+
+        public IEnumerable<Deployment> GetDeployments(int pipelineId)
+        {
+            return deployments.Where(d => d.PipelineId == pipelineId);
         }
 
         public IEnumerable<Deployment> GetDueDeployments()
@@ -19,9 +36,8 @@
             return deployments.Where(d => !d.HasRun);
         }
 
-        public IEnumerable<Deployment> GetDeployments(int pipelineId)
+        public void UpdateDeployment(Deployment deployment)
         {
-            return deployments.Where(d => d.PipelineId == pipelineId);
         }
     }
 }

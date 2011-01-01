@@ -1,6 +1,7 @@
 ﻿namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 {
     using System.Linq;
+    using System.Threading;
     using NUnit.Framework;
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
@@ -30,6 +31,24 @@
                 this.deploymentRepository.GetDeployments(pipelineId);
 
             Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
+        public void UpdateDeployment_WhenStarted_StartedIsUpdated()
+        {
+            // Arrange:
+            var added = new Deployment(1, 1);
+            this.deploymentRepository.AddDeployment(added);
+            Thread.Sleep(10);
+            added.Start();
+            int deploymentId = added.Id.Value;
+
+            // Act:
+            this.deploymentRepository.UpdateDeployment(added);
+
+            // Assert:
+            var updated = this.deploymentRepository.GetDeployment(deploymentId);
+            Assert.True(updated.Started > added.Created);
         }
 
         // TODO: Test that when a deployment has been deployed, it should not be deployed again....

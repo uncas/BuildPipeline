@@ -10,8 +10,11 @@
         {
             this.PipelineId = pipelineId;
             this.EnvironmentId = environmentId;
+            this.Created = DateTime.Now;
         }
 
+        public int? Id { get; set; }
+        public DateTime Created { get; set; }
         public int EnvironmentId { get; private set; }
         public int PipelineId { get; private set; }
         public DateTime? Started { get; private set; }
