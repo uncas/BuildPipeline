@@ -13,6 +13,24 @@
             this.Created = DateTime.Now;
         }
 
+        public static Deployment Reconstruct(
+            int id,
+            DateTime created,
+            int pipelineId,
+            int environmentId,
+            DateTime? started,
+            DateTime? completed)
+        {
+            var deployment = new Deployment(
+                pipelineId,
+                environmentId);
+            deployment.Id = id;
+            deployment.Created = created;
+            deployment.Started = started;
+            deployment.Completed = completed;
+            return deployment;
+        }
+
         public int? Id { get; private set; }
         public DateTime Created { get; private set; }
         public int EnvironmentId { get; private set; }

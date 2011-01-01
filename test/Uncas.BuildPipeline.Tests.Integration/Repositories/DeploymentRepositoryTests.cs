@@ -14,6 +14,7 @@
         [SetUp]
         public void BeforeEach()
         {
+            // TODO: When a dedicated test database is in place, use the real repository here:
             this.deploymentRepository = new FakeDeploymentRepository();
         }
 

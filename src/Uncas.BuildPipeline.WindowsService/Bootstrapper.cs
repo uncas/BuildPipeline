@@ -8,11 +8,10 @@
     {
         public static IDeploymentService GetDeploymentService()
         {
-            // TODO: Use real deployment repository here:
             return new DeploymentService(
                 new EnvironmentRepository(),
                 new PipelineRepository(),
-                new FakeDeploymentRepository(),
+                new DeploymentRepository(),
                 new DeploymentUtility());
         }
     }

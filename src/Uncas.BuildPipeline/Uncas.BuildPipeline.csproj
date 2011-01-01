@@ -52,6 +52,8 @@
     <Compile Include="Models\Environment.cs" />
     <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BaseSql.cs" />
+    <Compile Include="Repositories\DeploymentRepository.cs" />
     <Compile Include="Repositories\FakeDeploymentRepository.cs" />
     <Compile Include="Repositories\EnvironmentRepository.cs" />
     <Compile Include="Repositories\IDeploymentRepository.cs" />

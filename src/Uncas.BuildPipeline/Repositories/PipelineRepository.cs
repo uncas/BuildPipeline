@@ -2,13 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Data.Common;
-    using System.Data.SqlClient;
     using Uncas.BuildPipeline.Models;
 
-    public class PipelineRepository : IPipelineRepository
+    public class PipelineRepository : BaseSql, IPipelineRepository
     {
+        public PipelineRepository()
+            : base(@"Server=.\SqlExpress;Database=BuildPipeline;User Id=sa;Pwd=ols")
+        {
+        }
+
         public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {
             var pipelines = new List<Pipeline>();
@@ -49,12 +52,12 @@ ORDER BY Pi.Created DESC",
                 (string)reader["SourceUrlBase"],
                 (DateTime)reader["Created"],
                 (string)reader["SourceAuthor"],
-                GetStringValue(reader["PackagePath"]));
+                BaseSql.GetStringValue(reader["PackagePath"]));
         }
 
         public Pipeline GetPipeline(int pipelineId)
         {
-            Pipeline pipeline=null;
+            Pipeline pipeline = null;
             string commandText = string.Format(@"
 SELECT Pr.ProjectName
     , Pi.SourceRevision
@@ -81,14 +84,7 @@ WHERE Pi.PipelineId = {0}",
             return pipeline;
         }
 
-        private static string GetStringValue(object dbValue)
-        {
-            if (dbValue == null || dbValue is DBNull)
-                return string.Empty;
-            return (string)dbValue;
-        }
-
-        private static void AddSteps(IList<Pipeline> pipelines)
+        private void AddSteps(IList<Pipeline> pipelines)
         {
             foreach (Pipeline pipeline in pipelines)
             {
@@ -96,7 +92,7 @@ WHERE Pi.PipelineId = {0}",
             }
         }
 
-        private static void AddSteps(Pipeline pipeline)
+        private void AddSteps(Pipeline pipeline)
         {
             string commandText = string.Format(@"
 SELECT IsSuccessful, StepName, Created
@@ -113,20 +109,6 @@ ORDER BY Created ASC",
                         (string)reader["StepName"],
                         (DateTime)reader["Created"]));
                 }
-            }
-        }
-
-        private static SqlDataReader GetReader(string commandText)
-        {
-            string connectionString =
-                @"Server=.\SqlExpress;Database=BuildPipeline;User Id=sa;Pwd=ols";
-            var connection =
-                new SqlConnection(connectionString);
-            using (var command =
-                new SqlCommand(commandText, connection))
-            {
-                connection.Open();
-                return command.ExecuteReader(CommandBehavior.CloseConnection);
             }
         }
     }
