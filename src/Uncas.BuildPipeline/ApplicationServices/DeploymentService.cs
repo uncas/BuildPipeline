@@ -1,6 +1,6 @@
 ﻿namespace Uncas.BuildPipeline.ApplicationServices
 {
-    using Uncas.BuildPipeline.Models;
+    using System;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
 
@@ -26,8 +26,22 @@
         {
             var pipeline =
                 this.pipelineRepository.GetPipeline(pipelineId);
-            Environment environment =
+            if (pipeline == null)
+            {
+                throw new ArgumentException(
+                    "The id does not correspond to an existing pipeline.",
+                    "pipelineId");
+            }
+
+            Models.Environment environment =
                 this.environmentRepository.GetEnvironment(environmentId);
+            if (environment == null)
+            {
+                throw new ArgumentException(
+                    "The id does not correspond to an existing environment.",
+                    "environmentId");
+            }
+
             string packagePath = pipeline.PackagePath;
             string workingDirectory = @"C:\temp\deploytest";
             this.deploymentUtility.Deploy(

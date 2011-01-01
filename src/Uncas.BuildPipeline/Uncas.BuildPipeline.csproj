@@ -45,6 +45,7 @@
     <Compile Include="ApplicationServices\DeploymentService.cs" />
     <Compile Include="ApplicationServices\IDeploymentService.cs" />
     <Compile Include="Models\BuildStep.cs" />
+    <Compile Include="Models\Deployment.cs" />
     <Compile Include="Models\Environment.cs" />
     <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
