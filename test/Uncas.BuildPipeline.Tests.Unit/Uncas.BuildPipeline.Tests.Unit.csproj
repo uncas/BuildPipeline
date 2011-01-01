@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationServices\DeploymentServiceTests.cs" />
-    <Compile Include="PipelineTests.cs" />
+    <Compile Include="Models\PipelineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

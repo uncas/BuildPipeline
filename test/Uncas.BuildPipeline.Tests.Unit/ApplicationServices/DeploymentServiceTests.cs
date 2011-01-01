@@ -171,7 +171,7 @@
             int pipelineId,
             int environmentId)
         {
-            var environment = new Models.Environment();
+            var environment = new Uncas.BuildPipeline.Models.Environment();
             var pipeline = new Pipeline(
                 pipelineId,
                 "A",

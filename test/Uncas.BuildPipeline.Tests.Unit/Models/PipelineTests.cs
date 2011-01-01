@@ -1,4 +1,4 @@
-﻿namespace Uncas.BuildPipeline.Tests.Unit
+﻿namespace Uncas.BuildPipeline.Tests.Unit.Models
 {
     using System;
     using System.Threading;
