@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BuildStepViewModel.cs" />
+    <Compile Include="ViewModels\DeployViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\PipelineIndexViewModel.cs" />
     <Compile Include="ViewModels\PipelineViewModel.cs" />

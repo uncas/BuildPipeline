@@ -1,15 +1,12 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Uncas.BuildPipeline.Web.ViewModels.EnvironmentViewModel>>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Uncas.BuildPipeline.Web.ViewModels.DeployViewModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Deploy
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     Deploy this revision to one of the following environments:
-    <div>
-        TODO: Show details about the revision...
-    </div>
     <table>
-        <% foreach (var item in Model)
+        <% foreach (var item in Model.Environments)
            { %>
         <tr>
             <td>
@@ -24,5 +21,33 @@
             </td>
         </tr>
         <% } %>
+    </table>
+    This revision has previously been deployed as follows:
+    <table>
+        <tr>
+            <th>
+                Created
+            </th>
+            <th>
+                Started
+            </th>
+            <th>
+                Completed
+            </th>
+        </tr>
+        <% foreach (var item in Model.Deployments)
+           { %>
+        <tr>
+            <td>
+                <%: item.Created %>
+            </td>
+            <td>
+                <%: item.Started %>
+            </td>
+            <td>
+                <%: item.Completed %>
+            </td>
+        </tr>
+        <%} %>
     </table>
 </asp:Content>

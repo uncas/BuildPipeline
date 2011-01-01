@@ -23,7 +23,7 @@
             this.deploymentService = new DeploymentService(
                 this.environmentRepository,
                 this.pipelineRepository,
-                new FakeDeploymentRepository(),
+                new DeploymentRepository(),
                 new DeploymentUtility());
         }
 
@@ -39,21 +39,31 @@
         public ActionResult Deploy(int pipelineId)
         {
             var environments = this.environmentRepository.GetEnvironments();
-            var viewModel = environments.Select(
+            var environmentViewModels = environments.Select(
                 e => new EnvironmentViewModel
             {
                 EnvironmentId = e.Id,
                 EnvironmentName = e.EnvironmentName
             });
-            return View(viewModel);
+            var deployments = this.deploymentService.GetDeployments(pipelineId);
+            var deployViewModel = new DeployViewModel
+            {
+                Environments = environmentViewModels,
+                Deployments = deployments.Select(
+                    d => new DeploymentViewModel
+                    {
+                        Created = d.Created,
+                        Started = d.Started,
+                        Completed = d.Completed
+                    })
+            };
+            return View(deployViewModel);
         }
 
         [HttpPost]
         public ActionResult Deploy(int environmentId, int pipelineId)
         {
-            this.deploymentService.Deploy(pipelineId, environmentId);
-
-            // TODO: Give proper feed back to user:
+            this.deploymentService.ScheduleDeployment(pipelineId, environmentId);
             return RedirectToAction("Deploy", new { PipelineId = pipelineId });
         }
 
