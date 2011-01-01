@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.BuildPipeline.Tests.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.BuildPipeline", "src\Uncas.BuildPipeline\Uncas.BuildPipeline.csproj", "{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Tests", "3 - Tests", "{2DCB7954-4EE8-42DD-B21C-C54EE0BB0559}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - User Interface Layer", "1 - User Interface Layer", "{B1E7DDFA-C632-4404-B75E-A72E7E778AF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Shared Layer", "2 - Shared Layer", "{3519CDB6-E336-468C-81CF-CCFE51E3AD1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,5 +40,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E106A73C-20C3-4110-8BBE-2C891AA0BA7C} = {2DCB7954-4EE8-42DD-B21C-C54EE0BB0559}
+		{C0066A3B-97D4-4E46-88B1-44F2F1FABB3A} = {2DCB7954-4EE8-42DD-B21C-C54EE0BB0559}
+		{DB341F51-D746-46C5-B160-359306739736} = {B1E7DDFA-C632-4404-B75E-A72E7E778AF1}
+		{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2} = {3519CDB6-E336-468C-81CF-CCFE51E3AD1C}
 	EndGlobalSection
 EndGlobal

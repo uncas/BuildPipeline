@@ -51,7 +51,5 @@
             Assert.NotNull(updated.Started);
             Assert.True(updated.Started > added.Created);
         }
-
-        // TODO: Test that when a deployment has been deployed, it should not be deployed again....
     }
 }
