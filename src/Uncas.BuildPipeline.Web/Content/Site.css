@@ -340,16 +340,33 @@ div#title
     width: 6em;
 }
 
+.PipelineGreen
+{
+    background-color: Green;
+    color: White;
+}
+
+.PipelineRed
+{
+    background-color: Red;
+    color: White;
+}
+
 .BuildStep
 {
-    padding: 4px;
+    border: solid 1px #CFCFCF;
+    float: left;
     margin: 1px;
+    padding: 1px;
 }
 
 .BuildGreen
 {
-    background-color: Green;
-    color: White;
+    background-image: url("Images/BuildGreen_25.png");
+    background-repeat: repeat-x;
+    color: Black;
+    margin: 1px;
+    height: 23px;
 }
 
 .BuildRed

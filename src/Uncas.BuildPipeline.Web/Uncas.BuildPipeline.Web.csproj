@@ -72,6 +72,8 @@
     <Compile Include="ViewModels\PipelineViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\BuildGreen_25.png" />
+    <Content Include="Content\Images\BuildRed_25.png" />
     <Content Include="Global.asax" />
     <Content Include="Views\Home\Deploy.aspx" />
     <Content Include="Views\Home\PipelineListView.ascx" />

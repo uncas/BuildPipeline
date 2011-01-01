@@ -45,7 +45,7 @@
                 SourceUrlRelative = sourceUrlRelative,
                 CreatedDisplay = createdDisplay,
                 StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
-                CssClass = pipeline.IsSuccessful ? "BuildGreen" : "BuildRed"
+                CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed"
             };
             result.Steps = pipeline.Steps.Select(MapToBuildStepViewModel);
             PopulateBaseViewModel(result);
@@ -89,7 +89,7 @@
             {
                 StatusText = step.IsSuccessful ? "OK" : "Failed",
                 StepName = step.StepName,
-                CssClass = step.IsSuccessful ? "BuildStep BuildGreen" : "BuildStep BuildRed"
+                CssClass = step.IsSuccessful ? "BuildGreen" : "BuildRed"
             };
         }
     }
