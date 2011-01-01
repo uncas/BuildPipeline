@@ -15,7 +15,9 @@
     public class DeploymentServiceTests
     {
         private IDeploymentService deploymentService;
+
         private Mock<IDeploymentRepository> deploymentRepositoryMock;
+        private Mock<IDeploymentUtility> deploymentUtilityMock;
         private Mock<IEnvironmentRepository> environmentRepositoryMock;
         private Mock<IPipelineRepository> pipelineRepositoryMock;
 
@@ -26,15 +28,15 @@
                 new Mock<IEnvironmentRepository>();
             this.pipelineRepositoryMock =
                 new Mock<IPipelineRepository>();
-            var deploymentUtilityMock =
+            this.deploymentUtilityMock =
                 new Mock<IDeploymentUtility>();
             this.deploymentRepositoryMock =
                 new Mock<IDeploymentRepository>();
             this.deploymentService = new DeploymentService(
                 this.environmentRepositoryMock.Object,
                 this.pipelineRepositoryMock.Object,
-                deploymentRepositoryMock.Object,
-                deploymentUtilityMock.Object);
+                this.deploymentRepositoryMock.Object,
+                this.deploymentUtilityMock.Object);
         }
 
         [Test]
@@ -118,8 +120,8 @@
                 environmentId,
                 scheduledStart);
             var deployment = new Deployment(
-                pipelineId, 
-                environmentId, 
+                pipelineId,
+                environmentId,
                 scheduledStart);
             this.deploymentRepositoryMock.Setup(
                 dr => dr.GetDeployments(pipelineId)).
@@ -165,6 +167,43 @@
             Assert.NotNull(scheduledDeployments);
             Assert.True(scheduledDeployments.Count() > 0);
             Assert.True(scheduledDeployments.Any(d => d.ScheduledStart == scheduledStart));
+        }
+
+        [Test]
+        public void DeployDueDeployments_NoDue_DeploysNone()
+        {
+            // Act:
+            this.deploymentService.DeployDueDeployments();
+
+            // Assert:
+            this.deploymentUtilityMock.Verify(
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BuildPipeline.Models.Environment>()),
+                Times.Never());
+        }
+
+        [Test]
+        public void DeployDueDeployments_WhenContainsOne_DeploysOne()
+        {
+            // Arrange:
+            int pipelineId = 1;
+            int environmentId = 1;
+            DateTime scheduledStart = DateTime.Now;
+            var deployment = new Deployment(
+                pipelineId,
+                environmentId,
+                scheduledStart);
+            SetupRepositories(pipelineId, environmentId);
+            this.deploymentRepositoryMock.Setup(
+                dr => dr.GetDueDeployments()).
+                Returns(new List<Deployment> { deployment });
+
+            // Act:
+            this.deploymentService.DeployDueDeployments();
+
+            // Assert:
+            this.deploymentUtilityMock.Verify(
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BuildPipeline.Models.Environment>()),
+                Times.Once());
         }
 
         private void SetupRepositories(

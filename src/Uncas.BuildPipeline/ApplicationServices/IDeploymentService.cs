@@ -8,6 +8,7 @@
     public interface IDeploymentService
     {
         void Deploy(int pipelineId, int environmentId);
+        void DeployDueDeployments();
         IEnumerable<Deployment> GetDueDeployments();
         IEnumerable<Deployment> GetDeployments(int pipelineId);
 
