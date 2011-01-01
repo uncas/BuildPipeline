@@ -1,6 +1,8 @@
 ﻿namespace Uncas.BuildPipeline.ApplicationServices
 {
     using System;
+    using Uncas.BuildPipeline.ApplicationServices.Results;
+    using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
 
@@ -48,6 +50,39 @@
                 packagePath,
                 workingDirectory,
                 environment);
+        }
+
+        public ScheduleDeploymentResult ScheduleDeployment(
+            int pipelineId,
+            int environmentId,
+            DateTime scheduledStart)
+        {
+            var result = new ScheduleDeploymentResult();
+
+            var pipeline =
+                this.pipelineRepository.GetPipeline(pipelineId);
+            if (pipeline == null)
+            {
+                result.AddError(new ResultError("The id does not correspond to an existing pipeline."));
+            }
+
+            Models.Environment environment =
+                this.environmentRepository.GetEnvironment(environmentId);
+            if (environment == null)
+            {
+                result.AddError(new ResultError("The id does not correspond to an existing environment."));
+            }
+
+            if (result.HasErrors)
+            {
+                return result;
+            }
+
+            var deployment = new Deployment(
+                pipelineId,
+                environmentId,
+                scheduledStart);
+            return new ScheduleDeploymentResult(deployment);
         }
     }
 }
