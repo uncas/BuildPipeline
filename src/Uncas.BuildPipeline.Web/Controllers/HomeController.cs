@@ -23,6 +23,7 @@
             this.deploymentService = new DeploymentService(
                 this.environmentRepository,
                 this.pipelineRepository,
+                new DeploymentRepository(),
                 new DeploymentUtility());
         }
 

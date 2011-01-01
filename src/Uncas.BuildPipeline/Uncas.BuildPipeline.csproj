@@ -52,7 +52,9 @@
     <Compile Include="Models\Environment.cs" />
     <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DeploymentRepository.cs" />
     <Compile Include="Repositories\EnvironmentRepository.cs" />
+    <Compile Include="Repositories\IDeploymentRepository.cs" />
     <Compile Include="Repositories\IEnvironmentRepository.cs" />
     <Compile Include="Repositories\IPipelineRepository.cs" />
     <Compile Include="Repositories\PipelineRepository.cs" />

@@ -10,13 +10,16 @@
     {
         private readonly IEnvironmentRepository environmentRepository;
         private readonly IPipelineRepository pipelineRepository;
+        private readonly IDeploymentRepository deploymentRepository;
         private readonly IDeploymentUtility deploymentUtility;
 
         public DeploymentService(
             IEnvironmentRepository environmentRepository,
             IPipelineRepository pipelineRepository,
+            IDeploymentRepository deploymentRepository,
             IDeploymentUtility deploymentUtility)
         {
+            this.deploymentRepository = deploymentRepository;
             this.environmentRepository = environmentRepository;
             this.pipelineRepository = pipelineRepository;
             this.deploymentUtility = deploymentUtility;
@@ -82,6 +85,7 @@
                 pipelineId,
                 environmentId,
                 scheduledStart);
+            this.deploymentRepository.AddDeployment(deployment);
             return new ScheduleDeploymentResult(deployment);
         }
     }
