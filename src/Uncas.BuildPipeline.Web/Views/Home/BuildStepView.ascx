@@ -3,6 +3,6 @@
     <div>
         <%: Model.StepName %>
     </div>
-    <div class="<%=Model.CssClass %>">
+    <div class="BuildStepIcon <%=Model.CssClass %>">
     </div>
 </div>

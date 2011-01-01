@@ -360,21 +360,22 @@ div#title
     padding: 1px;
 }
 
-.BuildGreen
+.BuildStepIcon
 {
-    background-image: url("Images/BuildGreen_25.png");
     background-repeat: repeat-x;
     color: Black;
     margin: 1px;
     height: 23px;
 }
 
+.BuildGreen
+{
+    background-image: url("Images/BuildGreen_25.png");
+}
+
 .BuildRed
 {
-    background-color: Red;
-    color: White;
-    font-size: 120%;
-    font-weight: bolder;
+    background-image: url("Images/BuildRed_25.png");
 }
 
 .BuildListView
