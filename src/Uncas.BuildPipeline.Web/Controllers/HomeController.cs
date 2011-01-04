@@ -39,13 +39,15 @@
         public ActionResult Deploy(int pipelineId)
         {
             var environments = this.environmentRepository.GetEnvironments();
+            var pipeline = this.pipelineRepository.GetPipeline(pipelineId);
+            var deployments = this.deploymentService.GetDeployments(pipelineId);
             var environmentViewModels = environments.Select(
                 e => new EnvironmentViewModel
             {
                 EnvironmentId = e.Id,
                 EnvironmentName = e.EnvironmentName
             });
-            var deployments = this.deploymentService.GetDeployments(pipelineId);
+            var pipelineViewModel = PipelineMapper.MapToPipelineViewModel(pipeline);
             var deployViewModel = new DeployViewModel
             {
                 Environments = environmentViewModels,
@@ -57,7 +59,8 @@
                         Completed = d.Completed,
                         EnvironmentName = environments.FirstOrDefault(
                             e => e.Id == d.EnvironmentId).EnvironmentName
-                    })
+                    }),
+                Pipeline = pipelineViewModel
             };
             return View(deployViewModel);
         }

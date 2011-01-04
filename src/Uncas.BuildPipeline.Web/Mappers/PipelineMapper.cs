@@ -30,7 +30,7 @@
             //bool showDeployment = HttpContext.Current.Request.Url.AbsoluteUri.Contains("51743");
         }
 
-        private static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
+        public static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
             string sourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, "");

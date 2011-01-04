@@ -7,6 +7,7 @@
     {
         public IEnumerable<EnvironmentViewModel> Environments { get; set; }
         public IEnumerable<DeploymentViewModel> Deployments { get; set; }
+        public PipelineViewModel Pipeline { get; set; }
     }
 
     public class DeploymentViewModel
