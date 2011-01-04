@@ -56,8 +56,10 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\EnvironmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -68,6 +70,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BuildStepViewModel.cs" />
     <Compile Include="ViewModels\DeployViewModel.cs" />
+    <Compile Include="ViewModels\EnvironmentIndexViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\PipelineIndexViewModel.cs" />
     <Compile Include="ViewModels\PipelineViewModel.cs" />
@@ -76,6 +79,7 @@
     <Content Include="Content\Images\BuildGreen_25.png" />
     <Content Include="Content\Images\BuildRed_25.png" />
     <Content Include="Global.asax" />
+    <Content Include="Views\Environment\Index.aspx" />
     <Content Include="Views\Home\PipelineDetailsView.ascx" />
     <Content Include="Views\Home\Deploy.aspx" />
     <Content Include="Views\Home\PipelineListView.ascx" />

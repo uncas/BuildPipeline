@@ -4,7 +4,6 @@
     using System.Web.Mvc;
     using Uncas.BuildPipeline.ApplicationServices;
     using Uncas.BuildPipeline.Repositories;
-    using Uncas.BuildPipeline.Utilities;
     using Uncas.BuildPipeline.Web.Mappers;
     using Uncas.BuildPipeline.Web.ViewModels;
 
@@ -18,13 +17,9 @@
 
         public HomeController()
         {
-            this.environmentRepository = new EnvironmentRepository();
-            this.pipelineRepository = new PipelineRepository();
-            this.deploymentService = new DeploymentService(
-                this.environmentRepository,
-                this.pipelineRepository,
-                new DeploymentRepository(),
-                new DeploymentUtility());
+            this.environmentRepository = Bootstrapper.GetEnvironmentRepository();
+            this.pipelineRepository = Bootstrapper.GetPipelineRepository();
+            this.deploymentService = Bootstrapper.GetDeploymentService();
         }
 
         [HttpGet]

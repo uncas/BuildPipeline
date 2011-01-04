@@ -23,6 +23,8 @@
                     <li>
                         <%: Html.ActionLink("Pipelines", "Index", "Home")%></li>
                     <li>
+                        <%: Html.ActionLink("Environments", "Index", "Environment")%></li>
+                    <li>
                         <%: Html.ActionLink("About", "About", "Home")%></li>
                 </ul>
             </div>
@@ -30,7 +32,8 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-                Version <%: ViewData["Version"] %>
+                Version
+                <%: ViewData["Version"] %>
             </div>
         </div>
     </div>
