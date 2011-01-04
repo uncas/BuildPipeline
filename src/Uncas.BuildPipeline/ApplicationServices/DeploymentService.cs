@@ -115,5 +115,12 @@
             return this.deploymentRepository.GetDeployments(
                 pipelineId);
         }
+
+        public IEnumerable<Deployment> GetDeploymentsByEnvironment(
+            int environmentId)
+        {
+            return this.deploymentRepository.GetByEnvironment(
+                environmentId);
+        }
     }
 }

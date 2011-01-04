@@ -5,6 +5,7 @@
     using System.Data;
     using System.Data.Common;
     using System.Data.SqlClient;
+    using System.Linq;
     using Uncas.BuildPipeline.Models;
 
     public class DeploymentRepository : BaseSql, IDeploymentRepository
@@ -58,7 +59,7 @@ ORDER BY Created ASC";
                 }
             }
 
-            return result;
+            return result.ToList();
         }
 
         private Deployment MapDataToDeployment(DbDataReader reader)
@@ -95,7 +96,7 @@ ORDER BY Created ASC",
                 }
             }
 
-            return result;
+            return result.ToList();
         }
 
         public void UpdateDeployment(Deployment deployment)
@@ -134,6 +135,31 @@ ORDER BY Created ASC",
             }
 
             return deployment;
+        }
+
+        public IEnumerable<Deployment> GetByEnvironment(int environmentId)
+        {
+            string commandText = string.Format(@"
+SELECT DeploymentId
+    , PipelineId
+    , EnvironmentId
+    , Created
+    , Started
+    , Completed
+FROM Deployment
+WHERE EnvironmentId = {0}
+ORDER BY Created ASC",
+               environmentId);
+            var result = new List<Deployment>();
+            using (DbDataReader reader = GetReader(commandText))
+            {
+                while (reader.Read())
+                {
+                    result.Add(MapDataToDeployment(reader));
+                }
+            }
+
+            return result.ToList();
         }
     }
 }

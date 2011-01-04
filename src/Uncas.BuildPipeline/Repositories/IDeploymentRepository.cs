@@ -8,6 +8,7 @@
         void AddDeployment(Deployment deployment);
         IEnumerable<Deployment> GetDueDeployments();
         IEnumerable<Deployment> GetDeployments(int pipelineId);
+        IEnumerable<Deployment> GetByEnvironment(int environmentId);
         void UpdateDeployment(Deployment deployment);
         Deployment GetDeployment(int id);
     }

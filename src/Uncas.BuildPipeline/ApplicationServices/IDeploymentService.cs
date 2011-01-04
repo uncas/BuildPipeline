@@ -14,5 +14,7 @@
         ScheduleDeploymentResult ScheduleDeployment(
             int pipelineId, 
             int environmentId);
+
+        IEnumerable<Deployment> GetDeploymentsByEnvironment(int environmentId);
     }
 }

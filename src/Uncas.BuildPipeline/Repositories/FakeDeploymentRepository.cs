@@ -39,5 +39,11 @@
         public void UpdateDeployment(Deployment deployment)
         {
         }
+
+
+        public IEnumerable<Deployment> GetByEnvironment(int environmentId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
