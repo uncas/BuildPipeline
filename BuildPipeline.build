@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <project name="BuildPipeline" default="build">
 
   <!-- Configuration - default values that can be changed depending on the situation, can be changed in local.properties.xml -->
@@ -99,7 +99,7 @@
     <property name="svn.revision" value="0" />
     <exec
       program="${svn}"
-      commandline='log --xml --limit 1 --username buildmaster --password buildmaster123 --no-auth-cache'
+      commandline='log --xml --limit 1 --username ole --password ols --no-auth-cache'
       output="${output.dir}\revision.xml"
       failonerror="false" />
     <xmlpeek
@@ -111,7 +111,7 @@
 
     <exec
       program="${svn}"
-      commandline='info --xml --username buildmaster --password buildmaster123 --no-auth-cache'
+      commandline='info --xml --username ole --password ols --no-auth-cache'
       output="${output.dir}\svninfo.xml"
       failonerror="false" />
     <xmlpeek file="${output.dir}\svninfo.xml" xpath="/info/entry/url" property="svn.url" />
