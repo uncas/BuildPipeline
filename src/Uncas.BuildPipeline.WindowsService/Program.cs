@@ -12,6 +12,7 @@
         /// Name of the service as defined in the Service component.
         /// </summary>
         private const string ServiceName = "DeployService";
+
         /// <summary>
         /// Mapping of console command line args to ServiceManagerCommands.
         /// </summary>
@@ -42,12 +43,14 @@
                     ServiceMain();
                     return;
                 }
+                
                 ServiceManagerCommand command;
                 if (!TryParseCommandLine(args, out command))
                 {
                     PrintUsage();
                     return;
                 }
+            
                 ServiceManager serviceManager = new ServiceManager(ServiceName);
                 if (command == ServiceManagerCommand.Application)
                 {
@@ -85,13 +88,17 @@
         {
             command = ServiceManagerCommand.Unknown;
             if (args.Length > 1)
+            {
                 return false;
+            }
+
             string commandLineArg = args[0];
             if (_commands.ContainsKey(commandLineArg))
             {
                 command = _commands[commandLineArg];
                 return true;
             }
+            
             return false;
         }
 
@@ -103,6 +110,7 @@
             {
                 Console.WriteLine("  " + exeName + " " + item.Key);
             }
+ 
             Console.Read();
         }
     }

@@ -65,10 +65,20 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mappers\PipelineMapper.cs" />
-    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AccountMembershipService.cs" />
+    <Compile Include="Models\AccountValidation.cs" />
+    <Compile Include="Models\ChangePasswordModel.cs" />
+    <Compile Include="Models\FormsAuthenticationService.cs" />
+    <Compile Include="Models\IFormsAuthenticationService.cs" />
+    <Compile Include="Models\IMembershipService.cs" />
+    <Compile Include="Models\LogOnModel.cs" />
+    <Compile Include="Models\PropertiesMustMatchAttribute.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\ValidatePasswordLengthAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BuildStepViewModel.cs" />
+    <Compile Include="ViewModels\DeploymentViewModel.cs" />
     <Compile Include="ViewModels\DeployViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentIndexViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
