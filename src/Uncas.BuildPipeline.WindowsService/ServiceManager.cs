@@ -70,7 +70,7 @@
                 {
                     EventLog.WriteEntry(
                         "ServiceManager",
-                        ex.ToString(), 
+                        ex.ToString(),
                         EventLogEntryType.Error);
                     return false;
                 }
@@ -115,7 +115,7 @@
                     installer.Rollback(mySavedState);
                     EventLog.WriteEntry(
                         "ServiceManager",
-                        ex.ToString(), 
+                        ex.ToString(),
                         EventLogEntryType.Error);
                 }
             }
@@ -145,7 +145,7 @@
             {
                 EventLog.WriteEntry(
                     "ServiceManager",
-                    ex.ToString(), 
+                    ex.ToString(),
                     EventLogEntryType.Error);
             }
         }
@@ -165,14 +165,14 @@
                     {
                         serviceController.Start();
                         WaitForStatusChange(
-                            serviceController, 
+                            serviceController,
                             ServiceControllerStatus.Running);
                     }
                     catch (InvalidOperationException ex)
                     {
                         EventLog.WriteEntry(
                             "ServiceManager",
-                            ex.ToString(), 
+                            ex.ToString(),
                             EventLogEntryType.Error);
                     }
                 }
@@ -213,7 +213,7 @@
                 serviceController.Refresh();
                 count++;
             }
-            
+
             if (serviceController.Status != newStatus)
             {
                 throw new Exception("Failed to change status of service. New status: " + newStatus);
@@ -224,10 +224,10 @@
         {
             _commands = new Dictionary<ServiceManagerCommand, Action>
             {
-                {ServiceManagerCommand.Install, InstallService},
-                {ServiceManagerCommand.UnInstall, UninstallService},
-                {ServiceManagerCommand.Start, StartService},
-                {ServiceManagerCommand.Stop, StopService},
+                { ServiceManagerCommand.Install, InstallService },
+                { ServiceManagerCommand.UnInstall, UninstallService },
+                { ServiceManagerCommand.Start, StartService },
+                { ServiceManagerCommand.Stop, StopService },
             };
         }
 

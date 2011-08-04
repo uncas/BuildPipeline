@@ -19,11 +19,11 @@
         private static Dictionary<string, ServiceManagerCommand> _commands = 
             new Dictionary<string, ServiceManagerCommand>
         {
-            {"-console", ServiceManagerCommand.Application},
-            {"-install", ServiceManagerCommand.Install},
-            {"-uninstall", ServiceManagerCommand.UnInstall},
-            {"-start", ServiceManagerCommand.Start},
-            {"-stop", ServiceManagerCommand.Stop}
+            { "-console", ServiceManagerCommand.Application },
+            { "-install", ServiceManagerCommand.Install },
+            { "-uninstall", ServiceManagerCommand.UnInstall },
+            { "-start", ServiceManagerCommand.Start },
+            { "-stop", ServiceManagerCommand.Stop }
         };
 
         /// <summary>
