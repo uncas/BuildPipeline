@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Configuration.Install;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.ServiceProcess;
     using System.Threading;
 
@@ -19,7 +20,7 @@
         Unknown,
         Application,
         Install,
-        UnInstall,
+        Uninstall,
         Start,
         Stop,
     }
@@ -39,11 +40,11 @@
         /// </param>
         public ServiceManager(string serviceName)
         {
-            _serviceName = serviceName;
+            ServiceName = serviceName;
             InitializeCommands();
         }
 
-        protected string _serviceName { get; set; }
+        private string ServiceName { get; set; }
 
         public void RunCommand(ServiceManagerCommand command)
         {
@@ -53,10 +54,14 @@
             }
         }
 
+        [SuppressMessage(
+            "Microsoft.Design",
+            "CA1031:DoNotCatchGeneralExceptionTypes",
+            Justification = "Needs to be robust - general exceptions are logged.")]
         public virtual bool IsServiceInstalled()
         {
             using (ServiceController serviceController =
-                new ServiceController(_serviceName))
+                new ServiceController(ServiceName))
             {
                 try
                 {
@@ -81,7 +86,7 @@
 
         public bool IsServiceRunning()
         {
-            using (ServiceController serviceController = new ServiceController(_serviceName))
+            using (ServiceController serviceController = new ServiceController(ServiceName))
             {
                 if (!IsServiceInstalled())
                 {
@@ -92,6 +97,10 @@
             }
         }
 
+        [SuppressMessage(
+            "Microsoft.Design",
+            "CA1031:DoNotCatchGeneralExceptionTypes",
+            Justification = "Needs to be robust - general exceptions are logged.")]
         protected virtual void InstallService()
         {
             if (IsServiceInstalled())
@@ -125,6 +134,10 @@
             }
         }
 
+        [SuppressMessage(
+            "Microsoft.Design",
+            "CA1031:DoNotCatchGeneralExceptionTypes",
+            Justification = "Needs to be robust - general exceptions are logged.")]
         protected virtual void UninstallService()
         {
             if (!IsServiceInstalled())
@@ -157,7 +170,7 @@
                 return;
             }
 
-            using (ServiceController serviceController = new ServiceController(_serviceName))
+            using (ServiceController serviceController = new ServiceController(ServiceName))
             {
                 if (serviceController.Status == ServiceControllerStatus.Stopped)
                 {
@@ -186,7 +199,7 @@
                 return;
             }
 
-            using (ServiceController serviceController = new ServiceController(_serviceName))
+            using (ServiceController serviceController = new ServiceController(ServiceName))
             {
                 if (serviceController.Status != ServiceControllerStatus.Running)
                     return;
@@ -216,7 +229,7 @@
 
             if (serviceController.Status != newStatus)
             {
-                throw new Exception("Failed to change status of service. New status: " + newStatus);
+                throw new InvalidOperationException("Failed to change status of service. New status: " + newStatus);
             }
         }
 
@@ -225,13 +238,17 @@
             _commands = new Dictionary<ServiceManagerCommand, Action>
             {
                 { ServiceManagerCommand.Install, InstallService },
-                { ServiceManagerCommand.UnInstall, UninstallService },
+                { ServiceManagerCommand.Uninstall, UninstallService },
                 { ServiceManagerCommand.Start, StartService },
                 { ServiceManagerCommand.Stop, StopService },
             };
         }
 
-        private AssemblyInstaller GetAssemblyInstaller(string[] commandLine)
+        [SuppressMessage(
+            "Microsoft.Reliability",
+            "CA2000:Dispose objects before losing scope",
+            Justification = "Is disposed in other methods in this class.")]
+        private static AssemblyInstaller GetAssemblyInstaller(string[] commandLine)
         {
             AssemblyInstaller installer = new AssemblyInstaller();
             installer.Path = Environment.GetCommandLineArgs()[0];

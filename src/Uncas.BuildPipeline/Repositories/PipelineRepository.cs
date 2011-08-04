@@ -8,7 +8,7 @@
     public class PipelineRepository : BaseSql, IPipelineRepository
     {
         public PipelineRepository()
-            : base(@"Server=.\SqlExpress;Database=BuildPipeline;User Id=sa;Pwd=ols")
+            : base(@"Server=.\SqlExpress;Database=BuildPipeline;User Id=BuildLogin;Pwd=ols")
         {
         }
 

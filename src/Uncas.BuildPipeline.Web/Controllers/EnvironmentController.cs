@@ -37,7 +37,19 @@
             IList<EnvironmentIndexViewModel> viewModels,
             Environment environment)
         {
-            var deployments = this.deploymentService.GetDeploymentsByEnvironment(environment.Id);
+            if (environment == null)
+            {
+                throw new System.ArgumentNullException("environment");
+            }
+
+            if (viewModels == null)
+            {
+                throw new System.ArgumentNullException("viewModels");
+            }
+
+            var deployments =
+                deploymentService.GetDeploymentsByEnvironment(
+                environment.Id);
             var lastDeployment = deployments.Where(d => d.Completed.HasValue).OrderByDescending(d => d.Completed).FirstOrDefault();
             if (lastDeployment == null)
                 return;

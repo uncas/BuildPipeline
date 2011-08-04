@@ -5,6 +5,7 @@
     using System.Linq;
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Web.ViewModels;
+    using System.Globalization;
 
     public static class PipelineMapper
     {
@@ -12,12 +13,16 @@
         {
             var result = new PipelineIndexViewModel();
             result.Pipelines = MapToPipelineViewModels(pipelines);
-            PopulateBaseViewModel(result);
             return result;
         }
 
         public static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
+            if (pipeline == null)
+            {
+                throw new ArgumentNullException("pipeline");
+            }
+
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
             string sourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, string.Empty);
             if (sourceUrlRelative.Contains("/"))
@@ -34,7 +39,6 @@
                 CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed"
             };
             result.Steps = pipeline.Steps.Select(MapToBuildStepViewModel);
-            PopulateBaseViewModel(result);
             return result;
         }
 
@@ -44,12 +48,6 @@
             var viewModels = pipelines.Select(
                 p => MapToPipelineViewModel(p));
             return viewModels;
-        }
-
-        private static void PopulateBaseViewModel(BaseViewModel baseViewModel)
-        {
-            ////bool showDeployment = bool.Parse(ConfigurationManager.AppSettings["showDeployment"]);
-            ////bool showDeployment = HttpContext.Current.Request.Url.AbsoluteUri.Contains("51743");
         }
 
         private static string GetDateTimeDisplay(DateTime dateTime)
@@ -76,6 +74,7 @@
             string pluralis = dateTimeDisplayNumber == 1 ?
                 string.Empty : "s";
             return string.Format(
+                CultureInfo.CurrentCulture,
                 "{0} {1}{2} ago",
                 dateTimeDisplayNumber,
                 dateTimeLabel,

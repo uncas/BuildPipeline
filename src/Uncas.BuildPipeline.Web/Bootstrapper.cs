@@ -4,7 +4,7 @@
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
 
-    public class Bootstrapper
+    public static class Bootstrapper
     {
         public static IDeploymentService GetDeploymentService()
         {

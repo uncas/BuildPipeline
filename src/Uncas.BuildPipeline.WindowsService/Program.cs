@@ -21,7 +21,7 @@
         {
             { "-console", ServiceManagerCommand.Application },
             { "-install", ServiceManagerCommand.Install },
-            { "-uninstall", ServiceManagerCommand.UnInstall },
+            { "-uninstall", ServiceManagerCommand.Uninstall },
             { "-start", ServiceManagerCommand.Start },
             { "-stop", ServiceManagerCommand.Stop }
         };
@@ -54,7 +54,8 @@
                 ServiceManager serviceManager = new ServiceManager(ServiceName);
                 if (command == ServiceManagerCommand.Application)
                 {
-                    Console.WriteLine("Running in console mode.");
+                    const string message = @"Running in console mode.";
+                    Console.WriteLine(message);
                     Bootstrapper.GetDeploymentService().DeployDueDeployments();
                     Console.Read();
                 }
@@ -108,7 +109,7 @@
             Console.WriteLine("Usage:");
             foreach (var item in _commands)
             {
-                Console.WriteLine("  " + exeName + " " + item.Key);
+                Console.WriteLine(@"  " + exeName + @" " + item.Key);
             }
  
             Console.Read();

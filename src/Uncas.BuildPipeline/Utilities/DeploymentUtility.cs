@@ -78,7 +78,7 @@
                     string destinationFolderPath = Path.Combine(destinationRootFolderPath, directoryName);
                     Directory.CreateDirectory(destinationFolderPath);
 
-                    if (fileName != string.Empty)
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
                         using (FileStream streamWriter = File.Create(destinationFilePath))
