@@ -17,9 +17,9 @@
 
         public HomeController()
         {
-            this.environmentRepository = Bootstrapper.GetEnvironmentRepository();
-            this.pipelineRepository = Bootstrapper.GetPipelineRepository();
-            this.deploymentService = Bootstrapper.GetDeploymentService();
+            this.environmentRepository = Bootstrapper.Resolve<IEnvironmentRepository>();
+            this.deploymentService = Bootstrapper.Resolve<IDeploymentService>();
+            this.pipelineRepository = Bootstrapper.Resolve<IPipelineRepository>();
         }
 
         [HttpGet]

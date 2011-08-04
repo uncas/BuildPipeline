@@ -16,9 +16,9 @@
 
         public EnvironmentController()
         {
-            this.environmentRepository = Bootstrapper.GetEnvironmentRepository();
-            this.deploymentService = Bootstrapper.GetDeploymentService();
-            this.pipelineRepository = Bootstrapper.GetPipelineRepository();
+            this.environmentRepository = Bootstrapper.Resolve<IEnvironmentRepository>();
+            this.deploymentService = Bootstrapper.Resolve<IDeploymentService>();
+            this.pipelineRepository = Bootstrapper.Resolve<IPipelineRepository>();
         }
 
         public ActionResult Index()
