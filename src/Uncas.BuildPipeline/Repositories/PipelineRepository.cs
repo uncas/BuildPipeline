@@ -15,8 +15,8 @@
         public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {
             var pipelines = new List<Pipeline>();
-            string commandText = string.Format(@"
-SELECT TOP {0}
+            string commandText = string.Format(
+@"SELECT TOP {0}
     Pr.ProjectName
     , Pi.SourceRevision
     , Pi.PipelineId
@@ -42,24 +42,11 @@ ORDER BY Pi.Created DESC",
             return pipelines;
         }
 
-        private static Pipeline MapDataToPipeline(DbDataReader reader)
-        {
-            return new Pipeline(
-                (int)reader["PipelineId"],
-                (string)reader["ProjectName"],
-                (int)reader["SourceRevision"],
-                (string)reader["SourceUrl"],
-                (string)reader["SourceUrlBase"],
-                (DateTime)reader["Created"],
-                (string)reader["SourceAuthor"],
-                BaseSql.GetStringValue(reader["PackagePath"]));
-        }
-
         public Pipeline GetPipeline(int pipelineId)
         {
             Pipeline pipeline = null;
-            string commandText = string.Format(@"
-SELECT Pr.ProjectName
+            string commandText = string.Format(
+@"SELECT Pr.ProjectName
     , Pi.SourceRevision
     , Pi.PipelineId
     , Pr.SourceUrlBase
@@ -84,6 +71,19 @@ WHERE Pi.PipelineId = {0}",
             return pipeline;
         }
 
+        private static Pipeline MapDataToPipeline(DbDataReader reader)
+        {
+            return new Pipeline(
+                (int)reader["PipelineId"],
+                (string)reader["ProjectName"],
+                (int)reader["SourceRevision"],
+                (string)reader["SourceUrl"],
+                (string)reader["SourceUrlBase"],
+                (DateTime)reader["Created"],
+                (string)reader["SourceAuthor"],
+                BaseSql.GetStringValue(reader["PackagePath"]));
+        }
+        
         private void AddSteps(IList<Pipeline> pipelines)
         {
             foreach (Pipeline pipeline in pipelines)
@@ -94,8 +94,8 @@ WHERE Pi.PipelineId = {0}",
 
         private void AddSteps(Pipeline pipeline)
         {
-            string commandText = string.Format(@"
-SELECT IsSuccessful, StepName, Created
+            string commandText = string.Format(
+@"SELECT IsSuccessful, StepName, Created
 FROM BuildStep
 WHERE PipelineId = {0}
 ORDER BY Created ASC",

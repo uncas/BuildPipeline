@@ -16,24 +16,10 @@
             return result;
         }
 
-        private static IEnumerable<PipelineViewModel>
-           MapToPipelineViewModels(IEnumerable<Pipeline> pipelines)
-        {
-            var viewModels = pipelines.Select(
-                p => MapToPipelineViewModel(p));
-            return viewModels;
-        }
-
-        private static void PopulateBaseViewModel(BaseViewModel baseViewModel)
-        {
-            //bool showDeployment = bool.Parse(ConfigurationManager.AppSettings["showDeployment"]);
-            //bool showDeployment = HttpContext.Current.Request.Url.AbsoluteUri.Contains("51743");
-        }
-
         public static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
-            string sourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, "");
+            string sourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, string.Empty);
             if (sourceUrlRelative.Contains("/"))
                 sourceUrlRelative = sourceUrlRelative.Split('/').Last();
             var result = new PipelineViewModel
@@ -50,6 +36,20 @@
             result.Steps = pipeline.Steps.Select(MapToBuildStepViewModel);
             PopulateBaseViewModel(result);
             return result;
+        }
+
+        private static IEnumerable<PipelineViewModel>
+           MapToPipelineViewModels(IEnumerable<Pipeline> pipelines)
+        {
+            var viewModels = pipelines.Select(
+                p => MapToPipelineViewModel(p));
+            return viewModels;
+        }
+
+        private static void PopulateBaseViewModel(BaseViewModel baseViewModel)
+        {
+            ////bool showDeployment = bool.Parse(ConfigurationManager.AppSettings["showDeployment"]);
+            ////bool showDeployment = HttpContext.Current.Request.Url.AbsoluteUri.Contains("51743");
         }
 
         private static string GetDateTimeDisplay(DateTime dateTime)

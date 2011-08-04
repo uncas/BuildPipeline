@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-
-namespace Uncas.BuildPipeline.Web.Models
+﻿namespace Uncas.BuildPipeline.Web.Models
 {
+    using System;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
+    using System.Web.Security;
 
-    #region Models
     [PropertiesMustMatch("NewPassword", "ConfirmPassword", ErrorMessage = "The new password and confirmation password do not match.")]
     public class ChangePasswordModel
     {
@@ -70,13 +64,6 @@ namespace Uncas.BuildPipeline.Web.Models
         [DisplayName("Confirm password")]
         public string ConfirmPassword { get; set; }
     }
-    #endregion
-
-    #region Services
-    // The FormsAuthentication type is sealed and contains static members, so it is difficult to
-    // unit test code that calls its members. The interface and helper class below demonstrate
-    // how to create an abstract wrapper around such a type in order to make the AccountController
-    // code unit testable.
 
     public interface IMembershipService
     {
@@ -111,17 +98,17 @@ namespace Uncas.BuildPipeline.Web.Models
 
         public bool ValidateUser(string userName, string password)
         {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
-            if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
+            if (string.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (string.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
 
             return _provider.ValidateUser(userName, password);
         }
 
         public MembershipCreateStatus CreateUser(string userName, string password, string email)
         {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
-            if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
-            if (String.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
+            if (string.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (string.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
+            if (string.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
 
             MembershipCreateStatus status;
             _provider.CreateUser(userName, password, email, null, null, true, null, out status);
@@ -130,9 +117,9 @@ namespace Uncas.BuildPipeline.Web.Models
 
         public bool ChangePassword(string userName, string oldPassword, string newPassword)
         {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
-            if (String.IsNullOrEmpty(oldPassword)) throw new ArgumentException("Value cannot be null or empty.", "oldPassword");
-            if (String.IsNullOrEmpty(newPassword)) throw new ArgumentException("Value cannot be null or empty.", "newPassword");
+            if (string.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (string.IsNullOrEmpty(oldPassword)) throw new ArgumentException("Value cannot be null or empty.", "oldPassword");
+            if (string.IsNullOrEmpty(newPassword)) throw new ArgumentException("Value cannot be null or empty.", "newPassword");
 
             // The underlying ChangePassword() will throw an exception rather
             // than return false in certain failure scenarios.
@@ -162,7 +149,7 @@ namespace Uncas.BuildPipeline.Web.Models
     {
         public void SignIn(string userName, bool createPersistentCookie)
         {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (string.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
 
             FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
         }
@@ -172,9 +159,7 @@ namespace Uncas.BuildPipeline.Web.Models
             FormsAuthentication.SignOut();
         }
     }
-    #endregion
 
-    #region Validation
     public static class AccountValidation
     {
         public static string ErrorCodeToString(MembershipCreateStatus createStatus)
@@ -242,8 +227,11 @@ namespace Uncas.BuildPipeline.Web.Models
 
         public override string FormatErrorMessage(string name)
         {
-            return String.Format(CultureInfo.CurrentUICulture, ErrorMessageString,
-                OriginalProperty, ConfirmProperty);
+            return string.Format(
+                CultureInfo.CurrentUICulture, 
+                ErrorMessageString,
+                OriginalProperty, 
+                ConfirmProperty);
         }
 
         public override bool IsValid(object value)
@@ -251,7 +239,7 @@ namespace Uncas.BuildPipeline.Web.Models
             PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(value);
             object originalValue = properties.Find(OriginalProperty, true /* ignoreCase */).GetValue(value);
             object confirmValue = properties.Find(ConfirmProperty, true /* ignoreCase */).GetValue(value);
-            return Object.Equals(originalValue, confirmValue);
+            return object.Equals(originalValue, confirmValue);
         }
     }
 
@@ -268,16 +256,18 @@ namespace Uncas.BuildPipeline.Web.Models
 
         public override string FormatErrorMessage(string name)
         {
-            return String.Format(CultureInfo.CurrentUICulture, ErrorMessageString,
-                name, _minCharacters);
+            return string.Format(
+                CultureInfo.CurrentUICulture, 
+                ErrorMessageString,
+                name, 
+                _minCharacters);
         }
 
         public override bool IsValid(object value)
         {
             string valueAsString = value as string;
-            return (valueAsString != null && valueAsString.Length >= _minCharacters);
+            return valueAsString != null && 
+                valueAsString.Length >= _minCharacters;
         }
     }
-    #endregion
-
 }

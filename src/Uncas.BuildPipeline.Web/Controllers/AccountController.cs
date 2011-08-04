@@ -1,26 +1,15 @@
-﻿using System;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.Security;
-using Uncas.BuildPipeline.Web.Models;
-
-namespace Uncas.BuildPipeline.Web.Controllers
+﻿namespace Uncas.BuildPipeline.Web.Controllers
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.Security;
+    using Uncas.BuildPipeline.Web.Models;
 
     [HandleError]
     public class AccountController : Controller
     {
-
         public IFormsAuthenticationService FormsService { get; set; }
         public IMembershipService MembershipService { get; set; }
-
-        protected override void Initialize(RequestContext requestContext)
-        {
-            if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
-            if (MembershipService == null) { MembershipService = new AccountMembershipService(); }
-
-            base.Initialize(requestContext);
-        }
 
         // **************************************
         // URL: /Account/LogOn
@@ -39,7 +28,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
                 if (MembershipService.ValidateUser(model.UserName, model.Password))
                 {
                     FormsService.SignIn(model.UserName, model.RememberMe);
-                    if (!String.IsNullOrEmpty(returnUrl))
+                    if (!string.IsNullOrEmpty(returnUrl))
                     {
                         return Redirect(returnUrl);
                     }
@@ -50,7 +39,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
                 }
             }
 
@@ -94,7 +83,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", AccountValidation.ErrorCodeToString(createStatus));
+                    ModelState.AddModelError(string.Empty, AccountValidation.ErrorCodeToString(createStatus));
                 }
             }
 
@@ -126,7 +115,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                    ModelState.AddModelError(string.Empty, "The current password is incorrect or the new password is invalid.");
                 }
             }
 
@@ -144,5 +133,12 @@ namespace Uncas.BuildPipeline.Web.Controllers
             return View();
         }
 
+        protected override void Initialize(RequestContext requestContext)
+        {
+            if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
+            if (MembershipService == null) { MembershipService = new AccountMembershipService(); }
+
+            base.Initialize(requestContext);
+        }
     }
 }

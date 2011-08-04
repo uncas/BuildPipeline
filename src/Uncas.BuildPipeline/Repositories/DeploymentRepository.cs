@@ -28,7 +28,8 @@ SET @DeploymentId = @@IDENTITY";
                 new SqlParameter("DeploymentId", SqlDbType.Int);
             deploymentIdParameter.Direction =
                 ParameterDirection.Output;
-            ExecuteNonQuery(commandText,
+            ExecuteNonQuery(
+                commandText,
                 new SqlParameter("Created", deployment.Created),
                 new SqlParameter("PipelineId", deployment.PipelineId),
                 new SqlParameter("EnvironmentId", deployment.EnvironmentId),
@@ -62,21 +63,11 @@ ORDER BY Created ASC";
             return result.ToList();
         }
 
-        private Deployment MapDataToDeployment(DbDataReader reader)
-        {
-            return Deployment.Reconstruct(
-                (int)reader["DeploymentId"],
-                (DateTime)reader["Created"],
-                (int)reader["PipelineId"],
-                (int)reader["EnvironmentId"],
-                GetDateTimeValue(reader["Started"]),
-                GetDateTimeValue(reader["Completed"]));
-        }
-
         public IEnumerable<Deployment> GetDeployments(int pipelineId)
         {
-            string commandText = string.Format(@"
-SELECT DeploymentId
+            string commandText = 
+                string.Format(
+@"SELECT DeploymentId
     , PipelineId
     , EnvironmentId
     , Created
@@ -106,7 +97,8 @@ UPDATE Deployment
 SET Started = @Started
     , Completed = @Completed
 WHERE DeploymentId = @DeploymentId";
-            ExecuteNonQuery(commandText,
+            ExecuteNonQuery(
+                commandText,
                 GetDateTimeParameter("Started", deployment.Started),
                 GetDateTimeParameter("Completed", deployment.Completed),
                 new SqlParameter("DeploymentId", deployment.Id));
@@ -114,8 +106,8 @@ WHERE DeploymentId = @DeploymentId";
 
         public Deployment GetDeployment(int id)
         {
-            string commandText = string.Format(@"
-SELECT DeploymentId
+            string commandText = string.Format(
+@"SELECT DeploymentId
     , PipelineId
     , EnvironmentId
     , Created
@@ -139,8 +131,8 @@ ORDER BY Created ASC",
 
         public IEnumerable<Deployment> GetByEnvironment(int environmentId)
         {
-            string commandText = string.Format(@"
-SELECT DeploymentId
+            string commandText = string.Format(
+@"SELECT DeploymentId
     , PipelineId
     , EnvironmentId
     , Created
@@ -160,6 +152,17 @@ ORDER BY Created ASC",
             }
 
             return result.ToList();
+        }
+
+        private Deployment MapDataToDeployment(DbDataReader reader)
+        {
+            return Deployment.Reconstruct(
+                (int)reader["DeploymentId"],
+                (DateTime)reader["Created"],
+                (int)reader["PipelineId"],
+                (int)reader["EnvironmentId"],
+                GetDateTimeValue(reader["Started"]),
+                GetDateTimeValue(reader["Completed"]));
         }
     }
 }

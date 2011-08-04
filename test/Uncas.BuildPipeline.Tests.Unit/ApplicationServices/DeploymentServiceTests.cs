@@ -116,8 +116,8 @@
                 pipelineId,
                 environmentId);
             this.deploymentRepositoryMock.Setup(
-                dr => dr.GetDeployments(pipelineId)).
-                Returns(new List<Deployment> { deployment });
+                dr => dr.GetDeployments(pipelineId))
+                .Returns(new List<Deployment> { deployment });
 
             // Act:
             IEnumerable<Deployment> scheduledDeployments =
@@ -146,8 +146,8 @@
                 pipelineId,
                 environmentId);
             this.deploymentRepositoryMock.Setup(
-                dr => dr.GetDueDeployments()).
-                Returns(new List<Deployment> { deployment });
+                dr => dr.GetDueDeployments())
+                .Returns(new List<Deployment> { deployment });
 
             // Act:
             IEnumerable<Deployment> scheduledDeployments =
@@ -182,8 +182,8 @@
                 environmentId);
             SetupRepositories(pipelineId, environmentId);
             this.deploymentRepositoryMock.Setup(
-                dr => dr.GetDueDeployments()).
-                Returns(new List<Deployment> { deployment });
+                dr => dr.GetDueDeployments())
+                .Returns(new List<Deployment> { deployment });
 
             // Act:
             this.deploymentService.DeployDueDeployments();
@@ -205,8 +205,8 @@
                 environmentId);
             SetupRepositories(pipelineId, environmentId);
             this.deploymentRepositoryMock.Setup(
-                dr => dr.GetDueDeployments()).
-                Returns(new List<Deployment> { deployment });
+                dr => dr.GetDueDeployments())
+                .Returns(new List<Deployment> { deployment });
             this.deploymentService.DeployDueDeployments();
             this.deploymentUtilityMock.Verify(
                 du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BuildPipeline.Models.Environment>()),

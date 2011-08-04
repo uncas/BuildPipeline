@@ -13,7 +13,7 @@
             this.connectionString = connectionString;
         }
 
-        internal protected static DateTime? GetDateTimeValue(
+        protected internal static DateTime? GetDateTimeValue(
             object dbValue)
         {
             if (dbValue == null || dbValue is DBNull)
@@ -21,14 +21,26 @@
             return (DateTime)dbValue;
         }
 
-        internal protected static string GetStringValue(object dbValue)
+        protected internal static string GetStringValue(object dbValue)
         {
             if (dbValue == null || dbValue is DBNull)
                 return string.Empty;
             return (string)dbValue;
         }
 
-        internal protected SqlDataReader GetReader(string commandText)
+        protected internal static SqlParameter GetDateTimeParameter(
+            string name,
+            DateTime? value)
+        {
+            var result = new SqlParameter(name, SqlDbType.DateTime);
+            if (value.HasValue)
+                result.Value = value.Value;
+            else
+                result.Value = DBNull.Value;
+            return result;
+        }
+
+        protected internal SqlDataReader GetReader(string commandText)
         {
             var connection =
                 new SqlConnection(this.connectionString);
@@ -40,7 +52,7 @@
             }
         }
 
-        internal protected void ExecuteNonQuery(
+        protected internal void ExecuteNonQuery(
             string commandText,
             params SqlParameter[] parameters)
         {
@@ -56,18 +68,6 @@
                     command.ExecuteNonQuery();
                 }
             }
-        }
-
-        internal protected static SqlParameter GetDateTimeParameter(
-            string name,
-            DateTime? value)
-        {
-            var result = new SqlParameter(name, SqlDbType.DateTime);
-            if (value.HasValue)
-                result.Value = value.Value;
-            else
-                result.Value = DBNull.Value;
-            return result;
         }
     }
 }

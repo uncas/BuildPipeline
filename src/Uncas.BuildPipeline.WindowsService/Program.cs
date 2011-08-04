@@ -15,7 +15,8 @@
         /// <summary>
         /// Mapping of console command line args to ServiceManagerCommands.
         /// </summary>
-        private static Dictionary<string, ServiceManagerCommand> _commands = new Dictionary<string, ServiceManagerCommand>
+        private static Dictionary<string, ServiceManagerCommand> _commands = 
+            new Dictionary<string, ServiceManagerCommand>
         {
             {"-console", ServiceManagerCommand.Application},
             {"-install", ServiceManagerCommand.Install},
@@ -61,8 +62,10 @@
             }
             catch (Exception ex)
             {
-                EventLog.WriteEntry("DeployService",
-                                    ex.ToString(), EventLogEntryType.Error);
+                EventLog.WriteEntry(
+                    "DeployService",
+                    ex.ToString(), 
+                    EventLogEntryType.Error);
             }
         }
 
@@ -76,8 +79,9 @@
             ServiceBase.Run(ServicesToRun);
         }
 
-        private static bool TryParseCommandLine(string[] args,
-                                                out ServiceManagerCommand command)
+        private static bool TryParseCommandLine(
+            string[] args,
+            out ServiceManagerCommand command)
         {
             command = ServiceManagerCommand.Unknown;
             if (args.Length > 1)

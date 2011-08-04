@@ -1,11 +1,17 @@
 ﻿namespace Uncas.BuildPipeline.WindowsService
 {
-    partial class ProjectInstaller
+    using System.ComponentModel;
+    using System.ServiceProcess;
+
+    public partial class ProjectInstaller
     {
+        private ServiceProcessInstaller serviceProcessInstaller1;
+        private ServiceInstaller serviceInstaller1;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -46,12 +52,8 @@
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
             this.serviceProcessInstaller1,
             this.serviceInstaller1});
-
         }
 
         #endregion
-
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
     }
 }
