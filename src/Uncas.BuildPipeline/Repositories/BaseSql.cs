@@ -58,10 +58,14 @@
                 using (var command =
                     new SqlCommand(commandText, connection))
                 {
-                    foreach (SqlParameter parameter in parameters)
+                    if (parameters != null)
                     {
-                        command.Parameters.Add(parameter);
+                        foreach (SqlParameter parameter in parameters)
+                        {
+                            command.Parameters.Add(parameter);
+                        }
                     }
+
                     connection.Open();
                     command.ExecuteNonQuery();
                 }

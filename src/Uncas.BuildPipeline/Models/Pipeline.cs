@@ -6,7 +6,7 @@
 
     public class Pipeline
     {
-        private IList<BuildStep> steps;
+        private readonly IList<BuildStep> _buildSteps;
 
         public Pipeline(
             int id,
@@ -16,17 +16,17 @@
             string sourceUrlBase,
             DateTime created,
             string sourceAuthor,
-            string packageUrl)
+            string packagePath)
         {
-            this.steps = new List<BuildStep>();
-            this.Id = id;
-            this.ProjectName = projectName;
-            this.SourceRevision = sourceRevision;
-            this.SourceUrl = sourceUrl;
-            this.SourceUrlBase = sourceUrlBase;
-            this.Created = created;
-            this.SourceAuthor = sourceAuthor;
-            this.PackagePath = packageUrl;
+            _buildSteps = new List<BuildStep>();
+            Id = id;
+            ProjectName = projectName;
+            SourceRevision = sourceRevision;
+            SourceUrl = sourceUrl;
+            SourceUrlBase = sourceUrlBase;
+            Created = created;
+            SourceAuthor = sourceAuthor;
+            PackagePath = packagePath;
         }
 
         public int Id { get; private set; }
@@ -40,30 +40,26 @@
 
         public IEnumerable<BuildStep> Steps
         {
-            get
-            {
-                return this.steps;
-            }
+            get { return _buildSteps; }
         }
 
         public bool IsSuccessful
         {
-            get
-            {
-                return !Steps.Any(s => !s.IsSuccessful);
-            }
+            get { return !Steps.Any(s => !s.IsSuccessful); }
         }
 
         public void AddStep(BuildStep buildStep)
         {
             // Removing any existing steps with the same name:
-            var existing = this.steps.FirstOrDefault(
+            BuildStep existing = _buildSteps.FirstOrDefault(
                 s => s.StepName == buildStep.StepName);
             if (existing != null)
-                this.steps.Remove(existing);
+            {
+                _buildSteps.Remove(existing);
+            }
 
             // Adding the new step:
-            this.steps.Add(buildStep);
+            _buildSteps.Add(buildStep);
         }
     }
 }

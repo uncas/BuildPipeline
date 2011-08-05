@@ -17,7 +17,13 @@
 
         public void AddDeployment(Deployment deployment)
         {
-            const string commandText = @"
+            if (deployment == null)
+            {
+                throw new ArgumentNullException("deployment");
+            }
+
+            const string commandText =
+                @"
 INSERT INTO Deployment
 (Created, PipelineId, EnvironmentId)
 VALUES
@@ -37,9 +43,87 @@ SET @DeploymentId = @@IDENTITY";
             deployment.ChangeId((int)deploymentIdParameter.Value);
         }
 
+        public IEnumerable<Deployment> GetByEnvironment(int environmentId)
+        {
+            string commandText = string.Format(
+                @"SELECT DeploymentId
+    , PipelineId
+    , EnvironmentId
+    , Created
+    , Started
+    , Completed
+FROM Deployment
+WHERE EnvironmentId = {0}
+ORDER BY Created ASC",
+                environmentId);
+            var result = new List<Deployment>();
+            using (DbDataReader reader = GetReader(commandText))
+            {
+                while (reader.Read())
+                {
+                    result.Add(MapDataToDeployment(reader));
+                }
+            }
+
+            return result.ToList();
+        }
+
+        public Deployment GetDeployment(int id)
+        {
+            string commandText = string.Format(
+                @"SELECT DeploymentId
+    , PipelineId
+    , EnvironmentId
+    , Created
+    , Started
+    , Completed
+FROM Deployment
+WHERE DeploymentId = {0}
+ORDER BY Created ASC",
+                id);
+            Deployment deployment = null;
+            using (DbDataReader reader = GetReader(commandText))
+            {
+                if (reader.Read())
+                {
+                    deployment = MapDataToDeployment(reader);
+                }
+            }
+
+            return deployment;
+        }
+
+        public IEnumerable<Deployment> GetDeployments(int pipelineId)
+        {
+            string commandText =
+                string.Format(
+                    @"SELECT DeploymentId
+    , PipelineId
+    , EnvironmentId
+    , Created
+    , Started
+    , Completed
+FROM Deployment
+WHERE PipelineId = {0}
+ORDER BY Created ASC",
+                    pipelineId);
+
+            var result = new List<Deployment>();
+            using (DbDataReader reader = GetReader(commandText))
+            {
+                while (reader.Read())
+                {
+                    result.Add(MapDataToDeployment(reader));
+                }
+            }
+
+            return result.ToList();
+        }
+
         public IEnumerable<Deployment> GetDueDeployments()
         {
-            const string commandText = @"
+            const string commandText =
+                @"
 SELECT DeploymentId
     , PipelineId
     , EnvironmentId
@@ -63,36 +147,15 @@ ORDER BY Created ASC";
             return result.ToList();
         }
 
-        public IEnumerable<Deployment> GetDeployments(int pipelineId)
-        {
-            string commandText = 
-                string.Format(
-@"SELECT DeploymentId
-    , PipelineId
-    , EnvironmentId
-    , Created
-    , Started
-    , Completed
-FROM Deployment
-WHERE PipelineId = {0}
-ORDER BY Created ASC",
-                pipelineId);
-
-            var result = new List<Deployment>();
-            using (DbDataReader reader = GetReader(commandText))
-            {
-                while (reader.Read())
-                {
-                    result.Add(MapDataToDeployment(reader));
-                }
-            }
-
-            return result.ToList();
-        }
-
         public void UpdateDeployment(Deployment deployment)
         {
-            const string commandText = @"
+            if (deployment == null)
+            {
+                throw new ArgumentNullException("deployment");
+            }
+
+            const string commandText =
+                @"
 UPDATE Deployment
 SET Started = @Started
     , Completed = @Completed
@@ -104,57 +167,7 @@ WHERE DeploymentId = @DeploymentId";
                 new SqlParameter("DeploymentId", deployment.Id));
         }
 
-        public Deployment GetDeployment(int id)
-        {
-            string commandText = string.Format(
-@"SELECT DeploymentId
-    , PipelineId
-    , EnvironmentId
-    , Created
-    , Started
-    , Completed
-FROM Deployment
-WHERE DeploymentId = {0}
-ORDER BY Created ASC",
-                id);
-            Deployment deployment = null;
-            using (DbDataReader reader = GetReader(commandText))
-            {
-                if (reader.Read())
-                {
-                    deployment = MapDataToDeployment(reader);
-                }
-            }
-
-            return deployment;
-        }
-
-        public IEnumerable<Deployment> GetByEnvironment(int environmentId)
-        {
-            string commandText = string.Format(
-@"SELECT DeploymentId
-    , PipelineId
-    , EnvironmentId
-    , Created
-    , Started
-    , Completed
-FROM Deployment
-WHERE EnvironmentId = {0}
-ORDER BY Created ASC",
-               environmentId);
-            var result = new List<Deployment>();
-            using (DbDataReader reader = GetReader(commandText))
-            {
-                while (reader.Read())
-                {
-                    result.Add(MapDataToDeployment(reader));
-                }
-            }
-
-            return result.ToList();
-        }
-
-        private Deployment MapDataToDeployment(DbDataReader reader)
+        private static Deployment MapDataToDeployment(DbDataReader reader)
         {
             return Deployment.Reconstruct(
                 (int)reader["DeploymentId"],

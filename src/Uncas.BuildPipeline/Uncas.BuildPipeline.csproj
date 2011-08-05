@@ -55,9 +55,11 @@
     <Compile Include="ApplicationServices\Results\BaseResult.cs" />
     <Compile Include="ApplicationServices\Results\ResultError.cs" />
     <Compile Include="ApplicationServices\Results\ScheduleDeploymentResult.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\BuildStep.cs" />
     <Compile Include="Models\Deployment.cs" />
     <Compile Include="Models\Environment.cs" />
+    <Compile Include="Models\EnvironmentProperty.cs" />
     <Compile Include="Models\Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseSql.cs" />

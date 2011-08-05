@@ -72,6 +72,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Mappers\PipelineMapper.cs" />
     <Compile Include="Models\AccountMembershipService.cs" />
     <Compile Include="Models\AccountValidation.cs" />
