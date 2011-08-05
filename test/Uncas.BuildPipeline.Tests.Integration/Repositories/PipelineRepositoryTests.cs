@@ -10,7 +10,7 @@
     public class PipelineRepositoryTests
     {
         private readonly PipelineRepository pipelineRepository = 
-            new PipelineRepository();
+            new PipelineRepository(null);
 
         [Test]
         public void GetPipelines_PageSize2_GetsMax2()

@@ -6,32 +6,32 @@
 
     public partial class DeployService : ServiceBase
     {
-        private readonly Timer timer;
-        private IDeploymentService deploymentService;
+        private readonly IDeploymentService _deploymentService;
+        private readonly Timer _timer;
 
         public DeployService()
         {
             InitializeComponent();
             const int intervalSeconds = 10;
-            this.timer = new Timer(intervalSeconds * 1000);
-            this.timer.Elapsed +=
-                new ElapsedEventHandler(timer_Elapsed);
-            this.deploymentService = Bootstrapper.GetDeploymentService();
+            _timer = new Timer(intervalSeconds*1000);
+            _timer.Elapsed +=
+                timer_Elapsed;
+            _deploymentService = Bootstrapper.Resolve<IDeploymentService>();
         }
 
         protected override void OnStart(string[] args)
         {
-            this.timer.Start();
+            _timer.Start();
         }
 
         protected override void OnStop()
         {
-            this.timer.Stop();
+            _timer.Stop();
         }
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this.deploymentService.DeployDueDeployments();
+            _deploymentService.DeployDueDeployments();
         }
     }
 }

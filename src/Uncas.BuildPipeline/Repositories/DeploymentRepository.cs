@@ -7,12 +7,13 @@
     using System.Data.SqlClient;
     using System.Linq;
     using Uncas.BuildPipeline.Models;
-    using Uncas.Core.Data;
+    using Uncas.Core.External;
 
-    public class DeploymentRepository : SqlDbContext, IDeploymentRepository
+    public class DeploymentRepository : SQLiteDbContext, IDeploymentRepository
     {
-        public DeploymentRepository()
-            : base(@"Server=.\SqlExpress;Database=BuildPipeline;User Id=sa;Pwd=ols")
+        public DeploymentRepository(
+            IBuildPipelineRepositoryConfiguration configuration)
+            : base(configuration.ConnectionString)
         {
         }
 

@@ -5,6 +5,7 @@
     using System.Diagnostics;
     using System.Reflection;
     using System.ServiceProcess;
+    using Uncas.BuildPipeline.ApplicationServices;
 
     internal static class Program
     {
@@ -16,15 +17,15 @@
         /// <summary>
         /// Mapping of console command line args to ServiceManagerCommands.
         /// </summary>
-        private static Dictionary<string, ServiceManagerCommand> _commands = 
+        private static readonly Dictionary<string, ServiceManagerCommand> _commands =
             new Dictionary<string, ServiceManagerCommand>
-        {
-            { "-console", ServiceManagerCommand.Application },
-            { "-install", ServiceManagerCommand.Install },
-            { "-uninstall", ServiceManagerCommand.Uninstall },
-            { "-start", ServiceManagerCommand.Start },
-            { "-stop", ServiceManagerCommand.Stop }
-        };
+                {
+                    { "-console", ServiceManagerCommand.Application },
+                    { "-install", ServiceManagerCommand.Install },
+                    { "-uninstall", ServiceManagerCommand.Uninstall },
+                    { "-start", ServiceManagerCommand.Start },
+                    { "-stop", ServiceManagerCommand.Stop }
+                };
 
         /// <summary>
         /// The main entry point for the application.
@@ -43,20 +44,20 @@
                     ServiceMain();
                     return;
                 }
-                
+
                 ServiceManagerCommand command;
                 if (!TryParseCommandLine(args, out command))
                 {
                     PrintUsage();
                     return;
                 }
-            
-                ServiceManager serviceManager = new ServiceManager(ServiceName);
+
+                var serviceManager = new ServiceManager(ServiceName);
                 if (command == ServiceManagerCommand.Application)
                 {
                     const string message = @"Running in console mode.";
                     Console.WriteLine(message);
-                    Bootstrapper.GetDeploymentService().DeployDueDeployments();
+                    Bootstrapper.Resolve<IDeploymentService>().DeployDueDeployments();
                     Console.Read();
                 }
                 else
@@ -68,18 +69,30 @@
             {
                 EventLog.WriteEntry(
                     "DeployService",
-                    ex.ToString(), 
+                    ex.ToString(),
                     EventLogEntryType.Error);
             }
+        }
+
+        private static void PrintUsage()
+        {
+            string exeName = Assembly.GetExecutingAssembly().ManifestModule.Name;
+            Console.WriteLine("Usage:");
+            foreach (var item in _commands)
+            {
+                Console.WriteLine(@"  " + exeName + @" " + item.Key);
+            }
+
+            Console.Read();
         }
 
         private static void ServiceMain()
         {
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
-                            {
-                                new DeployService()
-                            };
+                                {
+                                    new DeployService()
+                                };
             ServiceBase.Run(ServicesToRun);
         }
 
@@ -99,20 +112,8 @@
                 command = _commands[commandLineArg];
                 return true;
             }
-            
-            return false;
-        }
 
-        private static void PrintUsage()
-        {
-            string exeName = Assembly.GetExecutingAssembly().ManifestModule.Name;
-            Console.WriteLine("Usage:");
-            foreach (var item in _commands)
-            {
-                Console.WriteLine(@"  " + exeName + @" " + item.Key);
-            }
- 
-            Console.Read();
+            return false;
         }
     }
 }

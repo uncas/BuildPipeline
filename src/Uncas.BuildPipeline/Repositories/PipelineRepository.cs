@@ -4,12 +4,13 @@
     using System.Collections.Generic;
     using System.Data.Common;
     using Uncas.BuildPipeline.Models;
-    using Uncas.Core.Data;
+    using Uncas.Core.External;
 
-    public class PipelineRepository : SqlDbContext, IPipelineRepository
+    public class PipelineRepository : SQLiteDbContext, IPipelineRepository
     {
-        public PipelineRepository()
-            : base(@"Server=.\SqlExpress;Database=BuildPipeline;User Id=BuildLogin;Pwd=ols")
+        public PipelineRepository(
+            IBuildPipelineRepositoryConfiguration configuration)
+            : base(configuration.ConnectionString)
         {
         }
 

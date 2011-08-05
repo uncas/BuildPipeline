@@ -1,18 +1,10 @@
 ﻿namespace Uncas.BuildPipeline.WindowsService
 {
-    using Uncas.BuildPipeline.ApplicationServices;
-    using Uncas.BuildPipeline.Repositories;
-    using Uncas.BuildPipeline.Utilities;
-
     internal static class Bootstrapper
     {
-        public static IDeploymentService GetDeploymentService()
+        public static T Resolve<T>() where T : class
         {
-            return new DeploymentService(
-                new EnvironmentRepository(),
-                new PipelineRepository(),
-                new DeploymentRepository(),
-                new DeploymentUtility());
+            return SharedBootstrapper.Resolve<T>();
         }
     }
 }

@@ -90,6 +90,10 @@
       <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
       <Name>Uncas.BuildPipeline</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Uncas.Core.External\Uncas.Core.External.csproj">
+      <Project>{ED660804-F127-407B-8D63-3BB5720B59A7}</Project>
+      <Name>Uncas.Core.External</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Uncas.Core\Uncas.Core.csproj">
       <Project>{E4F20F98-4E29-4E1C-8FD4-71F320A54214}</Project>
       <Name>Uncas.Core</Name>
