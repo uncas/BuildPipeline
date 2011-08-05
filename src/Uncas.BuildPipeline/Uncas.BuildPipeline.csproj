@@ -91,6 +91,7 @@
     <Compile Include="ApplicationServices\Results\BaseResult.cs" />
     <Compile Include="ApplicationServices\Results\ResultError.cs" />
     <Compile Include="ApplicationServices\Results\ScheduleDeploymentResult.cs" />
+    <Compile Include="Repositories\BuildPipelineSchemaRepository.cs" />
     <Compile Include="SharedBootstrapper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\BuildStep.cs" />

@@ -18,7 +18,8 @@
         {
             Pipeline pipeline = null;
             string commandText = string.Format(
-                @"SELECT Pr.ProjectName
+                @"
+SELECT Pr.ProjectName
     , Pi.SourceRevision
     , Pi.PipelineId
     , Pr.SourceUrlBase
@@ -51,7 +52,8 @@ WHERE Pi.PipelineId = {0}",
         {
             var pipelines = new List<Pipeline>();
             string commandText = string.Format(
-                @"SELECT TOP {0}
+                @"
+SELECT
     Pr.ProjectName
     , Pi.SourceRevision
     , Pi.PipelineId
@@ -63,7 +65,8 @@ WHERE Pi.PipelineId = {0}",
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
-ORDER BY Pi.Created DESC",
+ORDER BY Pi.Created DESC
+LIMIT {0}",
                 pageSize);
             using (DbCommand command = CreateCommand())
             {

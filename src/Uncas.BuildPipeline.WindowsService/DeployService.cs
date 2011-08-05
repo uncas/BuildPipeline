@@ -13,7 +13,7 @@
         {
             InitializeComponent();
             const int intervalSeconds = 10;
-            _timer = new Timer(intervalSeconds*1000);
+            _timer = new Timer(intervalSeconds * 1000);
             _timer.Elapsed +=
                 timer_Elapsed;
             _deploymentService = Bootstrapper.Resolve<IDeploymentService>();

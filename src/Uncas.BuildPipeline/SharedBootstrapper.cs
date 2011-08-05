@@ -18,24 +18,24 @@
                 {
                     _registered = new Dictionary<Type, Func<object>>();
                     _registered.Add(
-                        typeof (IDeploymentService),
+                        typeof(IDeploymentService),
                         () => new DeploymentService(
                                   Resolve<IEnvironmentRepository>(),
                                   Resolve<IPipelineRepository>(),
                                   Resolve<IDeploymentRepository>(),
                                   new DeploymentUtility()));
                     _registered.Add(
-                        typeof (IEnvironmentRepository),
+                        typeof(IEnvironmentRepository),
                         () => new EnvironmentRepository());
                     _registered.Add(
-                        typeof (IPipelineRepository),
+                        typeof(IPipelineRepository),
                         () => new PipelineRepository(
                                   Resolve<IBuildPipelineRepositoryConfiguration>()));
                     _registered.Add(
-                        typeof (IBuildPipelineRepositoryConfiguration),
+                        typeof(IBuildPipelineRepositoryConfiguration),
                         () => new BuildPipelineRepositoryConfiguration());
                     _registered.Add(
-                        typeof (IDeploymentRepository),
+                        typeof(IDeploymentRepository),
                         () => new DeploymentRepository(
                                   Resolve<IBuildPipelineRepositoryConfiguration>()));
                 }
@@ -46,7 +46,7 @@
 
         public static T Resolve<T>() where T : class
         {
-            Type interfaceType = typeof (T);
+            Type interfaceType = typeof(T);
             if (!Registered.ContainsKey(interfaceType))
             {
                 return null;
