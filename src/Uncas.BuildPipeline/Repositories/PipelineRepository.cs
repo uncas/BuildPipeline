@@ -4,19 +4,53 @@
     using System.Collections.Generic;
     using System.Data.Common;
     using Uncas.BuildPipeline.Models;
+    using Uncas.Core.Data;
 
-    public class PipelineRepository : BaseSql, IPipelineRepository
+    public class PipelineRepository : SqlDbContext, IPipelineRepository
     {
         public PipelineRepository()
             : base(@"Server=.\SqlExpress;Database=BuildPipeline;User Id=BuildLogin;Pwd=ols")
         {
         }
 
+        public Pipeline GetPipeline(int pipelineId)
+        {
+            Pipeline pipeline = null;
+            string commandText = string.Format(
+                @"SELECT Pr.ProjectName
+    , Pi.SourceRevision
+    , Pi.PipelineId
+    , Pr.SourceUrlBase
+    , Pi.SourceUrl
+    , Pi.Created
+    , Pi.SourceAuthor
+    , Pi.PackagePath
+FROM Pipeline AS Pi
+JOIN Project AS Pr
+    ON Pi.ProjectId = Pr.ProjectId
+WHERE Pi.PipelineId = {0}",
+                pipelineId);
+            using (DbCommand command = CreateCommand())
+            {
+                command.CommandText = commandText;
+                using (DbDataReader reader = GetReader(command))
+                {
+                    if (reader.Read())
+                    {
+                        pipeline = MapDataToPipeline(reader);
+                    }
+                }
+            }
+
+            AddSteps(pipeline);
+            return pipeline;
+        }
+
         public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {
             var pipelines = new List<Pipeline>();
             string commandText = string.Format(
-@"SELECT TOP {0}
+                @"SELECT TOP {0}
     Pr.ProjectName
     , Pi.SourceRevision
     , Pi.PipelineId
@@ -30,45 +64,20 @@ JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
 ORDER BY Pi.Created DESC",
                 pageSize);
-            using (DbDataReader reader = GetReader(commandText))
+            using (DbCommand command = CreateCommand())
             {
-                while (reader.Read())
+                command.CommandText = commandText;
+                using (DbDataReader reader = GetReader(command))
                 {
-                    pipelines.Add(MapDataToPipeline(reader));
+                    while (reader.Read())
+                    {
+                        pipelines.Add(MapDataToPipeline(reader));
+                    }
                 }
             }
 
             AddSteps(pipelines);
             return pipelines;
-        }
-
-        public Pipeline GetPipeline(int pipelineId)
-        {
-            Pipeline pipeline = null;
-            string commandText = string.Format(
-@"SELECT Pr.ProjectName
-    , Pi.SourceRevision
-    , Pi.PipelineId
-    , Pr.SourceUrlBase
-    , Pi.SourceUrl
-    , Pi.Created
-    , Pi.SourceAuthor
-    , Pi.PackagePath
-FROM Pipeline AS Pi
-JOIN Project AS Pr
-    ON Pi.ProjectId = Pr.ProjectId
-WHERE Pi.PipelineId = {0}",
-                pipelineId);
-            using (DbDataReader reader = GetReader(commandText))
-            {
-                if (reader.Read())
-                {
-                    pipeline = MapDataToPipeline(reader);
-                }
-            }
-
-            AddSteps(pipeline);
-            return pipeline;
         }
 
         private static Pipeline MapDataToPipeline(DbDataReader reader)
@@ -81,10 +90,10 @@ WHERE Pi.PipelineId = {0}",
                 (string)reader["SourceUrlBase"],
                 (DateTime)reader["Created"],
                 (string)reader["SourceAuthor"],
-                BaseSql.GetStringValue(reader["PackagePath"]));
+                GetString(reader, "PackagePath"));
         }
-        
-        private void AddSteps(IList<Pipeline> pipelines)
+
+        private void AddSteps(IEnumerable<Pipeline> pipelines)
         {
             foreach (Pipeline pipeline in pipelines)
             {
@@ -95,19 +104,23 @@ WHERE Pi.PipelineId = {0}",
         private void AddSteps(Pipeline pipeline)
         {
             string commandText = string.Format(
-@"SELECT IsSuccessful, StepName, Created
+                @"SELECT IsSuccessful, StepName, Created
 FROM BuildStep
 WHERE PipelineId = {0}
 ORDER BY Created ASC",
                 pipeline.Id);
-            using (DbDataReader reader = GetReader(commandText))
+            using (DbCommand command = CreateCommand())
             {
-                while (reader.Read())
+                command.CommandText = commandText;
+                using (DbDataReader reader = GetReader(command))
                 {
-                    pipeline.AddStep(new BuildStep(
-                        (bool)reader["IsSuccessful"],
-                        (string)reader["StepName"],
-                        (DateTime)reader["Created"]));
+                    while (reader.Read())
+                    {
+                        pipeline.AddStep(new BuildStep(
+                                             (bool)reader["IsSuccessful"],
+                                             (string)reader["StepName"],
+                                             (DateTime)reader["Created"]));
+                    }
                 }
             }
         }

@@ -11,7 +11,8 @@
     <RootNamespace>Uncas.BuildPipeline.WindowsService</RootNamespace>
     <AssemblyName>Uncas.BuildPipeline.WindowsService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -82,11 +83,16 @@
       <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
       <Name>Uncas.BuildPipeline</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Uncas.Core\Uncas.Core.csproj">
+      <Project>{E4F20F98-4E29-4E1C-8FD4-71F320A54214}</Project>
+      <Name>Uncas.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\BuildPipelineKey.snk">
       <Link>BuildPipelineKey.snk</Link>
     </None>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

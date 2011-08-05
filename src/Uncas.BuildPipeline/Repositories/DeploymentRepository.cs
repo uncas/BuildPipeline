@@ -7,8 +7,9 @@
     using System.Data.SqlClient;
     using System.Linq;
     using Uncas.BuildPipeline.Models;
+    using Uncas.Core.Data;
 
-    public class DeploymentRepository : BaseSql, IDeploymentRepository
+    public class DeploymentRepository : SqlDbContext, IDeploymentRepository
     {
         public DeploymentRepository()
             : base(@"Server=.\SqlExpress;Database=BuildPipeline;User Id=sa;Pwd=ols")
@@ -31,15 +32,18 @@ VALUES
 
 SET @DeploymentId = @@IDENTITY";
             var deploymentIdParameter =
-                new SqlParameter("DeploymentId", SqlDbType.Int);
-            deploymentIdParameter.Direction =
-                ParameterDirection.Output;
-            ExecuteNonQuery(
-                commandText,
-                new SqlParameter("Created", deployment.Created),
-                new SqlParameter("PipelineId", deployment.PipelineId),
-                new SqlParameter("EnvironmentId", deployment.EnvironmentId),
-                deploymentIdParameter);
+                new SqlParameter("DeploymentId", SqlDbType.Int) { Direction = ParameterDirection.Output };
+            using (DbCommand command = CreateCommand())
+            {
+                command.CommandText = commandText;
+                ModifyData(
+                    command,
+                    new SqlParameter("Created", deployment.Created),
+                    new SqlParameter("PipelineId", deployment.PipelineId),
+                    new SqlParameter("EnvironmentId", deployment.EnvironmentId),
+                    deploymentIdParameter);
+            }
+
             deployment.ChangeId((int)deploymentIdParameter.Value);
         }
 
@@ -57,11 +61,15 @@ WHERE EnvironmentId = {0}
 ORDER BY Created ASC",
                 environmentId);
             var result = new List<Deployment>();
-            using (DbDataReader reader = GetReader(commandText))
+            using (DbCommand command = CreateCommand())
             {
-                while (reader.Read())
+                command.CommandText = commandText;
+                using (DbDataReader reader = GetReader(command))
                 {
-                    result.Add(MapDataToDeployment(reader));
+                    while (reader.Read())
+                    {
+                        result.Add(MapDataToDeployment(reader));
+                    }
                 }
             }
 
@@ -82,11 +90,15 @@ WHERE DeploymentId = {0}
 ORDER BY Created ASC",
                 id);
             Deployment deployment = null;
-            using (DbDataReader reader = GetReader(commandText))
+            using (DbCommand command = CreateCommand())
             {
-                if (reader.Read())
+                command.CommandText = commandText;
+                using (DbDataReader reader = GetReader(command))
                 {
-                    deployment = MapDataToDeployment(reader);
+                    if (reader.Read())
+                    {
+                        deployment = MapDataToDeployment(reader);
+                    }
                 }
             }
 
@@ -109,11 +121,15 @@ ORDER BY Created ASC",
                     pipelineId);
 
             var result = new List<Deployment>();
-            using (DbDataReader reader = GetReader(commandText))
+            using (DbCommand command = CreateCommand())
             {
-                while (reader.Read())
+                command.CommandText = commandText;
+                using (DbDataReader reader = GetReader(command))
                 {
-                    result.Add(MapDataToDeployment(reader));
+                    while (reader.Read())
+                    {
+                        result.Add(MapDataToDeployment(reader));
+                    }
                 }
             }
 
@@ -136,11 +152,15 @@ WHERE Started IS NULL
 ORDER BY Created ASC";
 
             var result = new List<Deployment>();
-            using (DbDataReader reader = GetReader(commandText))
+            using (DbCommand command = CreateCommand())
             {
-                while (reader.Read())
+                command.CommandText = commandText;
+                using (DbDataReader reader = GetReader(command))
                 {
-                    result.Add(MapDataToDeployment(reader));
+                    while (reader.Read())
+                    {
+                        result.Add(MapDataToDeployment(reader));
+                    }
                 }
             }
 
@@ -160,11 +180,14 @@ UPDATE Deployment
 SET Started = @Started
     , Completed = @Completed
 WHERE DeploymentId = @DeploymentId";
-            ExecuteNonQuery(
-                commandText,
-                GetDateTimeParameter("Started", deployment.Started),
-                GetDateTimeParameter("Completed", deployment.Completed),
-                new SqlParameter("DeploymentId", deployment.Id));
+            using (DbCommand command = CreateCommand())
+            {
+                command.CommandText = commandText;
+                AddParameter(command, "Started", deployment.Started);
+                AddParameter(command, "Completed", deployment.Completed);
+                AddParameter(command, "DeploymentId", deployment.Id);
+                ModifyData(command);
+            }
         }
 
         private static Deployment MapDataToDeployment(DbDataReader reader)
@@ -174,8 +197,8 @@ WHERE DeploymentId = @DeploymentId";
                 (DateTime)reader["Created"],
                 (int)reader["PipelineId"],
                 (int)reader["EnvironmentId"],
-                GetDateTimeValue(reader["Started"]),
-                GetDateTimeValue(reader["Completed"]));
+                GetDate(reader, "Started"),
+                GetDate(reader, "Completed"));
         }
     }
 }

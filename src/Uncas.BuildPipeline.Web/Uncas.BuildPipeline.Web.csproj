@@ -125,6 +125,10 @@
       <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
       <Name>Uncas.BuildPipeline</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Uncas.Core\Uncas.Core.csproj">
+      <Project>{E4F20F98-4E29-4E1C-8FD4-71F320A54214}</Project>
+      <Name>Uncas.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\BuildPipelineKey.snk">

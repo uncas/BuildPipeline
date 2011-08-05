@@ -29,11 +29,10 @@
                 {
                     return RedirectToAction("ChangePasswordSuccess");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty,
-                                             "The current password is incorrect or the new password is invalid.");
-                }
+
+                ModelState.AddModelError(
+                    string.Empty,
+                    "The current password is incorrect or the new password is invalid.");
             }
 
             // If we got this far, something failed, redisplay form
@@ -83,15 +82,11 @@
                     {
                         return Redirect(returnUrl);
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
-                }
+
+                ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
             }
 
             // If we got this far, something failed, redisplay form
@@ -126,10 +121,8 @@
                     FormsService.SignIn(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, AccountValidation.ErrorCodeToString(createStatus));
-                }
+
+                ModelState.AddModelError(string.Empty, AccountValidation.ErrorCodeToString(createStatus));
             }
 
             // If we got this far, something failed, redisplay form
