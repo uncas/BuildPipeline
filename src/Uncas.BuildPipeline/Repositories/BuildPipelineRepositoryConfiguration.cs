@@ -10,7 +10,8 @@ namespace Uncas.BuildPipeline.Repositories
             get
             {
                 return ConfigurationWrapper.GetConnectionString(
-                    "BuildPipelineConnectionString");
+                    "BuildPipelineConnectionString",
+                    "Data Source=Test.db;Version=3;");
             }
         }
     }
