@@ -24,11 +24,9 @@
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult About()
         {
-            IEnumerable<Pipeline> pipelines = _pipelineRepository.GetPipelines(BuildPageSize);
-            PipelineIndexViewModel viewModel = PipelineMapper.MapToPipelineIndexViewModel(pipelines);
-            return View(viewModel);
+            return View();
         }
 
         [HttpGet]
@@ -65,13 +63,15 @@
         public ActionResult Deploy(int environmentId, int pipelineId)
         {
             _deploymentService.ScheduleDeployment(pipelineId, environmentId);
-            return RedirectToAction("Deploy", new {PipelineId = pipelineId});
+            return RedirectToAction("Deploy", new { PipelineId = pipelineId });
         }
 
         [HttpGet]
-        public ActionResult About()
+        public ActionResult Index()
         {
-            return View();
+            IEnumerable<Pipeline> pipelines = _pipelineRepository.GetPipelines(BuildPageSize);
+            PipelineIndexViewModel viewModel = PipelineMapper.MapToPipelineIndexViewModel(pipelines);
+            return View(viewModel);
         }
     }
 }

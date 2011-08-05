@@ -46,21 +46,13 @@
 
         private string ServiceName { get; set; }
 
-        public void RunCommand(ServiceManagerCommand command)
-        {
-            if (_commands.ContainsKey(command))
-            {
-                _commands[command]();
-            }
-        }
-
         [SuppressMessage(
             "Microsoft.Design",
             "CA1031:DoNotCatchGeneralExceptionTypes",
             Justification = "Needs to be robust - general exceptions are logged.")]
         public virtual bool IsServiceInstalled()
         {
-            using (ServiceController serviceController =
+            using (var serviceController =
                 new ServiceController(ServiceName))
             {
                 try
@@ -86,7 +78,7 @@
 
         public bool IsServiceRunning()
         {
-            using (ServiceController serviceController = new ServiceController(ServiceName))
+            using (var serviceController = new ServiceController(ServiceName))
             {
                 if (!IsServiceInstalled())
                 {
@@ -94,6 +86,14 @@
                 }
 
                 return serviceController.Status == ServiceControllerStatus.Running;
+            }
+        }
+
+        public void RunCommand(ServiceManagerCommand command)
+        {
+            if (_commands.ContainsKey(command))
+            {
+                _commands[command]();
             }
         }
 
@@ -110,7 +110,7 @@
 
             try
             {
-                string[] commandLine = new string[1];
+                var commandLine = new string[1];
                 commandLine[0] = "Test install";
                 IDictionary mySavedState = new Hashtable();
                 AssemblyInstaller installer = GetAssemblyInstaller(commandLine);
@@ -134,35 +134,6 @@
             }
         }
 
-        [SuppressMessage(
-            "Microsoft.Design",
-            "CA1031:DoNotCatchGeneralExceptionTypes",
-            Justification = "Needs to be robust - general exceptions are logged.")]
-        protected virtual void UninstallService()
-        {
-            if (!IsServiceInstalled())
-            {
-                return;
-            }
-
-            string[] commandLine = new string[1];
-            commandLine[0] = "Test Uninstall";
-            IDictionary mySavedState = new Hashtable();
-            mySavedState.Clear();
-            AssemblyInstaller installer = GetAssemblyInstaller(commandLine);
-            try
-            {
-                installer.Uninstall(mySavedState);
-            }
-            catch (Exception ex)
-            {
-                EventLog.WriteEntry(
-                    "ServiceManager",
-                    ex.ToString(),
-                    EventLogEntryType.Error);
-            }
-        }
-
         protected virtual void StartService()
         {
             if (!IsServiceInstalled())
@@ -170,7 +141,7 @@
                 return;
             }
 
-            using (ServiceController serviceController = new ServiceController(ServiceName))
+            using (var serviceController = new ServiceController(ServiceName))
             {
                 if (serviceController.Status == ServiceControllerStatus.Stopped)
                 {
@@ -199,13 +170,57 @@
                 return;
             }
 
-            using (ServiceController serviceController = new ServiceController(ServiceName))
+            using (var serviceController = new ServiceController(ServiceName))
             {
                 if (serviceController.Status != ServiceControllerStatus.Running)
+                {
                     return;
+                }
                 serviceController.Stop();
                 WaitForStatusChange(serviceController, ServiceControllerStatus.Stopped);
             }
+        }
+
+        [SuppressMessage(
+            "Microsoft.Design",
+            "CA1031:DoNotCatchGeneralExceptionTypes",
+            Justification = "Needs to be robust - general exceptions are logged.")]
+        protected virtual void UninstallService()
+        {
+            if (!IsServiceInstalled())
+            {
+                return;
+            }
+
+            var commandLine = new string[1];
+            commandLine[0] = "Test Uninstall";
+            IDictionary mySavedState = new Hashtable();
+            mySavedState.Clear();
+            AssemblyInstaller installer = GetAssemblyInstaller(commandLine);
+            try
+            {
+                installer.Uninstall(mySavedState);
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry(
+                    "ServiceManager",
+                    ex.ToString(),
+                    EventLogEntryType.Error);
+            }
+        }
+
+        [SuppressMessage(
+            "Microsoft.Reliability",
+            "CA2000:Dispose objects before losing scope",
+            Justification = "Is disposed in other methods in this class.")]
+        private static AssemblyInstaller GetAssemblyInstaller(string[] commandLine)
+        {
+            var installer = new AssemblyInstaller();
+            installer.Path = Environment.GetCommandLineArgs()[0];
+            installer.CommandLine = commandLine;
+            installer.UseNewContext = true;
+            return installer;
         }
 
         /// <summary>
@@ -236,25 +251,12 @@
         private void InitializeCommands()
         {
             _commands = new Dictionary<ServiceManagerCommand, Action>
-            {
-                { ServiceManagerCommand.Install, InstallService },
-                { ServiceManagerCommand.Uninstall, UninstallService },
-                { ServiceManagerCommand.Start, StartService },
-                { ServiceManagerCommand.Stop, StopService },
-            };
-        }
-
-        [SuppressMessage(
-            "Microsoft.Reliability",
-            "CA2000:Dispose objects before losing scope",
-            Justification = "Is disposed in other methods in this class.")]
-        private static AssemblyInstaller GetAssemblyInstaller(string[] commandLine)
-        {
-            AssemblyInstaller installer = new AssemblyInstaller();
-            installer.Path = Environment.GetCommandLineArgs()[0];
-            installer.CommandLine = commandLine;
-            installer.UseNewContext = true;
-            return installer;
+                            {
+                                { ServiceManagerCommand.Install, InstallService },
+                                { ServiceManagerCommand.Uninstall, UninstallService },
+                                { ServiceManagerCommand.Start, StartService },
+                                { ServiceManagerCommand.Stop, StopService },
+                            };
         }
     }
 }

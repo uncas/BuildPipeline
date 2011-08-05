@@ -4,11 +4,11 @@
 
     public class Environment
     {
-        private readonly IDictionary<string, string> properties;
+        private readonly IDictionary<string, string> _properties;
 
         public Environment()
         {
-            this.properties = new Dictionary<string, string>();
+            _properties = new Dictionary<string, string>();
         }
 
         public int Id { get; set; }
@@ -16,15 +16,12 @@
 
         public IEnumerable<KeyValuePair<string, string>> Properties
         {
-            get
-            {
-                return this.properties;
-            }
+            get { return _properties; }
         }
 
         public void AddProperty(string key, string value)
         {
-            this.properties.Add(key, value);
+            _properties.Add(key, value);
         }
     }
 }
