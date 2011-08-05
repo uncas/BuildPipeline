@@ -30,6 +30,49 @@
             Process.Start(startInfo);
         }
 
+        private static void ExtractZipEntry(
+            string destinationRootFolderPath,
+            ZipInputStream zipStream,
+            ZipEntry theEntry)
+        {
+            string fileName = Path.GetFileName(theEntry.Name);
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            string directoryName = Path.GetDirectoryName(theEntry.Name);
+            if (string.IsNullOrEmpty(directoryName))
+            {
+                return;
+            }
+
+            // create directory
+            string destinationFolderPath =
+                Path.Combine(
+                    destinationRootFolderPath,
+                    directoryName);
+            Directory.CreateDirectory(destinationFolderPath);
+
+            string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
+            using (FileStream streamWriter = File.Create(destinationFilePath))
+            {
+                var data = new byte[2048];
+                while (true)
+                {
+                    int size = zipStream.Read(data, 0, data.Length);
+                    if (size > 0)
+                    {
+                        streamWriter.Write(data, 0, size);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
         private static void ExtractZipFile(
             string sourcePackagePath,
             string destinationRootFolderPath)
@@ -44,37 +87,17 @@
                 Directory.Delete(destinationRootFolderPath, true);
             }
 
-            using (var s = new ZipInputStream(File.OpenRead(sourcePackagePath)))
+            using (FileStream baseInputStream = File.OpenRead(sourcePackagePath))
             {
-                ZipEntry theEntry;
-                while ((theEntry = s.GetNextEntry()) != null)
+                using (var zipStream = new ZipInputStream(baseInputStream))
                 {
-                    string directoryName = Path.GetDirectoryName(theEntry.Name);
-                    string fileName = Path.GetFileName(theEntry.Name);
-
-                    // create directory
-                    string destinationFolderPath = Path.Combine(destinationRootFolderPath, directoryName);
-                    Directory.CreateDirectory(destinationFolderPath);
-
-                    if (!string.IsNullOrEmpty(fileName))
+                    ZipEntry theEntry;
+                    while ((theEntry = zipStream.GetNextEntry()) != null)
                     {
-                        string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
-                        using (FileStream streamWriter = File.Create(destinationFilePath))
-                        {
-                            var data = new byte[2048];
-                            while (true)
-                            {
-                                int size = s.Read(data, 0, data.Length);
-                                if (size > 0)
-                                {
-                                    streamWriter.Write(data, 0, size);
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        }
+                        ExtractZipEntry(
+                            destinationRootFolderPath,
+                            zipStream,
+                            theEntry);
                     }
                 }
             }
