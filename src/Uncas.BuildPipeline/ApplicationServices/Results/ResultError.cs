@@ -2,11 +2,11 @@
 {
     public class ResultError
     {
-        public ResultError(string message)
+        public ResultError(string description)
         {
-            this.Message = message;
+            Description = description;
         }
 
-        public string Message { get; private set; }
+        public string Description { get; private set; }
     }
 }

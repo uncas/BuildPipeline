@@ -13,7 +13,7 @@
     {
         public DeploymentRepository(
             IBuildPipelineRepositoryConfiguration configuration)
-            : base(configuration.ConnectionString)
+            : base(GetConnectionString(configuration))
         {
         }
 
@@ -50,20 +50,21 @@ SET @DeploymentId = @@IDENTITY";
 
         public IEnumerable<Deployment> GetByEnvironment(int environmentId)
         {
-            string commandText = string.Format(
-                @"SELECT DeploymentId
+            const string commandText =
+                @"
+SELECT DeploymentId
     , PipelineId
     , EnvironmentId
     , Created
     , Started
     , Completed
 FROM Deployment
-WHERE EnvironmentId = {0}
-ORDER BY Created ASC",
-                environmentId);
+WHERE EnvironmentId = @EnvironmentId
+ORDER BY Created ASC";
             var result = new List<Deployment>();
             using (DbCommand command = CreateCommand())
             {
+                AddParameter(command, "EnvironmentId", environmentId);
                 command.CommandText = commandText;
                 using (DbDataReader reader = GetReader(command))
                 {
@@ -79,20 +80,21 @@ ORDER BY Created ASC",
 
         public Deployment GetDeployment(int id)
         {
-            string commandText = string.Format(
-                @"SELECT DeploymentId
+            const string commandText =
+                @"
+SELECT DeploymentId
     , PipelineId
     , EnvironmentId
     , Created
     , Started
     , Completed
 FROM Deployment
-WHERE DeploymentId = {0}
-ORDER BY Created ASC",
-                id);
+WHERE DeploymentId = @DeploymentId
+ORDER BY Created ASC";
             Deployment deployment = null;
             using (DbCommand command = CreateCommand())
             {
+                AddParameter(command, "DeploymentId", id);
                 command.CommandText = commandText;
                 using (DbDataReader reader = GetReader(command))
                 {
@@ -108,22 +110,22 @@ ORDER BY Created ASC",
 
         public IEnumerable<Deployment> GetDeployments(int pipelineId)
         {
-            string commandText =
-                string.Format(
-                    @"SELECT DeploymentId
+            const string commandText =
+                @"
+SELECT DeploymentId
     , PipelineId
     , EnvironmentId
     , Created
     , Started
     , Completed
 FROM Deployment
-WHERE PipelineId = {0}
-ORDER BY Created ASC",
-                    pipelineId);
+WHERE PipelineId = @PipelineId
+ORDER BY Created ASC";
 
             var result = new List<Deployment>();
             using (DbCommand command = CreateCommand())
             {
+                AddParameter(command, "PipelineId", pipelineId);
                 command.CommandText = commandText;
                 using (DbDataReader reader = GetReader(command))
                 {
@@ -189,6 +191,17 @@ WHERE DeploymentId = @DeploymentId";
                 AddParameter(command, "DeploymentId", deployment.Id);
                 ModifyData(command);
             }
+        }
+
+        private static string GetConnectionString(
+            IBuildPipelineRepositoryConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException("configuration");
+            }
+
+            return configuration.ConnectionString;
         }
 
         private static Deployment MapDataToDeployment(DbDataReader reader)

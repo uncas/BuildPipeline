@@ -10,14 +10,14 @@
     {
         public PipelineRepository(
             IBuildPipelineRepositoryConfiguration configuration)
-            : base(configuration.ConnectionString)
+            : base(GetConnectionString(configuration))
         {
         }
 
         public Pipeline GetPipeline(int pipelineId)
         {
             Pipeline pipeline = null;
-            string commandText = string.Format(
+            const string commandText =
                 @"
 SELECT Pr.ProjectName
     , Pi.SourceRevision
@@ -30,10 +30,10 @@ SELECT Pr.ProjectName
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
-WHERE Pi.PipelineId = {0}",
-                pipelineId);
+WHERE Pi.PipelineId = @PipelineId";
             using (DbCommand command = CreateCommand())
             {
+                AddParameter(command, "PipelineId", pipelineId);
                 command.CommandText = commandText;
                 using (DbDataReader reader = GetReader(command))
                 {
@@ -51,7 +51,7 @@ WHERE Pi.PipelineId = {0}",
         public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {
             var pipelines = new List<Pipeline>();
-            string commandText = string.Format(
+            const string commandText =
                 @"
 SELECT
     Pr.ProjectName
@@ -66,10 +66,10 @@ FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
 ORDER BY Pi.Created DESC
-LIMIT {0}",
-                pageSize);
+LIMIT @PageSize";
             using (DbCommand command = CreateCommand())
             {
+                AddParameter(command, "PageSize", pageSize);
                 command.CommandText = commandText;
                 using (DbDataReader reader = GetReader(command))
                 {
@@ -82,6 +82,17 @@ LIMIT {0}",
 
             AddSteps(pipelines);
             return pipelines;
+        }
+
+        private static string GetConnectionString(
+            IBuildPipelineRepositoryConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException("configuration");
+            }
+
+            return configuration.ConnectionString;
         }
 
         private static Pipeline MapDataToPipeline(DbDataReader reader)
@@ -107,14 +118,15 @@ LIMIT {0}",
 
         private void AddSteps(Pipeline pipeline)
         {
-            string commandText = string.Format(
-                @"SELECT IsSuccessful, StepName, Created
+            const string commandText =
+                @"
+SELECT IsSuccessful, StepName, Created
 FROM BuildStep
-WHERE PipelineId = {0}
-ORDER BY Created ASC",
-                pipeline.Id);
+WHERE PipelineId = @PipelineId
+ORDER BY Created ASC";
             using (DbCommand command = CreateCommand())
             {
+                AddParameter(command, "PipelineId", pipeline.Id);
                 command.CommandText = commandText;
                 using (DbDataReader reader = GetReader(command))
                 {
