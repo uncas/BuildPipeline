@@ -23,11 +23,11 @@
         /// </summary>
         public static void Main(string[] args)
         {
-            new ProgramRunner().RunProgram(
-                args,
+            var programRunner = new ProgramRunner(
                 ActionToRun,
                 ServiceName,
                 GetServiceToRun);
+            programRunner.RunProgram(args);
         }
     }
 }
