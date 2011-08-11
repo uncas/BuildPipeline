@@ -73,11 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ProjectInstaller.resx">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Uncas.BuildPipeline\Uncas.BuildPipeline.csproj">
       <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
       <Name>Uncas.BuildPipeline</Name>
