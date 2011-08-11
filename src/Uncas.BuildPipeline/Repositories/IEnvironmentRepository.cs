@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Uncas.BuildPipeline.Models;
+    using Uncas.Core.Data;
 
     public interface IEnvironmentRepository
     {

@@ -4,6 +4,7 @@
     using Uncas.BuildPipeline.ApplicationServices.Results;
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
+    using Uncas.Core.Data;
 
     public interface IDeploymentService
     {

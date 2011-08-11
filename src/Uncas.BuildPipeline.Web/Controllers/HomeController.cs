@@ -8,6 +8,7 @@
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Web.Mappers;
     using Uncas.BuildPipeline.Web.ViewModels;
+    using Uncas.Core.Data;
 
     public class HomeController : BaseController
     {

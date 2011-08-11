@@ -6,6 +6,7 @@
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
+    using Uncas.Core.Data;
     using Environment = Uncas.BuildPipeline.Models.Environment;
 
     public class DeploymentService : IDeploymentService

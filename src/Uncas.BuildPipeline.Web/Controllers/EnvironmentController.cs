@@ -8,6 +8,7 @@
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Web.ViewModels;
+    using Uncas.Core.Data;
     using Environment = Uncas.BuildPipeline.Models.Environment;
 
     public class EnvironmentController : BaseController

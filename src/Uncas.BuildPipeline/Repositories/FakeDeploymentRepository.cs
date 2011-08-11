@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Uncas.BuildPipeline.Models;
+    using Uncas.Core.Data;
 
     public class FakeDeploymentRepository : IDeploymentRepository
     {

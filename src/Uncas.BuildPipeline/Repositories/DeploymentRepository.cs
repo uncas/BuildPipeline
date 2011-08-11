@@ -7,6 +7,7 @@
     using System.Data.SqlClient;
     using System.Linq;
     using Uncas.BuildPipeline.Models;
+    using Uncas.Core.Data;
     using Uncas.Core.External;
 
     public class DeploymentRepository : SQLiteDbContext, IDeploymentRepository
@@ -142,6 +143,11 @@ ORDER BY Created ASC";
         public IEnumerable<Deployment> GetDueDeployments(
             PagingInfo pagingInfo)
         {
+            if (pagingInfo == null)
+            {
+                throw new ArgumentNullException("pagingInfo");
+            }
+
             const string commandText =
                 @"
 SELECT DeploymentId

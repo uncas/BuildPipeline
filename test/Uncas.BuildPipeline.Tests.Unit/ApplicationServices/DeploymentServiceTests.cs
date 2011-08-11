@@ -10,6 +10,7 @@
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
+    using Uncas.Core.Data;
     using Environment = Uncas.BuildPipeline.Models.Environment;
 
     [TestFixture]
@@ -115,8 +116,8 @@
         public void DeployDueDeployments_WhenContainsOne_DeploysOne()
         {
             // Arrange:
-            int pipelineId = 1;
-            int environmentId = 1;
+            const int pipelineId = 1;
+            const int environmentId = 1;
             var deployment = new Deployment(
                 pipelineId,
                 environmentId);
@@ -136,8 +137,8 @@
         public void Deploy_ValidCommand_IsDeployed()
         {
             // Arrange:
-            int pipelineId = 1;
-            int environmentId = 1;
+            const int pipelineId = 1;
+            const int environmentId = 1;
             SetupRepositories(pipelineId, environmentId);
 
             // Act:
@@ -152,13 +153,12 @@
         public void GetDeployments_WhenScheduledNew_ContainsTheScheduled()
         {
             // Arrange:
-            int pipelineId = 1;
-            int environmentId = 1;
+            const int pipelineId = 1;
+            const int environmentId = 1;
             SetupRepositories(pipelineId, environmentId);
-            ScheduleDeploymentResult result =
-                deploymentService.ScheduleDeployment(
-                    pipelineId,
-                    environmentId);
+            deploymentService.ScheduleDeployment(
+                pipelineId,
+                environmentId);
             var deployment = new Deployment(
                 pipelineId,
                 environmentId);
@@ -183,12 +183,10 @@
             // Arrange:
             const int pipelineId = 1;
             const int environmentId = 1;
-            DateTime scheduledStart = DateTime.Now.AddMinutes(5d);
             SetupRepositories(pipelineId, environmentId);
-            ScheduleDeploymentResult result =
-                deploymentService.ScheduleDeployment(
-                    pipelineId,
-                    environmentId);
+            deploymentService.ScheduleDeployment(
+                pipelineId,
+                environmentId);
             var deployment = new Deployment(
                 pipelineId,
                 environmentId);
@@ -208,8 +206,8 @@
         public void ScheduleDeployment_NonExistingInput_IsNotScheduled()
         {
             // Arrange:
-            int pipelineId = 1;
-            int environmentId = 1;
+            const int pipelineId = 1;
+            const int environmentId = 1;
 
             // Act:
             ScheduleDeploymentResult result =
@@ -230,8 +228,8 @@
         public void ScheduleDeployment_ValidCommand_IsScheduled()
         {
             // Arrange:
-            int pipelineId = 1;
-            int environmentId = 1;
+            const int pipelineId = 1;
+            const int environmentId = 1;
             SetupRepositories(pipelineId, environmentId);
 
             // Act:
