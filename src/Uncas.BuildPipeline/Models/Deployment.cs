@@ -1,16 +1,21 @@
 ﻿namespace Uncas.BuildPipeline.Models
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
+    [SuppressMessage(
+        "Microsoft.Naming",
+        "CA1724:TypeNamesShouldNotMatchNamespaces",
+        Justification = "But it *is* a deployment!")]
     public class Deployment
     {
         public Deployment(
             int pipelineId,
             int environmentId)
         {
-            this.PipelineId = pipelineId;
-            this.EnvironmentId = environmentId;
-            this.Created = DateTime.Now;
+            PipelineId = pipelineId;
+            EnvironmentId = environmentId;
+            Created = DateTime.Now;
         }
 
         public int? Id { get; private set; }
@@ -25,7 +30,7 @@
             get
             {
                 return Started.HasValue &&
-                    Completed.HasValue;
+                       Completed.HasValue;
             }
         }
 
@@ -47,25 +52,25 @@
             return deployment;
         }
 
-        public void Start()
-        {
-            this.Started = DateTime.Now;
-        }
-
         public void Complete()
         {
-            if (!this.Started.HasValue)
+            if (!Started.HasValue)
             {
                 throw new NotSupportedException(
                     "A deployment must be started before it can be completed.");
             }
 
-            this.Completed = DateTime.Now;
+            Completed = DateTime.Now;
+        }
+
+        public void Start()
+        {
+            Started = DateTime.Now;
         }
 
         internal void ChangeId(int newId)
         {
-            this.Id = newId;
+            Id = newId;
         }
     }
 }

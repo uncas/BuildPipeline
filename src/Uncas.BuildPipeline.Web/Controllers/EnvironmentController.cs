@@ -1,5 +1,6 @@
 ﻿namespace Uncas.BuildPipeline.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
@@ -7,6 +8,7 @@
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Web.ViewModels;
+    using Environment = Uncas.BuildPipeline.Models.Environment;
 
     public class EnvironmentController : BaseController
     {
@@ -16,21 +18,9 @@
 
         public EnvironmentController()
         {
-            this.environmentRepository = Bootstrapper.Resolve<IEnvironmentRepository>();
-            this.deploymentService = Bootstrapper.Resolve<IDeploymentService>();
-            this.pipelineRepository = Bootstrapper.Resolve<IPipelineRepository>();
-        }
-
-        public ActionResult Index()
-        {
-            var environments = this.environmentRepository.GetEnvironments();
-            var viewModel = new List<EnvironmentIndexViewModel>();
-            foreach (var environment in environments)
-            {
-                AddEnvironmentIndexViewModel(viewModel, environment);
-            }
-
-            return View(viewModel);
+            environmentRepository = Bootstrapper.Resolve<IEnvironmentRepository>();
+            deploymentService = Bootstrapper.Resolve<IDeploymentService>();
+            pipelineRepository = Bootstrapper.Resolve<IPipelineRepository>();
         }
 
         public void AddEnvironmentIndexViewModel(
@@ -39,28 +29,45 @@
         {
             if (environment == null)
             {
-                throw new System.ArgumentNullException("environment");
+                throw new ArgumentNullException("environment");
             }
 
             if (viewModels == null)
             {
-                throw new System.ArgumentNullException("viewModels");
+                throw new ArgumentNullException("viewModels");
             }
 
-            var deployments =
+            IEnumerable<Deployment> deployments =
                 deploymentService.GetDeploymentsByEnvironment(
-                environment.Id);
-            var lastDeployment = deployments.Where(d => d.Completed.HasValue).OrderByDescending(d => d.Completed).FirstOrDefault();
+                    environment.Id);
+            Deployment lastDeployment =
+                deployments.Where(d => d.Completed.HasValue).OrderByDescending(d => d.Completed).FirstOrDefault();
             if (lastDeployment == null)
+            {
                 return;
-            var pipeline = this.pipelineRepository.GetPipeline(lastDeployment.PipelineId);
+            }
+            Pipeline pipeline = pipelineRepository.GetPipeline(lastDeployment.PipelineId);
             int currentSourceRevision = pipeline.SourceRevision;
             viewModels.Add(new EnvironmentIndexViewModel
-                {
-                    EnvironmentId = environment.Id,
-                    EnvironmentName = environment.EnvironmentName,
-                    CurrentSourceRevision = currentSourceRevision
-                });
+                               {
+                                   EnvironmentId = environment.Id,
+                                   EnvironmentName = environment.EnvironmentName,
+                                   CurrentSourceRevision = currentSourceRevision
+                               });
+        }
+
+        public ActionResult Index()
+        {
+            const int pageSize = 30;
+            IEnumerable<Environment> environments =
+                environmentRepository.GetEnvironments(new PagingInfo(pageSize));
+            var viewModel = new List<EnvironmentIndexViewModel>();
+            foreach (Environment environment in environments)
+            {
+                AddEnvironmentIndexViewModel(viewModel, environment);
+            }
+
+            return View(viewModel);
         }
     }
 }

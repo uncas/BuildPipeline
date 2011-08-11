@@ -42,7 +42,7 @@
             return _deployments.Where(d => d.PipelineId == pipelineId);
         }
 
-        public IEnumerable<Deployment> GetDueDeployments()
+        public IEnumerable<Deployment> GetDueDeployments(PagingInfo pagingInfo)
         {
             return _deployments.Where(d => !d.HasRun);
         }

@@ -1,6 +1,7 @@
 ﻿namespace Uncas.BuildPipeline.Utilities
 {
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using ICSharpCode.SharpZipLib.Zip;
@@ -73,6 +74,10 @@
             }
         }
 
+        [SuppressMessage(
+            "Microsoft.Usage", 
+            "CA2202:Do not dispose objects multiple times",
+            Justification = "Unknown in zip implementation.")]
         private static void ExtractZipFile(
             string sourcePackagePath,
             string destinationRootFolderPath)

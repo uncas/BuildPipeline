@@ -6,15 +6,22 @@
 
     public class EnvironmentRepository : IEnvironmentRepository
     {
-        public IEnumerable<Environment> GetEnvironments()
+        public Environment GetEnvironment(int environmentId)
+        {
+            const int pageSize = 30;
+            return GetEnvironments(new PagingInfo(pageSize)).SingleOrDefault(
+                e => e.Id == environmentId);
+        }
+
+        public IEnumerable<Environment> GetEnvironments(PagingInfo pagingInfo)
         {
             var result = new List<Environment>();
 
             var integrationEnvironment = new Environment
-            {
-                Id = 1,
-                EnvironmentName = "Integration"
-            };
+                                             {
+                                                 Id = 1,
+                                                 EnvironmentName = "Integration"
+                                             };
             integrationEnvironment.AddProperty(
                 "website.destination.path",
                 @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web");
@@ -27,10 +34,10 @@
             result.Add(integrationEnvironment);
 
             var qaEnvironment = new Environment
-            {
-                Id = 2,
-                EnvironmentName = "QA"
-            };
+                                    {
+                                        Id = 2,
+                                        EnvironmentName = "QA"
+                                    };
             qaEnvironment.AddProperty(
                 "website.destination.path",
                 @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web.QA");
@@ -42,12 +49,6 @@
                 "872");
             result.Add(qaEnvironment);
             return result;
-        }
-
-        public Environment GetEnvironment(int environmentId)
-        {
-            return GetEnvironments().SingleOrDefault(
-                e => e.Id == environmentId);
         }
     }
 }

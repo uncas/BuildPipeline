@@ -60,8 +60,9 @@
 
         public void DeployDueDeployments()
         {
+            const int pageSize = 30;
             IEnumerable<Deployment> dueDeployments =
-                deploymentRepository.GetDueDeployments();
+                deploymentRepository.GetDueDeployments(new PagingInfo(pageSize));
             foreach (Deployment deployment in dueDeployments)
             {
                 deployment.Start();
@@ -87,9 +88,9 @@
                 environmentId);
         }
 
-        public IEnumerable<Deployment> GetDueDeployments()
+        public IEnumerable<Deployment> GetDueDeployments(PagingInfo pagingInfo)
         {
-            return deploymentRepository.GetDueDeployments();
+            return deploymentRepository.GetDueDeployments(pagingInfo);
         }
 
         public ScheduleDeploymentResult ScheduleDeployment(

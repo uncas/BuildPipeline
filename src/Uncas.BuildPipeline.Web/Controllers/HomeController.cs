@@ -32,7 +32,9 @@
         [HttpGet]
         public ActionResult Deploy(int pipelineId)
         {
-            IEnumerable<Environment> environments = _environmentRepository.GetEnvironments();
+            const int pageSize = 30;
+            IEnumerable<Environment> environments =
+                _environmentRepository.GetEnvironments(new PagingInfo(pageSize));
             Pipeline pipeline = _pipelineRepository.GetPipeline(pipelineId);
             IEnumerable<Deployment> deployments = _deploymentService.GetDeployments(pipelineId);
             IEnumerable<EnvironmentViewModel> environmentViewModels = environments.Select(

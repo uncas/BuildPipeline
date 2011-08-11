@@ -139,7 +139,8 @@ ORDER BY Created ASC";
             return result.ToList();
         }
 
-        public IEnumerable<Deployment> GetDueDeployments()
+        public IEnumerable<Deployment> GetDueDeployments(
+            PagingInfo pagingInfo)
         {
             const string commandText =
                 @"
@@ -152,12 +153,14 @@ SELECT DeploymentId
 FROM Deployment
 WHERE Started IS NULL 
     OR Completed IS NULL
-ORDER BY Created ASC";
+ORDER BY Created ASC
+LIMIT @PageSize";
 
             var result = new List<Deployment>();
             using (DbCommand command = CreateCommand())
             {
                 command.CommandText = commandText;
+                AddParameter(command, "PageSize", pagingInfo.PageSize);
                 using (DbDataReader reader = GetReader(command))
                 {
                     while (reader.Read())
