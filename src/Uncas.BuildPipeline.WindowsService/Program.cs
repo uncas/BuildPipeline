@@ -6,6 +6,7 @@
     using System.Reflection;
     using System.ServiceProcess;
     using Uncas.BuildPipeline.ApplicationServices;
+    using Uncas.Core.Services;
 
     internal static class Program
     {
