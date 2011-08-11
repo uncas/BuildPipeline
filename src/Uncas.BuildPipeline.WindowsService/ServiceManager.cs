@@ -216,10 +216,12 @@
             Justification = "Is disposed in other methods in this class.")]
         private static AssemblyInstaller GetAssemblyInstaller(string[] commandLine)
         {
-            var installer = new AssemblyInstaller();
-            installer.Path = Environment.GetCommandLineArgs()[0];
-            installer.CommandLine = commandLine;
-            installer.UseNewContext = true;
+            var installer = new AssemblyInstaller
+                                {
+                                    Path = Environment.GetCommandLineArgs()[0],
+                                    CommandLine = commandLine,
+                                    UseNewContext = true
+                                };
             return installer;
         }
 

@@ -88,11 +88,10 @@
 
         private static void ServiceMain()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
-                                {
-                                    new DeployService()
-                                };
+            var ServicesToRun = new ServiceBase[]
+                                    {
+                                        new DeployService()
+                                    };
             ServiceBase.Run(ServicesToRun);
         }
 
