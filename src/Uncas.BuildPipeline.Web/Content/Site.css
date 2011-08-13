@@ -18,15 +18,18 @@ a:link
     color: #034af3;
     text-decoration: underline;
 }
+
 a:visited
 {
     color: #505abc;
 }
+
 a:hover
 {
     color: #1d60ff;
     text-decoration: none;
 }
+
 a:active
 {
     color: #12eb87;
@@ -40,6 +43,7 @@ p, ul
 
 /* HEADINGS   
 ----------------------------------------------------------*/
+
 h1, h2, h3, h4, h5, h6
 {
     font-size: 1.5em;
@@ -53,18 +57,22 @@ h1
     padding-bottom: 0;
     margin-bottom: 0;
 }
+
 h2
 {
     padding: 0 0 10px 0;
 }
+
 h3
 {
     font-size: 1.2em;
 }
+
 h4
 {
     font-size: 1.1em;
 }
+
 h5, h6
 {
     font-size: 1em;
@@ -72,6 +80,7 @@ h5, h6
 
 /* this rule styles <h2> tags that are the 
 first child of the left and right table columns */
+
 .rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
 {
     margin-top: 0;
@@ -82,6 +91,7 @@ first child of the left and right table columns */
 
 /* you can specify a greater or lesser percentage for the 
 page width. Or, you can specify an exact pixel width. */
+
 .page
 {
     width: 90%;
@@ -114,7 +124,8 @@ page width. Or, you can specify an exact pixel width. */
     padding: 30px 30px 15px 30px;
     background-color: #fff;
     margin-bottom: 30px;
-    _height: 1px; /* only IE6 applies CSS properties starting with an underscore */
+    _height: 1px;
+    /* only IE6 applies CSS properties starting with an underscore */
 }
 
 #footer
@@ -129,6 +140,7 @@ page width. Or, you can specify an exact pixel width. */
 
 /* TAB MENU   
 ----------------------------------------------------------*/
+
 ul#menu
 {
     border-bottom: 1px #5C87B2 solid;
@@ -240,6 +252,7 @@ table th
 
 /* MISC  
 ----------------------------------------------------------*/
+
 .clear
 {
     clear: both;
@@ -291,6 +304,7 @@ div#title
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
+
 .field-validation-error
 {
     color: #ff0000;
@@ -320,6 +334,7 @@ div#title
 
 /* Styles for editor and display helpers
 ----------------------------------------------------------*/
+
 .display-label, .editor-label, .display-field, .editor-field
 {
     margin: 0.5em 0;

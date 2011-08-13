@@ -8,30 +8,24 @@
 
         protected BaseResult()
         {
-            this.errors = new List<ResultError>();
+            errors = new List<ResultError>();
         }
 
         public bool Success { get; protected set; }
 
         public IEnumerable<ResultError> Errors
         {
-            get
-            {
-                return this.errors;
-            }
+            get { return errors; }
         }
 
         public bool HasErrors
         {
-            get
-            {
-                return this.errors.Count > 0;
-            }
+            get { return errors.Count > 0; }
         }
 
         public void AddError(ResultError error)
         {
-            this.errors.Add(error);
+            errors.Add(error);
         }
     }
 }

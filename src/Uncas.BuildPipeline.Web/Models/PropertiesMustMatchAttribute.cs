@@ -22,15 +22,12 @@
         }
 
         public string ConfirmProperty { get; private set; }
-        
+
         public string OriginalProperty { get; private set; }
 
         public override object TypeId
         {
-            get
-            {
-                return _typeId;
-            }
+            get { return _typeId; }
         }
 
         public override string FormatErrorMessage(string name)
@@ -47,7 +44,7 @@
             PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(value);
             object originalValue = properties.Find(OriginalProperty, true /* ignoreCase */).GetValue(value);
             object confirmValue = properties.Find(ConfirmProperty, true /* ignoreCase */).GetValue(value);
-            return object.Equals(originalValue, confirmValue);
+            return Equals(originalValue, confirmValue);
         }
     }
 }

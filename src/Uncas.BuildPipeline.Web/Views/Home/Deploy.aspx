@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Uncas.BuildPipeline.Web.ViewModels.DeployViewModel>" %>
+<%@ Import Namespace="Uncas.BuildPipeline.Web.ViewModels" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Deploy
@@ -8,18 +9,18 @@
     <div>
         Deploy this revision to one of the following environments:
         <table>
-            <% foreach (var item in Model.Environments)
+            <% foreach (EnvironmentViewModel item in Model.Environments)
                { %>
             <tr>
                 <td>
-                    <%: item.EnvironmentName %>
+                    <%:item.EnvironmentName%>
                 </td>
                 <td>
                     <% using (Html.BeginForm("Deploy", "Home", new { environmentId = item.EnvironmentId }))
-                       { %>
-                    <%: Html.Hidden("PipelineId") %>
+{ %>
+                    <%:Html.Hidden("PipelineId")%>
                     <input type="submit" value="Deploy" />
-                    <%} %>
+                    <% } %>
                 </td>
             </tr>
             <% } %>
@@ -42,23 +43,23 @@
                     Completed
                 </th>
             </tr>
-            <% foreach (var item in Model.Deployments)
+            <% foreach (DeploymentViewModel item in Model.Deployments)
                { %>
             <tr>
                 <td>
-                    <%: item.EnvironmentName %>
+                    <%:item.EnvironmentName%>
                 </td>
                 <td>
-                    <%: item.Created %>
+                    <%:item.Created%>
                 </td>
                 <td>
-                    <%: item.Started %>
+                    <%:item.Started%>
                 </td>
                 <td>
-                    <%: item.Completed %>
+                    <%:item.Completed%>
                 </td>
             </tr>
-            <%} %>
+            <% } %>
         </table>
     </div>
 </asp:Content>

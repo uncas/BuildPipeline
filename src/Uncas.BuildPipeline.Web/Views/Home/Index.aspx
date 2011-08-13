@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Uncas.BuildPipeline.Web.ViewModels.PipelineIndexViewModel>" %>
+<%@ Import Namespace="Uncas.BuildPipeline.Web.ViewModels" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Pipelines
@@ -19,7 +20,9 @@
                 Deployment
             </th>
         </tr>
-        <% foreach (var pipeline in Model.Pipelines)
-           { Html.RenderPartial("PipelineListView", pipeline); } %>
+        <% foreach (PipelineViewModel pipeline in Model.Pipelines)
+           {
+               Html.RenderPartial("PipelineListView", pipeline);
+           } %>
     </table>
 </asp:Content>

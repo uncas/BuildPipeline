@@ -9,15 +9,15 @@
             string stepName,
             DateTime created)
         {
-            this.IsSuccessful = isSuccessful;
-            this.StepName = stepName;
-            this.Created = created;
+            IsSuccessful = isSuccessful;
+            StepName = stepName;
+            Created = created;
         }
 
         public DateTime Created { get; private set; }
-        
+
         public bool IsSuccessful { get; private set; }
-        
+
         public string StepName { get; private set; }
     }
 }

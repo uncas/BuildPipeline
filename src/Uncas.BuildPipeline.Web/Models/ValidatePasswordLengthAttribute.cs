@@ -27,9 +27,9 @@
 
         public override bool IsValid(object value)
         {
-            string valueAsString = value as string;
+            var valueAsString = value as string;
             return valueAsString != null &&
-                valueAsString.Length >= _minCharacters;
+                   valueAsString.Length >= _minCharacters;
         }
     }
 }

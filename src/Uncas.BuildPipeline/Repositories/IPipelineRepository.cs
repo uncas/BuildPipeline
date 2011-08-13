@@ -6,7 +6,7 @@
     public interface IPipelineRepository
     {
         Pipeline GetPipeline(int pipelineId);
-        
+
         IEnumerable<Pipeline> GetPipelines(int pageSize);
     }
 }

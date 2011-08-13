@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Uncas.BuildPipeline.Web.ViewModels.EnvironmentIndexViewModel>>" %>
+<%@ Import Namespace="Uncas.BuildPipeline.Web.ViewModels" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Environments
@@ -13,14 +14,14 @@
                 Current revision
             </th>
         </tr>
-        <% foreach (var item in Model)
+        <% foreach (EnvironmentIndexViewModel item in Model)
            { %>
         <tr>
             <td>
-                <%: item.EnvironmentName %>
+                <%:item.EnvironmentName%>
             </td>
             <td>
-                <%: item.CurrentSourceRevision %>
+                <%:item.CurrentSourceRevision%>
             </td>
         </tr>
         <% } %>

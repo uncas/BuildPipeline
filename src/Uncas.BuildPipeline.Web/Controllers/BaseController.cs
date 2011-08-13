@@ -11,8 +11,8 @@
             ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            ViewData["Version"] = 
-                this.GetType().Assembly.GetName().Version.ToString();
+            ViewData["Version"] =
+                GetType().Assembly.GetName().Version.ToString();
         }
     }
 }

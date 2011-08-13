@@ -35,10 +35,10 @@
             result.Add(integrationEnvironment);
 
             var qualityAssuranceEnvironment = new Environment
-                                    {
-                                        Id = 2,
-                                        EnvironmentName = "QA"
-                                    };
+                                                  {
+                                                      Id = 2,
+                                                      EnvironmentName = "QA"
+                                                  };
             qualityAssuranceEnvironment.AddProperty(
                 "website.destination.path",
                 @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web.QA");

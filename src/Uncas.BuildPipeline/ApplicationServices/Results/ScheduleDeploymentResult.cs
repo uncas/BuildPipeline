@@ -6,8 +6,8 @@
     {
         public ScheduleDeploymentResult(Deployment deployment)
         {
-            this.Success = true;
-            this.Deployment = deployment;
+            Success = true;
+            Deployment = deployment;
         }
 
         public ScheduleDeploymentResult()

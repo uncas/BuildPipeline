@@ -7,10 +7,32 @@
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Repositories;
     using Uncas.BuildPipeline.Utilities;
+    using Environment = Uncas.BuildPipeline.Models.Environment;
 
     [TestFixture]
     public class DeploymentServiceTests
     {
+        #region Setup/Teardown
+
+        [SetUp]
+        public void BeforeEach()
+        {
+            environmentRepositoryMock =
+                new Mock<IEnvironmentRepository>();
+            pipelineRepositoryMock =
+                new Mock<IPipelineRepository>();
+            deploymentUtilityMock =
+                new Mock<IDeploymentUtility>();
+            deploymentRepository = new FakeDeploymentRepository();
+            deploymentService = new DeploymentService(
+                environmentRepositoryMock.Object,
+                pipelineRepositoryMock.Object,
+                deploymentRepository,
+                deploymentUtilityMock.Object);
+        }
+
+        #endregion
+
         private IDeploymentService deploymentService;
 
         private IDeploymentRepository deploymentRepository;
@@ -19,21 +41,26 @@
         private Mock<IEnvironmentRepository> environmentRepositoryMock;
         private Mock<IPipelineRepository> pipelineRepositoryMock;
 
-        [SetUp]
-        public void BeforeEach()
+        private void SetupRepositories(
+            int pipelineId,
+            int environmentId)
         {
-            this.environmentRepositoryMock =
-                new Mock<IEnvironmentRepository>();
-            this.pipelineRepositoryMock =
-                new Mock<IPipelineRepository>();
-            this.deploymentUtilityMock =
-                new Mock<IDeploymentUtility>();
-            this.deploymentRepository = new FakeDeploymentRepository();
-            this.deploymentService = new DeploymentService(
-                this.environmentRepositoryMock.Object,
-                this.pipelineRepositoryMock.Object,
-                this.deploymentRepository,
-                this.deploymentUtilityMock.Object);
+            var environment = new Environment();
+            var pipeline = new Pipeline(
+                pipelineId,
+                "A",
+                1,
+                "x",
+                "x",
+                DateTime.Now,
+                "x",
+                "x");
+            environmentRepositoryMock.Setup(
+                er => er.GetEnvironment(environmentId)).Returns(
+                    environment);
+            pipelineRepositoryMock.Setup(
+                pr => pr.GetPipeline(pipelineId)).Returns(
+                    pipeline);
         }
 
         [Test]
@@ -46,41 +73,19 @@
                 pipelineId,
                 environmentId);
             SetupRepositories(pipelineId, environmentId);
-            this.deploymentRepository.AddDeployment(deployment);
-            this.deploymentService.DeployDueDeployments();
-            this.deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BuildPipeline.Models.Environment>()),
+            deploymentRepository.AddDeployment(deployment);
+            deploymentService.DeployDueDeployments();
+            deploymentUtilityMock.Verify(
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>()),
                 Times.Once());
 
             // Act:
-            this.deploymentService.DeployDueDeployments();
+            deploymentService.DeployDueDeployments();
 
             // Assert:
-            this.deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BuildPipeline.Models.Environment>()),
+            deploymentUtilityMock.Verify(
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>()),
                 Times.Once());
-        }
-
-        private void SetupRepositories(
-            int pipelineId,
-            int environmentId)
-        {
-            var environment = new Uncas.BuildPipeline.Models.Environment();
-            var pipeline = new Pipeline(
-                pipelineId,
-                "A",
-                1,
-                "x",
-                "x",
-                DateTime.Now,
-                "x",
-                "x");
-            this.environmentRepositoryMock.Setup(
-                er => er.GetEnvironment(environmentId)).Returns(
-                environment);
-            this.pipelineRepositoryMock.Setup(
-                pr => pr.GetPipeline(pipelineId)).Returns(
-                pipeline);
         }
     }
 }

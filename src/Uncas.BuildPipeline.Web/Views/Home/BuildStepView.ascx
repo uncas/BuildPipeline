@@ -1,8 +1,8 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.BuildStepViewModel>" %>
-<div class="BuildStep" title="<%: Model.StatusText %>">
+<div class="BuildStep" title="<%:Model.StatusText%>">
     <div>
-        <%: Model.StepName %>
+        <%:Model.StepName%>
     </div>
-    <div class="BuildStepIcon <%=Model.CssClass %>">
+    <div class="BuildStepIcon <%=Model.CssClass%>">
     </div>
 </div>

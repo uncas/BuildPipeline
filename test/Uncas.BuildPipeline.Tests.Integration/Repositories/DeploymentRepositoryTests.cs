@@ -1,5 +1,6 @@
 ﻿namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using NUnit.Framework;
@@ -9,14 +10,18 @@
     [TestFixture]
     public class DeploymentRepositoryTests
     {
-        private IDeploymentRepository deploymentRepository;
+        #region Setup/Teardown
 
         [SetUp]
         public void BeforeEach()
         {
             // TODO: When a dedicated test database is in place, use the real repository here:
-            this.deploymentRepository = new FakeDeploymentRepository();
+            deploymentRepository = new FakeDeploymentRepository();
         }
+
+        #endregion
+
+        private IDeploymentRepository deploymentRepository;
 
         [Test]
         public void AddDeployment_WhenAdded_CanBeRetrieved()
@@ -26,10 +31,10 @@
             var deployment = new Deployment(
                 pipelineId,
                 environmentId);
-            this.deploymentRepository.AddDeployment(deployment);
+            deploymentRepository.AddDeployment(deployment);
 
-            var result =
-                this.deploymentRepository.GetDeployments(pipelineId);
+            IEnumerable<Deployment> result =
+                deploymentRepository.GetDeployments(pipelineId);
 
             Assert.True(result.Count() >= 1);
         }
@@ -39,16 +44,16 @@
         {
             // Arrange:
             var added = new Deployment(1, 1);
-            this.deploymentRepository.AddDeployment(added);
+            deploymentRepository.AddDeployment(added);
             Thread.Sleep(10);
             added.Start();
             int deploymentId = added.Id.Value;
 
             // Act:
-            this.deploymentRepository.UpdateDeployment(added);
+            deploymentRepository.UpdateDeployment(added);
 
             // Assert:
-            var updated = this.deploymentRepository.GetDeployment(deploymentId);
+            Deployment updated = deploymentRepository.GetDeployment(deploymentId);
             Assert.NotNull(updated.Started);
             Assert.True(updated.Started > added.Created);
         }

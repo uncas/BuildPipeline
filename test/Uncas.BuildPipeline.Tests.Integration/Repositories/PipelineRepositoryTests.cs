@@ -16,7 +16,7 @@
         public void GetPipelines_PageSize1_StepsAreIncluded()
         {
             const int pageSize = 1;
-            
+
             // TODO: TDD AddPipeline etc:
             // _pipelineRepository.AddPipeline();
 

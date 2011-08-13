@@ -75,7 +75,7 @@
         }
 
         [SuppressMessage(
-            "Microsoft.Usage", 
+            "Microsoft.Usage",
             "CA2202:Do not dispose objects multiple times",
             Justification = "Unknown in zip implementation.")]
         private static void ExtractZipFile(

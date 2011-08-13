@@ -3,7 +3,8 @@
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
-    [PropertiesMustMatch("Password", "ConfirmPassword", ErrorMessage = "The password and confirmation password do not match.")]
+    [PropertiesMustMatch("Password", "ConfirmPassword",
+        ErrorMessage = "The password and confirmation password do not match.")]
     public class RegisterModel
     {
         [Required]

@@ -6,7 +6,8 @@
     /// <summary>
     /// Model for changing password.
     /// </summary>
-    [PropertiesMustMatch("NewPassword", "ConfirmPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+    [PropertiesMustMatch("NewPassword", "ConfirmPassword",
+        ErrorMessage = "The new password and confirmation password do not match.")]
     public class ChangePasswordModel
     {
         [Required]

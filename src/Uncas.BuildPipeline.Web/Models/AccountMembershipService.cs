@@ -36,7 +36,7 @@
             {
                 throw new ArgumentException("Value cannot be null or empty.", "oldPassword");
             }
-            
+
             if (string.IsNullOrEmpty(newPassword))
             {
                 throw new ArgumentException("Value cannot be null or empty.", "newPassword");

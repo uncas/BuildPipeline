@@ -5,8 +5,8 @@
     public interface IDeploymentUtility
     {
         void Deploy(
-            string packagePath, 
-            string workingDirectory, 
+            string packagePath,
+            string workingDirectory,
             Environment environment);
     }
 }
