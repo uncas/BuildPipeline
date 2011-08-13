@@ -3,6 +3,9 @@
     using System.ComponentModel;
     using System.ServiceProcess;
 
+    /// <summary>
+    /// Installer for the project.
+    /// </summary>
     public partial class ProjectInstaller
     {
         private ServiceProcessInstaller serviceProcessInstaller1;

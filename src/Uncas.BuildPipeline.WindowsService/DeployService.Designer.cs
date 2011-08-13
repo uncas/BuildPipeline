@@ -1,5 +1,8 @@
 ﻿namespace Uncas.BuildPipeline.WindowsService
 {
+    /// <summary>
+    /// Service for deploying.
+    /// </summary>
     public partial class DeployService
     {
         /// <summary> 

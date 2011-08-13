@@ -4,6 +4,9 @@
     using System.Timers;
     using Uncas.BuildPipeline.ApplicationServices;
 
+    /// <summary>
+    /// Service for deploying.
+    /// </summary>
     public partial class DeployService : ServiceBase
     {
         private readonly IDeploymentService _deploymentService;
