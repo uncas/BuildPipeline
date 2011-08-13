@@ -10,6 +10,7 @@
     public class AccountController : Controller
     {
         public IFormsAuthenticationService FormsService { get; set; }
+        
         public IMembershipService MembershipService { get; set; }
 
         [Authorize]
@@ -40,10 +41,6 @@
             return View(model);
         }
 
-        // **************************************
-        // URL: /Account/ChangePasswordSuccess
-        // **************************************
-
         public ActionResult ChangePasswordSuccess()
         {
             return View();
@@ -55,10 +52,6 @@
 
             return RedirectToAction("Index", "Home");
         }
-
-        // **************************************
-        // URL: /Account/LogOn
-        // **************************************
 
         public ActionResult LogOn()
         {
@@ -93,14 +86,6 @@
             return View(model);
         }
 
-        // **************************************
-        // URL: /Account/LogOff
-        // **************************************
-
-        // **************************************
-        // URL: /Account/Register
-        // **************************************
-
         public ActionResult Register()
         {
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
@@ -130,16 +115,13 @@
             return View(model);
         }
 
-        // **************************************
-        // URL: /Account/ChangePassword
-        // **************************************
-
         protected override void Initialize(RequestContext requestContext)
         {
             if (FormsService == null)
             {
                 FormsService = new FormsAuthenticationService();
             }
+
             if (MembershipService == null)
             {
                 MembershipService = new AccountMembershipService();

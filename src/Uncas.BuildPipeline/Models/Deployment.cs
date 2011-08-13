@@ -19,10 +19,15 @@
         }
 
         public int? Id { get; private set; }
+        
         public DateTime Created { get; private set; }
+        
         public int EnvironmentId { get; private set; }
+        
         public int PipelineId { get; private set; }
+        
         public DateTime? Started { get; private set; }
+        
         public DateTime? Completed { get; private set; }
 
         public bool HasRun

@@ -30,12 +30,19 @@
         }
 
         public int Id { get; private set; }
+        
         public string ProjectName { get; private set; }
+        
         public string SourceAuthor { get; private set; }
+        
         public int SourceRevision { get; private set; }
+        
         public string SourceUrl { get; private set; }
+        
         public string SourceUrlBase { get; private set; }
+        
         public DateTime Created { get; private set; }
+        
         public string PackagePath { get; private set; }
 
         public IEnumerable<BuildStep> Steps

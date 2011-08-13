@@ -47,6 +47,7 @@
             {
                 return;
             }
+
             Pipeline pipeline = pipelineRepository.GetPipeline(lastDeployment.PipelineId);
             int currentSourceRevision = pipeline.SourceRevision;
             viewModels.Add(new EnvironmentIndexViewModel

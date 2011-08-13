@@ -7,7 +7,10 @@
     {
         public void SignIn(string userName, bool createPersistentCookie)
         {
-            if (string.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", "userName");
+            }
 
             FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
         }

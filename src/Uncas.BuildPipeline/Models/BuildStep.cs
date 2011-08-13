@@ -15,7 +15,9 @@
         }
 
         public DateTime Created { get; private set; }
+        
         public bool IsSuccessful { get; private set; }
+        
         public string StepName { get; private set; }
     }
 }

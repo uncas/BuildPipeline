@@ -19,6 +19,7 @@
         }
 
         public string ConfirmProperty { get; private set; }
+        
         public string OriginalProperty { get; private set; }
 
         public override object TypeId
