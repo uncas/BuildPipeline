@@ -7,6 +7,9 @@
     using Uncas.BuildPipeline.Repositories;
     using Uncas.Core;
 
+    /// <summary>
+    /// Setup logic for the website.
+    /// </summary>
     [SuppressMessage(
         "Microsoft.Naming",
         "CA1704:IdentifiersShouldBeSpelledCorrectly",

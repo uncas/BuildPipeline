@@ -3,6 +3,9 @@
     using System;
     using System.Web.Security;
 
+    /// <summary>
+    /// Handles membership.
+    /// </summary>
     public class AccountMembershipService : IMembershipService
     {
         private readonly MembershipProvider _provider;

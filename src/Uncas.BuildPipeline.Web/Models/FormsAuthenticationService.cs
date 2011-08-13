@@ -3,6 +3,9 @@
     using System;
     using System.Web.Security;
 
+    /// <summary>
+    /// Handles forms authentication.
+    /// </summary>
     public class FormsAuthenticationService : IFormsAuthenticationService
     {
         public void SignIn(string userName, bool createPersistentCookie)

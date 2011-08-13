@@ -2,6 +2,9 @@
 {
     using System.Web.Mvc;
 
+    /// <summary>
+    /// Base controller for the web site.
+    /// </summary>
     public class BaseController : Controller
     {
         protected override void OnActionExecuting(

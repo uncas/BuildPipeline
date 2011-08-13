@@ -11,6 +11,9 @@
     using Uncas.Core.Data;
     using Environment = Uncas.BuildPipeline.Models.Environment;
 
+    /// <summary>
+    /// Handles environments.
+    /// </summary>
     public class EnvironmentController : BaseController
     {
         private readonly IDeploymentService deploymentService;

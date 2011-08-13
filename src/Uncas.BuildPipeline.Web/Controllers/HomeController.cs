@@ -10,6 +10,9 @@
     using Uncas.BuildPipeline.Web.ViewModels;
     using Uncas.Core.Data;
 
+    /// <summary>
+    /// Handles the front page.
+    /// </summary>
     public class HomeController : BaseController
     {
         private const int BuildPageSize = 10;

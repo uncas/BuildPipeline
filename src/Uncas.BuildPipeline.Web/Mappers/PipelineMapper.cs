@@ -7,6 +7,9 @@
     using Uncas.BuildPipeline.Models;
     using Uncas.BuildPipeline.Web.ViewModels;
 
+    /// <summary>
+    /// Maps pipeline info.
+    /// </summary>
     public static class PipelineMapper
     {
         public static PipelineIndexViewModel MapToPipelineIndexViewModel(IEnumerable<Pipeline> pipelines)

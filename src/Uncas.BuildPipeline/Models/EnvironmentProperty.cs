@@ -6,18 +6,18 @@ namespace Uncas.BuildPipeline.Models
     public class EnvironmentProperty
     {
         /// <summary>
-        /// Gets or sets the key.
+        /// Gets or sets the key of the environment property.
         /// </summary>
         /// <value>
-        /// The key.
+        /// The key of the environment property.
         /// </value>
         public string Key { get; set; }
 
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets or sets the value of the environment property.
         /// </summary>
         /// <value>
-        /// The value.
+        /// The value of the environment property.
         /// </value>
         public string Value { get; set; }
     }

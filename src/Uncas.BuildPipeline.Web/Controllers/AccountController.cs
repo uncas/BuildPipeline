@@ -6,6 +6,9 @@
     using System.Web.Security;
     using Uncas.BuildPipeline.Web.Models;
 
+    /// <summary>
+    /// Handles login etc.
+    /// </summary>
     [HandleError]
     public class AccountController : Controller
     {

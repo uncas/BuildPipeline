@@ -2,6 +2,9 @@
 {
     using System.Web.Security;
 
+    /// <summary>
+    /// Handles validation for login.
+    /// </summary>
     public static class AccountValidation
     {
         public static string ErrorCodeToString(MembershipCreateStatus createStatus)

@@ -3,6 +3,9 @@
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
+    /// <summary>
+    /// Represents data for logging on.
+    /// </summary>
     public class LogOnModel
     {
         [Required]

@@ -5,6 +5,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
 
+    /// <summary>
+    /// Attribute for matching property values.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public sealed class PropertiesMustMatchAttribute : ValidationAttribute
     {
