@@ -25,7 +25,7 @@
                 throw new ArgumentNullException("deployment");
             }
 
-            const string commandText =
+            const string CommandText =
                 @"
 INSERT INTO Deployment
 (Created, PipelineId, EnvironmentId)
@@ -37,7 +37,7 @@ SET @DeploymentId = @@IDENTITY";
                 new SqlParameter("DeploymentId", SqlDbType.Int) { Direction = ParameterDirection.Output };
             using (DbCommand command = CreateCommand())
             {
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 ModifyData(
                     command,
                     new SqlParameter("Created", deployment.Created),
@@ -51,7 +51,7 @@ SET @DeploymentId = @@IDENTITY";
 
         public IEnumerable<Deployment> GetByEnvironment(int environmentId)
         {
-            const string commandText =
+            const string CommandText =
                 @"
 SELECT DeploymentId
     , PipelineId
@@ -66,7 +66,7 @@ ORDER BY Created ASC";
             using (DbCommand command = CreateCommand())
             {
                 AddParameter(command, "EnvironmentId", environmentId);
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 using (DbDataReader reader = GetReader(command))
                 {
                     while (reader.Read())
@@ -81,7 +81,7 @@ ORDER BY Created ASC";
 
         public Deployment GetDeployment(int id)
         {
-            const string commandText =
+            const string CommandText =
                 @"
 SELECT DeploymentId
     , PipelineId
@@ -96,7 +96,7 @@ ORDER BY Created ASC";
             using (DbCommand command = CreateCommand())
             {
                 AddParameter(command, "DeploymentId", id);
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 using (DbDataReader reader = GetReader(command))
                 {
                     if (reader.Read())
@@ -111,7 +111,7 @@ ORDER BY Created ASC";
 
         public IEnumerable<Deployment> GetDeployments(int pipelineId)
         {
-            const string commandText =
+            const string CommandText =
                 @"
 SELECT DeploymentId
     , PipelineId
@@ -127,7 +127,7 @@ ORDER BY Created ASC";
             using (DbCommand command = CreateCommand())
             {
                 AddParameter(command, "PipelineId", pipelineId);
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 using (DbDataReader reader = GetReader(command))
                 {
                     while (reader.Read())
@@ -148,7 +148,7 @@ ORDER BY Created ASC";
                 throw new ArgumentNullException("pagingInfo");
             }
 
-            const string commandText =
+            const string CommandText =
                 @"
 SELECT DeploymentId
     , PipelineId
@@ -165,7 +165,7 @@ LIMIT @PageSize";
             var result = new List<Deployment>();
             using (DbCommand command = CreateCommand())
             {
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 AddParameter(command, "PageSize", pagingInfo.PageSize);
                 using (DbDataReader reader = GetReader(command))
                 {
@@ -186,7 +186,7 @@ LIMIT @PageSize";
                 throw new ArgumentNullException("deployment");
             }
 
-            const string commandText =
+            const string CommandText =
                 @"
 UPDATE Deployment
 SET Started = @Started
@@ -194,7 +194,7 @@ SET Started = @Started
 WHERE DeploymentId = @DeploymentId";
             using (DbCommand command = CreateCommand())
             {
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 AddParameter(command, "Started", deployment.Started);
                 AddParameter(command, "Completed", deployment.Completed);
                 AddParameter(command, "DeploymentId", deployment.Id);

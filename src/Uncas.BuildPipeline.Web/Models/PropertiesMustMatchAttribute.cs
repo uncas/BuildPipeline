@@ -11,11 +11,11 @@
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public sealed class PropertiesMustMatchAttribute : ValidationAttribute
     {
-        private const string _defaultErrorMessage = "'{0}' and '{1}' do not match.";
+        private const string DefaultErrorMessage = "'{0}' and '{1}' do not match.";
         private readonly object _typeId = new object();
 
         public PropertiesMustMatchAttribute(string originalProperty, string confirmProperty)
-            : base(_defaultErrorMessage)
+            : base(DefaultErrorMessage)
         {
             OriginalProperty = originalProperty;
             ConfirmProperty = confirmProperty;

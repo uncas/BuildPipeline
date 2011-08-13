@@ -9,8 +9,8 @@
     {
         public Environment GetEnvironment(int environmentId)
         {
-            const int pageSize = 30;
-            return GetEnvironments(new PagingInfo(pageSize)).SingleOrDefault(
+            const int PageSize = 30;
+            return GetEnvironments(new PagingInfo(PageSize)).SingleOrDefault(
                 e => e.Id == environmentId);
         }
 
@@ -34,21 +34,21 @@
                 "876");
             result.Add(integrationEnvironment);
 
-            var qaEnvironment = new Environment
+            var qualityAssuranceEnvironment = new Environment
                                     {
                                         Id = 2,
                                         EnvironmentName = "QA"
                                     };
-            qaEnvironment.AddProperty(
+            qualityAssuranceEnvironment.AddProperty(
                 "website.destination.path",
                 @"c:\inetpub\wwwroot\Uncas.BuildPipeline.Web.QA");
-            qaEnvironment.AddProperty(
+            qualityAssuranceEnvironment.AddProperty(
                 "website.name",
                 "BuildPipelineWeb-QA");
-            qaEnvironment.AddProperty(
+            qualityAssuranceEnvironment.AddProperty(
                 "website.port",
                 "872");
-            result.Add(qaEnvironment);
+            result.Add(qualityAssuranceEnvironment);
             return result;
         }
     }

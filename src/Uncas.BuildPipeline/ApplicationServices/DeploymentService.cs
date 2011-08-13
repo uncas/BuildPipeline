@@ -61,9 +61,9 @@
 
         public void DeployDueDeployments()
         {
-            const int pageSize = 30;
+            const int PageSize = 30;
             IEnumerable<Deployment> dueDeployments =
-                deploymentRepository.GetDueDeployments(new PagingInfo(pageSize));
+                deploymentRepository.GetDueDeployments(new PagingInfo(PageSize));
             foreach (Deployment deployment in dueDeployments)
             {
                 deployment.Start();

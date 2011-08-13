@@ -17,7 +17,7 @@
         public Pipeline GetPipeline(int pipelineId)
         {
             Pipeline pipeline = null;
-            const string commandText =
+            const string CommandText =
                 @"
 SELECT Pr.ProjectName
     , Pi.SourceRevision
@@ -34,7 +34,7 @@ WHERE Pi.PipelineId = @PipelineId";
             using (DbCommand command = CreateCommand())
             {
                 AddParameter(command, "PipelineId", pipelineId);
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 using (DbDataReader reader = GetReader(command))
                 {
                     if (reader.Read())
@@ -51,7 +51,7 @@ WHERE Pi.PipelineId = @PipelineId";
         public IEnumerable<Pipeline> GetPipelines(int pageSize)
         {
             var pipelines = new List<Pipeline>();
-            const string commandText =
+            const string CommandText =
                 @"
 SELECT
     Pr.ProjectName
@@ -70,7 +70,7 @@ LIMIT @PageSize";
             using (DbCommand command = CreateCommand())
             {
                 AddParameter(command, "PageSize", pageSize);
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 using (DbDataReader reader = GetReader(command))
                 {
                     while (reader.Read())
@@ -118,7 +118,7 @@ LIMIT @PageSize";
 
         private void AddSteps(Pipeline pipeline)
         {
-            const string commandText =
+            const string CommandText =
                 @"
 SELECT IsSuccessful, StepName, Created
 FROM BuildStep
@@ -127,7 +127,7 @@ ORDER BY Created ASC";
             using (DbCommand command = CreateCommand())
             {
                 AddParameter(command, "PipelineId", pipeline.Id);
-                command.CommandText = commandText;
+                command.CommandText = CommandText;
                 using (DbDataReader reader = GetReader(command))
                 {
                     while (reader.Read())

@@ -8,11 +8,11 @@
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class ValidatePasswordLengthAttribute : ValidationAttribute
     {
-        private const string _defaultErrorMessage = "'{0}' must be at least {1} characters long.";
+        private const string DefaultErrorMessage = "'{0}' must be at least {1} characters long.";
         private readonly int _minCharacters = Membership.Provider.MinRequiredPasswordLength;
 
         public ValidatePasswordLengthAttribute()
-            : base(_defaultErrorMessage)
+            : base(DefaultErrorMessage)
         {
         }
 

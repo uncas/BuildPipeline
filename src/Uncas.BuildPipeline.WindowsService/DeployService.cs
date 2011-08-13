@@ -12,10 +12,10 @@
         public DeployService()
         {
             InitializeComponent();
-            const int intervalSeconds = 10;
-            _timer = new Timer(intervalSeconds * 1000);
+            const int IntervalSeconds = 10;
+            _timer = new Timer(IntervalSeconds * 1000);
             _timer.Elapsed +=
-                timer_Elapsed;
+                TimerElapsed;
             _deploymentService = Bootstrapper.Resolve<IDeploymentService>();
         }
 
@@ -29,7 +29,7 @@
             _timer.Stop();
         }
 
-        private void timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             _deploymentService.DeployDueDeployments();
         }

@@ -63,9 +63,9 @@
 
         public ActionResult Index()
         {
-            const int pageSize = 30;
+            const int PageSize = 30;
             IEnumerable<Environment> environments =
-                environmentRepository.GetEnvironments(new PagingInfo(pageSize));
+                environmentRepository.GetEnvironments(new PagingInfo(PageSize));
             var viewModel = new List<EnvironmentIndexViewModel>();
             foreach (Environment environment in environments)
             {
