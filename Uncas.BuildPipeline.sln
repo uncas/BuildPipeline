@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.BuildPipeline.Tests.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.BuildPipeline", "src\Uncas.BuildPipeline\Uncas.BuildPipeline.csproj", "{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Tests", "4 - Tests", "{2DCB7954-4EE8-42DD-B21C-C54EE0BB0559}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Tests", "3 - Tests", "{2DCB7954-4EE8-42DD-B21C-C54EE0BB0559}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - User Interface Layer", "1 - User Interface Layer", "{B1E7DDFA-C632-4404-B75E-A72E7E778AF1}"
 EndProject
