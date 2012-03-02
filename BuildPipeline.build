@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <project name="BuildPipeline" default="build">
 
   <!-- Configuration - default values that can be changed depending on the situation, can be changed in local.properties.xml -->
@@ -12,7 +12,10 @@
   <property name="svn" value="C:\Program Files (x86)\VisualSVN Server\bin\svn.exe" />
 
   <!-- Working values and built-in values - need not be changed -->
-  <property name="nunit.executable" value="lib\NUnit\nunit-console.exe" />
+  <property name="nant.dir" value="C:\Program Files (x86)\nant" />
+  <property name="nant.executable" value="${nant.dir}\nant.exe" />
+  <property name="nunit.dir" value="packages\NUnit.Runners.2.6.0.12051\tools" />
+  <property name="nunit.executable" value="${nunit.dir}\nunit-console.exe" />
   <property name="output.dir" value="${project::get-base-directory()}\build" />
 
   <!-- Local properties, that overrides the ones from above -->
@@ -78,7 +81,7 @@
       </fileset>
     </copy>
     <copy todir="${test.directory}">
-      <fileset basedir="lib\NUnit">
+      <fileset basedir="${nunit.dir}">
         <include name="**\*.*" />
       </fileset>
     </copy>
@@ -99,7 +102,7 @@
     <property name="svn.revision" value="0" />
     <exec
       program="${svn}"
-      commandline='log --xml --limit 1 --username ole --password ols --no-auth-cache'
+      commandline='log --xml --limit 1'
       output="${output.dir}\revision.xml"
       failonerror="false" />
     <xmlpeek
@@ -111,7 +114,7 @@
 
     <exec
       program="${svn}"
-      commandline='info --xml --username ole --password ols --no-auth-cache'
+      commandline='info --xml'
       output="${output.dir}\svninfo.xml"
       failonerror="false" />
     <xmlpeek file="${output.dir}\svninfo.xml" xpath="/info/entry/url" property="svn.url" />
@@ -140,7 +143,7 @@
       <attributes>
         <attribute type="System.Reflection.AssemblyCompanyAttribute" value="Uncas" />
         <attribute type="System.Reflection.AssemblyProductAttribute" value="Uncas.BuildPipeline" />
-        <attribute type="System.Reflection.AssemblyCopyrightAttribute" value="Copyright (c) 2011, Ole Lynge Sørensen" />
+        <attribute type="System.Reflection.AssemblyCopyrightAttribute" value="Copyright (c) 2012, Ole Lynge Soerensen" />
         <attribute type="System.Reflection.AssemblyVersionAttribute" value="${version.string}" />
         <attribute type="System.Reflection.AssemblyFileVersionAttribute" value="${version.string}" />
       </attributes>
@@ -182,7 +185,7 @@
     <call target="packageTestProject" />
 
     <copy todir="${package.dir}\tools\NUnit">
-      <fileset basedir="lib\NUnit">
+      <fileset basedir="${nunit.dir}">
         <include name="**\*.*" />
       </fileset>
     </copy>
@@ -208,7 +211,7 @@
   <target name="masterPackage">
     <property name="package.dir" value="${output.dir}\MasterPackage" />
     <copy todir="${package.dir}\NAnt">
-      <fileset basedir="lib\NAnt">
+      <fileset basedir="${nant.dir}">
         <include name="**\*.*" />
       </fileset>
     </copy>
@@ -228,14 +231,14 @@
   </target>
 
   <target name="testPackageTest" depends="package">
-    <exec program="lib\nant\nant.exe">
+    <exec program="${nant.executable}">
       <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
       <arg value="test" />
     </exec>
   </target>
 
   <target name="deploy" depends="package">
-    <exec program="lib\nant\nant.exe">
+    <exec program="${nant.executable}">
       <arg value="-buildfile:build/Uncas.BuildPipeline/BuildActions.build" />
       <arg value="deploy" />
     </exec>
