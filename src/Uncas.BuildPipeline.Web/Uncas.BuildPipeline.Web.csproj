@@ -14,6 +14,8 @@
     <AssemblyName>Uncas.BuildPipeline.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\Uncas.BuildPipeline\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +94,9 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Uncas.Core">
+      <HintPath>..\..\packages\Uncas.Core.1.1.0.154\lib\net40\Uncas.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\VersionInfo.cs">
@@ -158,19 +163,12 @@
       <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
       <Name>Uncas.BuildPipeline</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Uncas.Core.External\Uncas.Core.External.csproj">
-      <Project>{ED660804-F127-407B-8D63-3BB5720B59A7}</Project>
-      <Name>Uncas.Core.External</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Uncas.Core\Uncas.Core.csproj">
-      <Project>{E4F20F98-4E29-4E1C-8FD4-71F320A54214}</Project>
-      <Name>Uncas.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\BuildPipelineKey.snk">
       <Link>BuildPipelineKey.snk</Link>
     </None>
+    <Content Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -200,4 +198,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
