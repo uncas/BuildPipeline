@@ -1,0 +1,1 @@
+git log --pretty=oneline | wc -l > build\Revision.txt

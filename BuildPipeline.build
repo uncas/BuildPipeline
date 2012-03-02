@@ -96,7 +96,27 @@
     </if>
   </target>
 
-  <target name="getSubversionRevision">
+  <target name="getRevision" depends="init">
+    <!-- Retrieve revision number -->
+    <echo message="Retrieving revision number" />
+    <property name="version.revision" value="0" />
+    <exec
+      program="CountRevisions.cmd"
+      failonerror="false" />
+    <property name="file.contents" value="0" />
+    <loadfile file="build\Revision.txt" property="file.contents" />
+    <property name="file.contents" value="${string::trim(file.contents)}" />
+    <echo message="contents of file is ${file.contents}"/>
+    <property name="version.revision" value="${file.contents}" />
+    <echo message="Using revision number: ${version.revision}" />
+
+    <exec program="git" commandline="rev-parse HEAD" output="build\hash.txt" />
+    <loadfile file="build\hash.txt" property="git.hash" />
+    <property name="git.hash" value="${string::trim(git.hash)}" />
+    <echo message="hash of the commit is ${git.hash}"/>
+  </target>
+
+  <target name="getRevision_svn">
     <!-- Retrieve subversion revision number -->
     <echo message="Retrieving Subversion revision number" />
     <property name="svn.revision" value="0" />
@@ -134,11 +154,11 @@
     </if>
   </target>
 
-  <target name="PrepareCommit" depends="test">
-    <echo message="Build and unit tests says OK!" />
-  </target>
-
-  <target name="generateVersionInfoFile" depends="getSubversionRevision">
+  <target name="generateVersionInfoFile" depends="getRevision">
+    <if test="${property::exists('CCNetLabel')}">
+      <property name="version.build" value="${CCNetLabel}" />
+    </if>
+    <property name="version.string" value="${version.major}.${version.minor}.${version.build}.${version.revision}" />
     <asminfo output="src\VersionInfo.cs" language="CSharp">
       <attributes>
         <attribute type="System.Reflection.AssemblyCompanyAttribute" value="Uncas" />
@@ -146,8 +166,13 @@
         <attribute type="System.Reflection.AssemblyCopyrightAttribute" value="Copyright (c) 2012, Ole Lynge Soerensen" />
         <attribute type="System.Reflection.AssemblyVersionAttribute" value="${version.string}" />
         <attribute type="System.Reflection.AssemblyFileVersionAttribute" value="${version.string}" />
+        <attribute type="System.Reflection.AssemblyInformationalVersionAttribute" value="${version.string} (${git.hash})" />
       </attributes>
     </asminfo>
+  </target>
+
+  <target name="PrepareCommit" depends="test">
+    <echo message="Build and unit tests says OK!" />
   </target>
 
   <target name="packageTestProject">
@@ -244,7 +269,7 @@
     </exec>
   </target>
 
-  <target name="logBuild" depends="getSubversionRevision"
+  <target name="logBuild" depends="getRevision"
     if="${property::exists('CCNetIntegrationStatus')}">
     <if test="${not property::exists('package.path')}">
       <property name="package.path" value="" />
