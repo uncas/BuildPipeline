@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.BuildPipeline.Web", "src\Uncas.BuildPipeline.Web\Uncas.BuildPipeline.Web.csproj", "{DB341F51-D746-46C5-B160-359306739736}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.BuildPipeline.Tests.Unit", "test\Uncas.BuildPipeline.Tests.Unit\Uncas.BuildPipeline.Tests.Unit.csproj", "{C0066A3B-97D4-4E46-88B1-44F2F1FABB3A}"
