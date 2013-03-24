@@ -30,15 +30,19 @@ VALUES
 (@Created, @PipelineId, @EnvironmentId)
 
 SET @DeploymentId = Scope_Identity()";
-            var p = new DynamicParameters();
-            p.Add("@Created", deployment.Created);
-            p.Add("@PipelineId", deployment.PipelineId);
-            p.Add("@EnvironmentId", deployment.EnvironmentId);
-            p.Add("DeploymentId",
-                  dbType: DbType.Int32,
-                  direction: ParameterDirection.Output);
-            _connection.Execute(sql, p);
-            var deploymentId = p.Get<int>("DeploymentId");
+            var param =
+                new DynamicParameters(
+                    new
+                        {
+                            deployment.Created,
+                            deployment.PipelineId,
+                            deployment.EnvironmentId
+                        });
+            param.Add("DeploymentId",
+                      dbType: DbType.Int32,
+                      direction: ParameterDirection.Output);
+            _connection.Execute(sql, param);
+            var deploymentId = param.Get<int>("DeploymentId");
             deployment.ChangeId(deploymentId);
         }
 
@@ -122,13 +126,8 @@ UPDATE Deployment
 SET Started = @Started
     , Completed = @Completed
 WHERE DeploymentId = @id";
-            _connection.Execute(sql,
-                                new
-                                    {
-                                        deployment.Started,
-                                        deployment.Completed,
-                                        deployment.Id
-                                    });
+            var param = new {deployment.Started, deployment.Completed, deployment.Id};
+            _connection.Execute(sql, param);
         }
 
         #endregion
