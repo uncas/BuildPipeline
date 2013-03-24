@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using NUnit.Framework;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
@@ -11,24 +10,6 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
     [TestFixture]
     public class PipelineRepositoryTests : WithBootstrapping<IPipelineRepository>
     {
-        #region Setup/Teardown
-
-        [SetUp]
-        public void BeforeEach()
-        {
-            _scope = new TransactionScope();
-        }
-
-        [TearDown]
-        public void AfterEach()
-        {
-            _scope.Dispose();
-        }
-
-        #endregion
-
-        private TransactionScope _scope;
-
         [Test]
         public void GetPipelines_PageSize1_PipelineIsIncluded()
         {

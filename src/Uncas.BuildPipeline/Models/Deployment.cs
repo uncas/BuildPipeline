@@ -9,6 +9,10 @@
         Justification = "But it *is* a deployment!")]
     public class Deployment
     {
+        private Deployment()
+        {
+        }
+
         public Deployment(
             int pipelineId,
             int environmentId)

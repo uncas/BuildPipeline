@@ -62,20 +62,44 @@ ORDER BY Pi.Created DESC
         {
             int projectId = AddProject(pipeline.ProjectName, "someUrl");
             const string commandText = @"
-INSERT INTO Pipeline
-(ProjectId, SourceRevision, SourceUrl, Created, SourceAuthor, PackagePath)
-VALUES
-(@projectId, @sourceRevision, @sourceUrl, GETDATE(), @sourceAuthor, @packagePath)";
-            _connection.Execute(commandText,
-                                new
-                                    {
-                                        PipelineId = pipeline.Id,
-                                        projectId,
-                                        pipeline.SourceRevision,
-                                        pipeline.SourceUrl,
-                                        pipeline.SourceAuthor,
-                                        pipeline.PackagePath
-                                    });
+SELECT @pipelineId = PipelineId
+FROM Pipeline
+WHERE ProjectId = @projectId
+    AND SourceRevision = @sourceRevision
+    AND SourceUrl = @sourceUrl
+
+IF @pipelineId IS NULL
+BEGIN
+    INSERT INTO Pipeline
+    (ProjectId, SourceRevision, SourceUrl, Created, SourceAuthor, PackagePath)
+    VALUES
+    (@projectId, @sourceRevision, @sourceUrl, GETDATE(), @sourceAuthor, @packagePath)
+
+    SET @pipelineId = Scope_Identity()
+END
+ELSE
+BEGIN
+    UPDATE Pipeline
+    SET Modified = GETDATE()
+        , SourceAuthor = @sourceAuthor
+        , PackagePath = @packagePath
+    WHERE PipelineId = @pipelineId
+END";
+            var param =
+                new DynamicParameters(
+                    new
+                        {
+                            projectId,
+                            pipeline.SourceRevision,
+                            pipeline.SourceUrl,
+                            pipeline.SourceAuthor,
+                            pipeline.PackagePath
+                        });
+            param.Add("PipelineId",
+                      dbType: DbType.Int32,
+                      direction: ParameterDirection.Output);
+            _connection.Execute(commandText, param);
+            pipeline.AssignId(param.Get<int>("PipelineId"));
         }
 
         #endregion

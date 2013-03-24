@@ -72,5 +72,10 @@ namespace Uncas.BuildPipeline.Models
             // Adding the new step:
             _buildSteps.Add(buildStep);
         }
+
+        public void AssignId(int id)
+        {
+            Id = id;
+        }
     }
 }
