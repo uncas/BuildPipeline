@@ -1,6 +1,7 @@
 ﻿param (
     [string]$task = "UnitTest",
-    [string]$branch = "master"
+    [string]$branch = "master",
+    [string]$dbScriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526"
 )
 
 $baseDir  = Resolve-Path .
@@ -75,9 +76,8 @@ function DownloadFile ($from, $to) {
 
 function UpdateDb {
     UnitTest
-    $scriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526"
-    $scriptSource = "https://raw.github.com/uncas/db-deployment/$scriptVersion/dbDeployment.ps1"
-    $script = "packages\dbDeployment-$scriptVersion.ps1"
+    $scriptSource = "https://raw.github.com/uncas/db-deployment/$dbScriptVersion/dbDeployment.ps1"
+    $script = "packages\dbDeployment-$dbScriptVersion.ps1"
     if (!(Test-Path $script)) {
         DownloadFile $scriptSource $script
     }
