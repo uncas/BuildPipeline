@@ -1,5 +1,4 @@
 ﻿Essentials:
-- Script: From a clean clone: Run cmd file to build without errors.
 - Script: Fully automated set up of database, site and service on local machine.
 
 Features:
