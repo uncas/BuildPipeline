@@ -22,7 +22,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
                                         "bla",
                                         "bla");
             Resolve<IPipelineRepository>().AddPipeline(pipeline);
-            return pipeline.Id;
+            return pipeline.PipelineId;
         }
 
         [Test]

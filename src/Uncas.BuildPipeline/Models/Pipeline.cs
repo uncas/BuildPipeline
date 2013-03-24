@@ -23,7 +23,7 @@ namespace Uncas.BuildPipeline.Models
             string sourceAuthor,
             string packagePath) : this()
         {
-            Id = pipelineId;
+            PipelineId = pipelineId;
             ProjectName = projectName;
             SourceRevision = sourceRevision;
             SourceUrl = sourceUrl;
@@ -33,7 +33,7 @@ namespace Uncas.BuildPipeline.Models
             PackagePath = packagePath;
         }
 
-        public int Id { get; private set; }
+        public int PipelineId { get; private set; }
 
         public string ProjectName { get; private set; }
 
@@ -75,7 +75,7 @@ namespace Uncas.BuildPipeline.Models
 
         public void AssignId(int id)
         {
-            Id = id;
+            PipelineId = id;
         }
     }
 }

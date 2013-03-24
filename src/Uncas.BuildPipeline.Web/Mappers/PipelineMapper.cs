@@ -34,7 +34,7 @@
 
             var result = new PipelineViewModel
                              {
-                                 PipelineId = pipeline.Id,
+                                 PipelineId = pipeline.PipelineId,
                                  ProjectName = pipeline.ProjectName,
                                  SourceAuthor = pipeline.SourceAuthor,
                                  SourceRevision = pipeline.SourceRevision,
