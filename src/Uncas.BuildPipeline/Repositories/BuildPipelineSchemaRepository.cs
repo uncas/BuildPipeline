@@ -1,13 +1,11 @@
+using System.Collections.Generic;
+using Uncas.Core.Data.Migration;
+
 namespace Uncas.BuildPipeline.Repositories
 {
-    using System.Collections.Generic;
-    using Uncas.Core.Data.Migration;
-
-    public class BuildPipelineSchemaRepository :
-        IAvailableChangeRepository<DbChange>
+    public class BuildPipelineSchemaRepository : IAvailableChangeRepository<DbChange>
     {
-        private const string Project =
-            @"
+        private const string Project = @"
 CREATE TABLE Project
 (
     ProjectId    integer    NOT NULL
@@ -17,8 +15,7 @@ CREATE TABLE Project
     , SourceUrlBase    text    NOT NULL
 )";
 
-        private const string Pipeline =
-            @"
+        private const string Pipeline = @"
 CREATE TABLE Pipeline
 (
     PipelineId    integer    NOT NULL
@@ -33,8 +30,7 @@ CREATE TABLE Pipeline
     , FOREIGN KEY (ProjectId) REFERENCES Project (ProjectId)
 )";
 
-        private const string BuildStep =
-            @"CREATE TABLE BuildStep
+        private const string BuildStep = @"CREATE TABLE BuildStep
 (
     BuildStepId    integer    NOT NULL
         PRIMARY KEY ASC
@@ -46,8 +42,7 @@ CREATE TABLE Pipeline
     , FOREIGN KEY (PipelineId) REFERENCES Pipeline (PipelineId)
 )";
 
-        private const string Deployment =
-            @"CREATE TABLE Deployment
+        private const string Deployment = @"CREATE TABLE Deployment
 (
     DeploymentId    integer    NOT NULL
         PRIMARY KEY ASC
@@ -58,6 +53,8 @@ CREATE TABLE Pipeline
     , Completed    datetime    NULL
     , FOREIGN KEY (PipelineId) REFERENCES Pipeline (PipelineId)
  )";
+
+        #region IAvailableChangeRepository<DbChange> Members
 
         /// <summary>
         /// Gets the available changes.
@@ -72,6 +69,8 @@ CREATE TABLE Pipeline
             result.Add(GetChange("04-Deployment", Deployment));
             return result;
         }
+
+        #endregion
 
         private static DbChange GetChange(string scriptName, string content)
         {

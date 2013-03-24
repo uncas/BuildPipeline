@@ -1,4 +1,6 @@
-﻿namespace Uncas.BuildPipeline.Repositories
+﻿using Uncas.Core.Data;
+
+namespace Uncas.BuildPipeline.Repositories
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +8,7 @@
     using Uncas.BuildPipeline.Models;
     using Uncas.Core.External;
 
-    public class PipelineRepository : SQLiteDbContext, IPipelineRepository
+    public class PipelineRepository : SqlDbContext, IPipelineRepository
     {
         public PipelineRepository(
             IBuildPipelineRepositoryConfiguration configuration)
@@ -53,7 +55,7 @@ WHERE Pi.PipelineId = @PipelineId";
             var pipelines = new List<Pipeline>();
             const string CommandText =
                 @"
-SELECT
+SELECT TOP (@PageSize)
     Pr.ProjectName
     , Pi.SourceRevision
     , Pi.PipelineId
@@ -66,7 +68,7 @@ FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
 ORDER BY Pi.Created DESC
-LIMIT @PageSize";
+--LIMIT @PageSize";
             using (DbCommand command = CreateCommand())
             {
                 AddParameter(command, "PageSize", pageSize);

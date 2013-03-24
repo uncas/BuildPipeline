@@ -10,7 +10,7 @@
     using Uncas.Core.Data;
     using Uncas.Core.External;
 
-    public class DeploymentRepository : SQLiteDbContext, IDeploymentRepository
+    public class DeploymentRepository : SqlDbContext, IDeploymentRepository
     {
         public DeploymentRepository(
             IBuildPipelineRepositoryConfiguration configuration)
