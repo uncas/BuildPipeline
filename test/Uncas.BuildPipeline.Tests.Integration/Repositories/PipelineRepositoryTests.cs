@@ -28,7 +28,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         #endregion
 
         private readonly IPipelineRepository _pipelineRepository =
-            new PipelineRepository(new BuildPipelineRepositoryConfiguration());
+            new PipelineRepository();
 
         private TransactionScope _scope;
 
@@ -36,21 +36,22 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         public void GetPipelines_PageSize1_PipelineIsIncluded()
         {
             const int pageSize = 1;
-            _pipelineRepository.AddPipeline(new Pipeline(1,
-                                                         "myproject",
-                                                         123812830,
-                                                         "mySourceUrl",
-                                                         "mySourceUrlBase",
-                                                         DateTime.Now,
-                                                         "mySourceAuthor",
-                                                         "myPackagePath"));
+            var pipeline1 = new Pipeline(1,
+                                         "myproject",
+                                         123812830,
+                                         "mySourceUrl",
+                                         "mySourceUrlBase",
+                                         DateTime.Now,
+                                         "mySourceAuthor",
+                                         "myPackagePath");
+            _pipelineRepository.AddPipeline(pipeline1);
 
             Pipeline pipeline =
                 _pipelineRepository.GetPipelines(pageSize).FirstOrDefault();
 
             Assert.NotNull(pipeline);
-            Assert.NotNull(pipeline.ProjectName);
-            Assert.Greater(pipeline.SourceRevision, 0);
+            Assert.AreEqual(pipeline1.ProjectName, pipeline.ProjectName);
+            Assert.AreEqual(pipeline1.SourceRevision, pipeline.SourceRevision);
         }
 
         [Test]

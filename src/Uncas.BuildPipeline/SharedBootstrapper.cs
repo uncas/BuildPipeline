@@ -29,8 +29,7 @@
                         () => new EnvironmentRepository());
                     _registered.Add(
                         typeof(IPipelineRepository),
-                        () => new PipelineRepository(
-                                  Resolve<IBuildPipelineRepositoryConfiguration>()));
+                        () => new PipelineRepository());
                     _registered.Add(
                         typeof(IBuildPipelineRepositoryConfiguration),
                         () => new BuildPipelineRepositoryConfiguration());

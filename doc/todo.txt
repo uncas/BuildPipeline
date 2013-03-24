@@ -1,5 +1,15 @@
 ﻿Essentials:
-- Script: Fully automated set up of site on local machine.
+- Use dapper
+- Tests of existing logic
+- Reconsider data structure
+-- Pipeline: ADD BranchName, DROP SourceUrl+SourceRevision, ADD Revision
+- Build of itself
+- API endpoints for logging
+
+- Events & readmodels
+-- EventStore (AggregateName, AggregateId, EventName, EventTime, SequenceNumber, Data)
+--- Aggregates: Pipeline, Deployment, Environment
+-- PipelineReadStore
 
 Features:
 - Show github links.

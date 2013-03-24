@@ -1,15 +1,19 @@
-﻿namespace Uncas.BuildPipeline.Models
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace Uncas.BuildPipeline.Models
+{
     public class Pipeline
     {
         private readonly IList<BuildStep> _buildSteps;
 
+        private Pipeline()
+        {
+        }
+
         public Pipeline(
-            int id,
+            int pipelineId,
             string projectName,
             int sourceRevision,
             string sourceUrl,
@@ -19,7 +23,7 @@
             string packagePath)
         {
             _buildSteps = new List<BuildStep>();
-            Id = id;
+            Id = pipelineId;
             ProjectName = projectName;
             SourceRevision = sourceRevision;
             SourceUrl = sourceUrl;
@@ -58,8 +62,8 @@
         public void AddStep(BuildStep buildStep)
         {
             // Removing any existing steps with the same name:
-            BuildStep existing = _buildSteps.FirstOrDefault(
-                s => s.StepName == buildStep.StepName);
+            BuildStep existing =
+                _buildSteps.FirstOrDefault(s => s.StepName == buildStep.StepName);
             if (existing != null)
             {
                 _buildSteps.Remove(existing);

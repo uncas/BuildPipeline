@@ -35,7 +35,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\BuildPipelineKey.snk</AssemblyOriginatorKeyFile>
@@ -74,10 +74,14 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\..\packages\Dapper.1.12.1\lib\net40\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -98,7 +102,9 @@
     <Compile Include="ApplicationServices\Results\BaseResult.cs" />
     <Compile Include="ApplicationServices\Results\ResultError.cs" />
     <Compile Include="ApplicationServices\Results\ScheduleDeploymentResult.cs" />
+    <Compile Include="Repositories\BuildPipelineConnection.cs" />
     <Compile Include="Repositories\BuildPipelineSchemaRepository.cs" />
+    <Compile Include="Repositories\WithConnection.cs" />
     <Compile Include="SharedBootstrapper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\BuildStep.cs" />
@@ -128,11 +134,12 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)\src\Shared.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild" DependsOnTargets="CopyNuGetPackagesToLocalFolder">
+  </Target>
 </Project>

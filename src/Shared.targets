@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="CopyNuGetPackagesToLocalFolder">
+
+    <PropertyGroup>
+      <LocalPackageFolder>C:\NuGetPackages</LocalPackageFolder>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <NuGetPackages 
+        Include="$(SolutionDir)\packages\**\*.nupkg" />
+    </ItemGroup>
+
+    <Message Text="Copies %(NugetPackages.FileName)%(NugetPackages.Extension) to $(LocalPackageFolder)."
+      Condition="!Exists('$(LocalPackageFolder)\%(NugetPackages.FileName)%(NugetPackages.Extension)')" />
+
+    <Copy SourceFiles="@(NuGetPackages)"
+      DestinationFiles="$(LocalPackageFolder)\%(FileName)%(Extension)"
+      Condition="!Exists('$(LocalPackageFolder)\%(FileName)%(Extension)')" />
+
+  </Target>
+
+</Project>
