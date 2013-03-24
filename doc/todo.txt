@@ -1,10 +1,10 @@
 ﻿Essentials:
-- Use dapper
 - Tests of existing logic
 - Reconsider data structure
 -- Pipeline: ADD BranchName, DROP SourceUrl+SourceRevision, ADD Revision
 - Build of itself
 - API endpoints for logging
+- Use Unity with auto registration (registry)
 
 - Events & readmodels
 -- EventStore (AggregateName, AggregateId, EventName, EventTime, SequenceNumber, Data)

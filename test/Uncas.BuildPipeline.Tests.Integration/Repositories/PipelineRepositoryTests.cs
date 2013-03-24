@@ -9,7 +9,7 @@ using Uncas.BuildPipeline.Repositories;
 namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 {
     [TestFixture]
-    public class PipelineRepositoryTests
+    public class PipelineRepositoryTests : WithBootstrapping<IPipelineRepository>
     {
         #region Setup/Teardown
 
@@ -27,9 +27,6 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 
         #endregion
 
-        private readonly IPipelineRepository _pipelineRepository =
-            new PipelineRepository();
-
         private TransactionScope _scope;
 
         [Test]
@@ -44,10 +41,9 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
                                          DateTime.Now,
                                          "mySourceAuthor",
                                          "myPackagePath");
-            _pipelineRepository.AddPipeline(pipeline1);
+            Sut.AddPipeline(pipeline1);
 
-            Pipeline pipeline =
-                _pipelineRepository.GetPipelines(pageSize).FirstOrDefault();
+            Pipeline pipeline = Sut.GetPipelines(pageSize).FirstOrDefault();
 
             Assert.NotNull(pipeline);
             Assert.AreEqual(pipeline1.ProjectName, pipeline.ProjectName);
@@ -59,7 +55,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         {
             const int pageSize = 2;
 
-            IEnumerable<Pipeline> pipelines = _pipelineRepository.GetPipelines(pageSize);
+            IEnumerable<Pipeline> pipelines = Sut.GetPipelines(pageSize);
 
             Assert.True(pipelines.Count() <= pageSize);
         }

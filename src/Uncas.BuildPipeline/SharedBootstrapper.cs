@@ -28,8 +28,6 @@ namespace Uncas.BuildPipeline
                                     () => new EnvironmentRepository());
                     _registered.Add(typeof (IPipelineRepository),
                                     () => new PipelineRepository());
-                    _registered.Add(typeof (IBuildPipelineRepositoryConfiguration),
-                                    () => new BuildPipelineRepositoryConfiguration());
                     _registered.Add(typeof (IDeploymentRepository),
                                     () => new DeploymentRepository());
                 }
