@@ -66,8 +66,22 @@ function UnitTest {
     Run-Test "Uncas.BuildPipeline.Tests.Unit" $outputDir
 }
 
+function DownloadFile ($from, $to) {
+    Write-Host "Downloading file from '$from' to '$to'."
+    $webClient = New-Object System.Net.WebClient
+    $script = $webClient.DownloadString($from)
+    Set-Content $to $script
+}
+
 function UpdateDb {
     UnitTest
+    $scriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526"
+    $scriptSource = "https://raw.github.com/uncas/db-deployment/$scriptVersion/dbDeployment.ps1"
+    $script = "packages\dbDeployment-$scriptVersion.ps1"
+    if (!(Test-Path $script)) {
+        DownloadFile $scriptSource $script
+    }
+    . $script "Server=.\SqlExpress;Database=BuildPipeline;Integrated Security=true;" sql
 }
 
 function IntegrationTest {
