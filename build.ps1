@@ -19,8 +19,6 @@ $year = (Get-Date).year
 
 $configuration = "Release"
 
-$serviceName = "Uncas.BuildPipeline.WindowsService"
-
 $solutionFile = "$baseDir\Uncas.BuildPipeline.sln"
 $nunitFolder = "$baseDir\packages\NUnit.Runners.2.6.0.12051\tools"
 $nunitExe = "$nunitFolder\nunit-console.exe"
@@ -118,37 +116,47 @@ function StopAndWriteStopwatch ($stopwatch, $description) {
     Write-Host "$totalSeconds seconds: $description"
 }
 
-function DeployService {
+function DeployService (
+        $serviceName = "Uncas.BuildPipeline.WindowsService",
+        $destinationMachine = ".", 
+        $destinationRootFolder = "C:\Services") {
     if ($branch -ne "master") { return }
 
-    # Stopping service:
-    $sw = GetAndStartStopwatch
-    $service = Get-Service -ComputerName $deployMachine -Name $serviceName
-    if ($service.Status -ne "Stopped") {
+    $service = Get-Service -ComputerName $destinationMachine -Name "$serviceName*"
+    if ($service -and ($service.Status -ne "Stopped")) {
+        # Stopping service:
+        $sw = GetAndStartStopwatch
         $service.Stop()
-    }
-    StopAndWriteStopwatch $sw "Stop service"
+        StopAndWriteStopwatch $sw "Stop service"
 
-    # Waiting for the service to be completely shut down:
-    $sw = GetAndStartStopwatch
-    $waited = 0
-    $waitInterval = 1
-    $waitLimit = 120
-    while ($service.Status -ne "Stopped") {
-        Start-Sleep -s $waitInterval
-        $waited += $waitInterval
-        if ($waited -gt $waitLimit) { break }
-        $service = Get-Service -ComputerName $deployMachine -Name $serviceName
+        # Waiting for the service to be completely shut down:
+        $sw = GetAndStartStopwatch
+        $waited = 0
+        $waitInterval = 1
+        $waitLimit = 120
+        while ($service -and ($service.Status -ne "Stopped")) {
+            Start-Sleep -s $waitInterval
+            $waited += $waitInterval
+            if ($waited -gt $waitLimit) { break }
+            $service = Get-Service -ComputerName $destinationMachine -Name $serviceName
+        }
+        # Extra time to wait, such that files are not in use anymore:
+        Start-Sleep -s 5
+        StopAndWriteStopwatch $sw "Wait for service shut-down"
     }
-    # Extra time to wait, such that files are not in use anymore:
-    Start-Sleep -s 5
-    StopAndWriteStopwatch $sw "Wait for service shut-down"
 
     # Deploying files to service:
+    $destinationFolder = "$destinationRootFolder\$serviceName"
     $sw = GetAndStartStopwatch
-    Sync-Folders "$collectDir\$serviceName" $remoteServiceFolder
+    Sync-Folders "$collectDir\$serviceName" $destinationFolder
     StopAndWriteStopwatch $sw "Deploy files to service"
 
+    # Installing service:
+    if (!$service) {
+        New-Service -name $serviceName -binaryPathName "$destinationFolder\$serviceName.exe"
+        $service = Get-Service -ComputerName $destinationMachine -Name $serviceName
+    }
+    
     # Starting service:
     $sw = GetAndStartStopwatch
     $service.Start()
@@ -201,7 +209,7 @@ function DeployWeb {
 function Deploy {
     Collect
     DeployService
-    DeployWeb
+    #DeployWeb
 }
 
 if ($task -and (Test-Path "Function:\$task")) {

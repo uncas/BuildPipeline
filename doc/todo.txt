@@ -1,9 +1,6 @@
 ﻿Essentials:
-- Script: Fully automated set up of database, site and service on local machine.
+- Script: Fully automated set up of site on local machine.
 
 Features:
 - Show github links.
 - Show diffs (via local mirror of github repo).
-
-Refactorings:
-- Rewrite build script in powershell.
