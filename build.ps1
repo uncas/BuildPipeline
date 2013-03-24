@@ -1,5 +1,5 @@
 ﻿param (
-    [string]$task = "UnitTest",
+    [string]$task = "Collect",
     [string]$branch = "master",
     [string]$dbScriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526"
 )
@@ -92,7 +92,7 @@ function IntegrationTest {
 function Collect {
     IntegrationTest
     
-    Copy-WebApplication $srcDir "Uncas.BuildPipeline" $collectDir
+    Copy-WebApplication $srcDir "Uncas.BuildPipeline.Web" $collectDir
     copy $srcDir\Uncas.BuildPipeline.WindowsService\bin\$configuration $collectDir\Uncas.BuildPipeline.WindowsService -recurse
 }
 
