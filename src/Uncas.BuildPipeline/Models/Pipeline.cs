@@ -10,6 +10,7 @@ namespace Uncas.BuildPipeline.Models
 
         private Pipeline()
         {
+            _buildSteps = new List<BuildStep>();
         }
 
         public Pipeline(
@@ -20,9 +21,8 @@ namespace Uncas.BuildPipeline.Models
             string sourceUrlBase,
             DateTime created,
             string sourceAuthor,
-            string packagePath)
+            string packagePath) : this()
         {
-            _buildSteps = new List<BuildStep>();
             Id = pipelineId;
             ProjectName = projectName;
             SourceRevision = sourceRevision;
@@ -56,7 +56,7 @@ namespace Uncas.BuildPipeline.Models
 
         public bool IsSuccessful
         {
-            get { return !Steps.Any(s => !s.IsSuccessful); }
+            get { return Steps.All(s => s.IsSuccessful); }
         }
 
         public void AddStep(BuildStep buildStep)
