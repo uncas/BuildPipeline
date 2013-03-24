@@ -60,6 +60,17 @@ namespace Uncas.BuildPipeline.Repositories
             }
         }
 
+        public int ExecuteAndGetGeneratedId(
+            string sql, object param,string generatedIdName)
+        {
+            var dynamicParameters = new DynamicParameters(param);
+            dynamicParameters.Add(generatedIdName,
+                                  dbType: DbType.Int32,
+                                  direction: ParameterDirection.Output);
+            Execute(sql, dynamicParameters);
+            return dynamicParameters.Get<int>(generatedIdName);
+        }
+
         public TResult Execute<TResult>(
             Func<DbConnection, DbTransaction, TResult> task,
             IsolationLevel isolationLevel = IsolationLevel.ReadUncommitted)

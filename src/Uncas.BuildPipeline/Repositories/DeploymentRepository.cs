@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using Dapper;
 using Uncas.BuildPipeline.Models;
 using Uncas.Core.Data;
 
@@ -22,7 +20,6 @@ namespace Uncas.BuildPipeline.Repositories
                 throw new ArgumentNullException("deployment");
             }
 
-
             const string sql = @"
 INSERT INTO Deployment
 (Created, PipelineId, EnvironmentId)
@@ -31,18 +28,10 @@ VALUES
 
 SET @DeploymentId = Scope_Identity()";
             var param =
-                new DynamicParameters(
-                    new
-                        {
-                            deployment.Created,
-                            deployment.PipelineId,
-                            deployment.EnvironmentId
-                        });
-            param.Add("DeploymentId",
-                      dbType: DbType.Int32,
-                      direction: ParameterDirection.Output);
-            _connection.Execute(sql, param);
-            var deploymentId = param.Get<int>("DeploymentId");
+                new {deployment.Created, deployment.PipelineId, deployment.EnvironmentId};
+            int deploymentId = _connection.ExecuteAndGetGeneratedId(sql,
+                                                                    param,
+                                                                    "DeploymentId");
             deployment.ChangeId(deploymentId);
         }
 

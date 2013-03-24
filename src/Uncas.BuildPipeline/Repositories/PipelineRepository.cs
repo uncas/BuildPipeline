@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using Dapper;
 using Uncas.BuildPipeline.Models;
 
 namespace Uncas.BuildPipeline.Repositories
@@ -85,20 +83,16 @@ BEGIN
     WHERE PipelineId = @pipelineId
 END";
             var param =
-                new DynamicParameters(
-                    new
-                        {
-                            projectId,
-                            pipeline.SourceRevision,
-                            pipeline.SourceUrl,
-                            pipeline.SourceAuthor,
-                            pipeline.PackagePath
-                        });
-            param.Add("PipelineId",
-                      dbType: DbType.Int32,
-                      direction: ParameterDirection.Output);
-            _connection.Execute(sql, param);
-            pipeline.AssignId(param.Get<int>("PipelineId"));
+                new
+                    {
+                        projectId,
+                        pipeline.SourceRevision,
+                        pipeline.SourceUrl,
+                        pipeline.SourceAuthor,
+                        pipeline.PackagePath
+                    };
+            int pipelineId = _connection.ExecuteAndGetGeneratedId(sql, param, "PipelineId");
+            pipeline.AssignId(pipelineId);
         }
 
         #endregion
@@ -115,12 +109,9 @@ ELSE
 BEGIN
     SELECT @ProjectId = ProjectId FROM Project WHERE ProjectName = @ProjectName
 END";
-            var param = new DynamicParameters(new {projectName, sourceUrlBase});
-            param.Add("ProjectId",
-                      dbType: DbType.Int32,
-                      direction: ParameterDirection.Output);
-            _connection.Execute(sql, param);
-            return param.Get<int>("ProjectId");
+            return _connection.ExecuteAndGetGeneratedId(sql,
+                                                        new {projectName, sourceUrlBase},
+                                                        "ProjectId");
         }
 
         private void AddSteps(IEnumerable<Pipeline> pipelines)
