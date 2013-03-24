@@ -113,7 +113,7 @@
       <attributes>
         <attribute type="System.Reflection.AssemblyCompanyAttribute" value="Uncas" />
         <attribute type="System.Reflection.AssemblyProductAttribute" value="Uncas.BuildPipeline" />
-        <attribute type="System.Reflection.AssemblyCopyrightAttribute" value="Copyright (c) 2012, Ole Lynge Soerensen" />
+        <attribute type="System.Reflection.AssemblyCopyrightAttribute" value="Copyright (c) 2013, Ole Lynge Soerensen" />
         <attribute type="System.Reflection.AssemblyVersionAttribute" value="${version.string}" />
         <attribute type="System.Reflection.AssemblyFileVersionAttribute" value="${version.string}" />
         <attribute type="System.Reflection.AssemblyInformationalVersionAttribute" value="${version.string} (${git.hash})" />
