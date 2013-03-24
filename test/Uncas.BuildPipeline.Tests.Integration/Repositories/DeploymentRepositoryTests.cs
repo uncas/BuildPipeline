@@ -1,12 +1,12 @@
-﻿namespace Uncas.BuildPipeline.Tests.Integration.Repositories
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using NUnit.Framework;
-    using Uncas.BuildPipeline.Models;
-    using Uncas.BuildPipeline.Repositories;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using NUnit.Framework;
+using Uncas.BuildPipeline.Models;
+using Uncas.BuildPipeline.Repositories;
 
+namespace Uncas.BuildPipeline.Tests.Integration.Repositories
+{
     [TestFixture]
     public class DeploymentRepositoryTests
     {
@@ -16,27 +16,25 @@
         public void BeforeEach()
         {
             // TODO: When a dedicated test database is in place, use the real repository here:
-            deploymentRepository = new FakeDeploymentRepository();
+            _deploymentRepository = new FakeDeploymentRepository();
         }
 
         #endregion
 
-        private IDeploymentRepository deploymentRepository;
+        private IDeploymentRepository _deploymentRepository;
 
         [Test]
         public void AddDeployment_WhenAdded_CanBeRetrieved()
         {
             const int pipelineId = 1;
             const int environmentId = 1;
-            var deployment = new Deployment(
-                pipelineId,
-                environmentId);
-            deploymentRepository.AddDeployment(deployment);
+            var deployment = new Deployment(pipelineId, environmentId);
+            _deploymentRepository.AddDeployment(deployment);
 
             IEnumerable<Deployment> result =
-                deploymentRepository.GetDeployments(pipelineId);
+                _deploymentRepository.GetDeployments(pipelineId);
 
-            Assert.True(result.Count() >= 1);
+            Assert.True(result.Any());
         }
 
         [Test]
@@ -44,16 +42,16 @@
         {
             // Arrange:
             var added = new Deployment(1, 1);
-            deploymentRepository.AddDeployment(added);
+            _deploymentRepository.AddDeployment(added);
             Thread.Sleep(10);
             added.Start();
             int deploymentId = added.Id.Value;
 
             // Act:
-            deploymentRepository.UpdateDeployment(added);
+            _deploymentRepository.UpdateDeployment(added);
 
             // Assert:
-            Deployment updated = deploymentRepository.GetDeployment(deploymentId);
+            Deployment updated = _deploymentRepository.GetDeployment(deploymentId);
             Assert.NotNull(updated.Started);
             Assert.True(updated.Started > added.Created);
         }

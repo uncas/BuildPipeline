@@ -10,7 +10,7 @@
 
         IEnumerable<Deployment> GetByEnvironment(int environmentId);
 
-        Deployment GetDeployment(int id);
+        Deployment GetDeployment(int deploymentId);
 
         IEnumerable<Deployment> GetDeployments(int pipelineId);
 

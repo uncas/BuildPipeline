@@ -1,11 +1,11 @@
-﻿namespace Uncas.BuildPipeline
-{
-    using System;
-    using System.Collections.Generic;
-    using Uncas.BuildPipeline.ApplicationServices;
-    using Uncas.BuildPipeline.Repositories;
-    using Uncas.BuildPipeline.Utilities;
+﻿using System;
+using System.Collections.Generic;
+using Uncas.BuildPipeline.ApplicationServices;
+using Uncas.BuildPipeline.Repositories;
+using Uncas.BuildPipeline.Utilities;
 
+namespace Uncas.BuildPipeline
+{
     public static class SharedBootstrapper
     {
         private static Dictionary<Type, Func<object>> _registered;
@@ -17,26 +17,21 @@
                 if (_registered == null)
                 {
                     _registered = new Dictionary<Type, Func<object>>();
-                    _registered.Add(
-                        typeof(IDeploymentService),
-                        () => new DeploymentService(
-                                  Resolve<IEnvironmentRepository>(),
-                                  Resolve<IPipelineRepository>(),
-                                  Resolve<IDeploymentRepository>(),
-                                  new DeploymentUtility()));
-                    _registered.Add(
-                        typeof(IEnvironmentRepository),
-                        () => new EnvironmentRepository());
-                    _registered.Add(
-                        typeof(IPipelineRepository),
-                        () => new PipelineRepository());
-                    _registered.Add(
-                        typeof(IBuildPipelineRepositoryConfiguration),
-                        () => new BuildPipelineRepositoryConfiguration());
-                    _registered.Add(
-                        typeof(IDeploymentRepository),
-                        () => new DeploymentRepository(
-                                  Resolve<IBuildPipelineRepositoryConfiguration>()));
+                    _registered.Add(typeof (IDeploymentService),
+                                    () =>
+                                    new DeploymentService(
+                                        Resolve<IEnvironmentRepository>(),
+                                        Resolve<IPipelineRepository>(),
+                                        Resolve<IDeploymentRepository>(),
+                                        new DeploymentUtility()));
+                    _registered.Add(typeof (IEnvironmentRepository),
+                                    () => new EnvironmentRepository());
+                    _registered.Add(typeof (IPipelineRepository),
+                                    () => new PipelineRepository());
+                    _registered.Add(typeof (IBuildPipelineRepositoryConfiguration),
+                                    () => new BuildPipelineRepositoryConfiguration());
+                    _registered.Add(typeof (IDeploymentRepository),
+                                    () => new DeploymentRepository());
                 }
 
                 return _registered;
@@ -45,7 +40,7 @@
 
         public static T Resolve<T>() where T : class
         {
-            Type interfaceType = typeof(T);
+            Type interfaceType = typeof (T);
             if (!Registered.ContainsKey(interfaceType))
             {
                 return null;

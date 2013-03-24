@@ -33,9 +33,9 @@
             throw new NotImplementedException();
         }
 
-        public Deployment GetDeployment(int id)
+        public Deployment GetDeployment(int deploymentId)
         {
-            return _deployments.SingleOrDefault(d => d.Id == id);
+            return _deployments.SingleOrDefault(d => d.Id == deploymentId);
         }
 
         public IEnumerable<Deployment> GetDeployments(int pipelineId)
