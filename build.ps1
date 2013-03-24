@@ -19,6 +19,8 @@ $year = (Get-Date).year
 
 $configuration = "Release"
 
+$webserver = "localhost"
+
 $solutionFile = "$baseDir\Uncas.BuildPipeline.sln"
 $nunitFolder = "$baseDir\packages\NUnit.Runners.2.6.0.12051\tools"
 $nunitExe = "$nunitFolder\nunit-console.exe"
@@ -94,8 +96,8 @@ function Collect {
     copy $srcDir\Uncas.BuildPipeline.WindowsService\bin\$configuration $collectDir\Uncas.BuildPipeline.WindowsService -recurse
 }
 
-function FlipWebSite($siteName, $physicalPath) {
-    $session = New-PSSession -ComputerName $deployMachine
+function FlipRemoteWebSite($siteName, $physicalPath, $webserver) {
+    $session = New-PSSession -ComputerName $webserver
     if (!$session) { return }
     $block = { 
         param($siteName, $physicalPath)
@@ -104,6 +106,15 @@ function FlipWebSite($siteName, $physicalPath) {
         Set-ItemProperty "IIS:\Sites\$siteName" -name physicalPath -value $physicalPath
     }
     Invoke-Command -Session $session -ScriptBlock $block -argumentlist $siteName, $physicalPath
+}
+
+function FlipWebSite($siteName, $physicalPath, $webserver = $webserver) {
+    if ($webserver -ne "localhost") {
+        FlipRemoteWebSite $siteName $physicalPath $webServer
+        return
+    }
+
+    Set-ItemProperty "IIS:\Sites\$siteName" -name physicalPath -value $physicalPath
 }
 
 function GetAndStartStopwatch {
@@ -163,15 +174,19 @@ function DeployService (
     StopAndWriteStopwatch $sw "Start service"
 }
 
-function DeployWeb {
-    $webRootName = "deliverypipeline"
-    $siteName = "DeliveryPipeline"
+function DeployWeb (
+    $webRootName = "BuildPipeline",
+    $sourceFolder = "$collectDir\Uncas.BuildPipeline.Web",
+    $webserver = $webserver ) {
+
+    Import-Module WebAdministration
+
     if ($branch -ne "master") {
-        $webRootName = "deliverypipeline-$branch"
-        $siteName = "DeliveryPipeline-$branch"
+        $webRootName = "$webRootName-$branch"
     }
+    $siteName = $webRootName
     $relativeWebRoot = "inetpub\wwwroot\$webRootName"
-    $remoteWebRoot = "\\$deployMachine\c$\$relativeWebRoot"
+    $remoteWebRoot = "\\$webserver\c$\$relativeWebRoot"
 
     $sha = (git rev-parse HEAD)
     $webFolder = "$sha"
@@ -182,9 +197,18 @@ function DeployWeb {
     $sw = GetAndStartStopwatch
     if (!(Test-Path $remoteWebRoot)) { mkdir $remoteWebRoot }
     $previousWebsiteVersions = (gci $remoteWebRoot)
-    Sync-Folders "$collectDir\Uncas.BuildPipeline" $remoteWebFolder
+    Sync-Folders $sourceFolder $remoteWebFolder
     StopAndWriteStopwatch $sw "Deploy files to website"
 
+    # Creating site if it does not already exist:
+    $site = gci "IIS:\Sites\$siteName"
+    if (!$site) {
+        $sw = GetAndStartStopwatch
+        New-Item iis:\Sites\$siteName -bindings @{protocol="http";bindingInformation=":80:$siteName"} -physicalPath $localWebFolder
+        StopAndWriteStopwatch $sw "Create website"
+        return
+    }
+    
     # TODO: Consider warming the new location up?
 
     # Flipping website:
@@ -209,7 +233,7 @@ function DeployWeb {
 function Deploy {
     Collect
     DeployService
-    #DeployWeb
+    DeployWeb
 }
 
 if ($task -and (Test-Path "Function:\$task")) {
