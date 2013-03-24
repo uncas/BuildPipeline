@@ -1,5 +1,5 @@
 ﻿param (
-    [string]$task = "Compile",
+    [string]$task = "UnitTest",
     [string]$branch = "master"
 )
 

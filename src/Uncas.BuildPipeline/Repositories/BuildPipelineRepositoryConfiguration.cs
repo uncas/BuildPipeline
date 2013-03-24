@@ -1,18 +1,23 @@
+using Uncas.Core;
+
 namespace Uncas.BuildPipeline.Repositories
 {
-    using Uncas.Core;
-
     public class BuildPipelineRepositoryConfiguration :
         IBuildPipelineRepositoryConfiguration
     {
+        #region IBuildPipelineRepositoryConfiguration Members
+
         public string ConnectionString
         {
             get
             {
-                return ConfigurationWrapper.GetConnectionString(
-                    "BuildPipelineConnectionString",
-                    "Data Source=Test.db;Version=3;");
+                return
+                    ConfigurationWrapper.GetConnectionString(
+                        "BuildPipelineConnectionString",
+                        "Server=.\\SqlExpress;Database=BuildPipeline;Integrated Security=true;");
             }
         }
+
+        #endregion
     }
 }

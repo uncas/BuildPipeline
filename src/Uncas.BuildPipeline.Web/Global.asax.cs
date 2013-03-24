@@ -35,9 +35,6 @@
         {
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
-            //BuildPipelineDatabaseSetup.Setup(
-            //    ConfigurationWrapper.GetConnectionString(
-            //        "BuildPipelineConnectionString"));
         }
     }
 }
