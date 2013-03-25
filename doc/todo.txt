@@ -1,11 +1,12 @@
 ﻿Essentials:
-- Tests of existing logic
-- Reconsider data structure
--- Pipeline: ADD BranchName, DROP SourceUrl+SourceRevision, ADD Revision
 - Build of itself
-- API endpoints for logging
-- Use Unity with auto registration (registry)
+- Log to itself (via API endpoints for logging)
 
+Infrastructure:
+- Reconsider data structure
+-- Pipeline: Rename: SourceUrl -> BranchName, SourceRevision -> Revision
+- Tests of existing logic, specs
+- Use Unity with auto registration (registry)
 - Events & readmodels
 -- EventStore (AggregateName, AggregateId, EventName, EventTime, SequenceNumber, Data)
 --- Aggregates: Pipeline, Deployment, Environment
