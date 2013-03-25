@@ -4,6 +4,7 @@ using ServiceStack.Mvc;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
+using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Web.ApiModels.Examples;
 using Uncas.BuildPipeline.Web.App_Start;
 using WebActivator;
@@ -35,6 +36,7 @@ namespace Uncas.BuildPipeline.Web.App_Start
 
             //Register all your dependencies
             container.Register(new TodoRepository());
+            container.Register(Bootstrapper.Resolve<IPipelineRepository>());
 
             //Set MVC to use the same Funq IOC as ServiceStack
             ControllerBuilder.Current.SetControllerFactory(

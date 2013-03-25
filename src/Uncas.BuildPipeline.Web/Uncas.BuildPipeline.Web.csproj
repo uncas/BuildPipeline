@@ -150,6 +150,8 @@
     <Compile Include="ApiModels\Examples\Todo.cs" />
     <Compile Include="ApiModels\Examples\Todos.cs" />
     <Compile Include="ApiModels\Examples\TodosService.cs" />
+    <Compile Include="ApiModels\PipelineRequest.cs" />
+    <Compile Include="ApiModels\PipelineService.cs" />
     <Compile Include="App_Start\AppHost.cs" />
     <Compile Include="ApiModels\Examples\TodoRepository.cs" />
     <Compile Include="Bootstrapper.cs" />

@@ -28,6 +28,8 @@ JOIN Project AS Pr
 WHERE Pi.PipelineId = @PipelineId";
             Pipeline pipeline =
                 _connection.Query<Pipeline>(sql, new {pipelineId}).SingleOrDefault();
+            if (pipeline == null)
+                return null;
             AddSteps(pipeline);
             return pipeline;
         }
