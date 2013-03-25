@@ -4,8 +4,6 @@
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
-    using Uncas.BuildPipeline.Repositories;
-    using Uncas.Core;
 
     /// <summary>
     /// Setup logic for the website.
@@ -19,6 +17,9 @@
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.IgnoreRoute("api/{*pathInfo}");
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
