@@ -13,7 +13,7 @@
             return new Pipeline(
                 1,
                 "My project",
-                12,
+                "12",
                 "https://svn/test/trunk",
                 "https://svn/test/",
                 DateTime.Now,

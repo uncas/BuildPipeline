@@ -15,7 +15,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         {
             var pipeline = new Pipeline(1,
                                         "Bla",
-                                        1,
+                                        "1",
                                         "bla",
                                         "bla",
                                         DateTime.Now,

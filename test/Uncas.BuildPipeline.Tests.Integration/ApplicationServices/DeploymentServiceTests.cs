@@ -49,7 +49,7 @@
             var pipeline = new Pipeline(
                 pipelineId,
                 "A",
-                1,
+                "1",
                 "x",
                 "x",
                 DateTime.Now,

@@ -16,7 +16,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
             const int pageSize = 1;
             var pipeline1 = new Pipeline(1,
                                          "myproject",
-                                         123812830,
+                                         "123812830",
                                          "mySourceUrl",
                                          "mySourceUrlBase",
                                          DateTime.Now,

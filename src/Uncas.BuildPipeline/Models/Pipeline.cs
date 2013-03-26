@@ -16,7 +16,7 @@ namespace Uncas.BuildPipeline.Models
         public Pipeline(
             int pipelineId,
             string projectName,
-            int sourceRevision,
+            string sourceRevision,
             string sourceUrl,
             string sourceUrlBase,
             DateTime created,
@@ -39,7 +39,7 @@ namespace Uncas.BuildPipeline.Models
 
         public string SourceAuthor { get; private set; }
 
-        public int SourceRevision { get; private set; }
+        public string SourceRevision { get; private set; }
 
         public string SourceUrl { get; private set; }
 

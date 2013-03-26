@@ -27,7 +27,7 @@ namespace Uncas.BuildPipeline.Web.ApiModels
         {
             var pipeline = new Pipeline(0,
                                         request.ProjectName,
-                                        1,
+                                        request.Revision,
                                         request.BranchName,
                                         request.BranchName,
                                         DateTime.Now,
