@@ -1,8 +1,10 @@
+using System;
 using ServiceStack.Common;
 using ServiceStack.ServiceInterface;
 
 namespace Uncas.BuildPipeline.Web.ApiModels.Examples
 {
+    [CLSCompliant(false)]
     public class TodosService : Service
     {
         public TodoRepository Repository { get; set; } //Injected by IOC

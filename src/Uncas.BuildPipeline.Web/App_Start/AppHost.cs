@@ -1,3 +1,4 @@
+using System;
 using System.Web.Mvc;
 using Funq;
 using ServiceStack.Mvc;
@@ -15,11 +16,13 @@ namespace Uncas.BuildPipeline.Web.App_Start
 {
     //A customizeable typed UserSession that can be extended with your own properties
     //To access ServiceStack's Session, Cache, etc from MVC Controllers inherit from ControllerBase<CustomUserSession>
+    [CLSCompliant(false)]
     public class CustomUserSession : AuthUserSession
     {
         public string CustomProperty { get; set; }
     }
 
+    [CLSCompliant(false)]
     public class AppHost : AppHostBase
     {
         public AppHost() : base("BuildPipeline ASP.NET Host", typeof (AppHost).Assembly)

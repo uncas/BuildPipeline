@@ -6,6 +6,7 @@ using Uncas.BuildPipeline.Repositories;
 
 namespace Uncas.BuildPipeline.Web.ApiModels
 {
+    [CLSCompliant(false)]
     public class PipelineService : Service
     {
         public IPipelineRepository Repository { get; set; }
