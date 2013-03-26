@@ -1,7 +1,8 @@
 ﻿param (
     [string]$task = "Collect",
-    [string]$branch = "master",
-    [string]$dbScriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526"
+    [string]$branch = (git rev-parse --abbrev-ref HEAD),
+    [string]$dbScriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526",
+    [string]$baseUrl = "http://localhost:51743"
 )
 
 $baseDir  = Resolve-Path .
@@ -11,6 +12,7 @@ $outputDir = "$baseDir\output"
 $collectDir = "$outputDir\collect"
 
 . "$baseDir\build_ext.ps1"
+. "$baseDir\build_log.ps1"
 
 $versionMajor = 1
 $versionMinor = 0
@@ -94,6 +96,9 @@ function Collect {
     
     Copy-WebApplication $srcDir "Uncas.BuildPipeline.Web" $collectDir
     copy $srcDir\Uncas.BuildPipeline.WindowsService\bin\$configuration $collectDir\Uncas.BuildPipeline.WindowsService -recurse
+
+    $params = @{branchName=$branch; packagePath="none.zip"; baseUrl=$baseUrl}
+    LogPackage @params
 }
 
 function FlipRemoteWebSite($siteName, $physicalPath, $webserver) {
