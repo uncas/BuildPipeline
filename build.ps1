@@ -1,31 +1,43 @@
 ﻿param (
-    [string]$task = "Collect",
+    [string]$task = "Deploy",
     [string]$branch = (git rev-parse --abbrev-ref HEAD),
     [string]$dbScriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526",
+    [string]$environment = "develop",
     [string]$baseUrl = "http://localhost:51743"
 )
 
+# Constants for this solution:
+$solutionName = "Uncas.BuildPipeline"
+$nunitVersion = "2.6.0.12051"
+$versionMajor = 1
+$versionMinor = 0
+$versionBuild = 0
+$configuration = "Release"
+$webserver = "localhost"
+
+# Working variables:
 $baseDir  = Resolve-Path .
 $srcDir = "$baseDir\src"
 $testDir = "$baseDir\test"
 $outputDir = "$baseDir\output"
 $collectDir = "$outputDir\collect"
+$solutionFile = "$baseDir\$solutionName.sln"
+$nunitFolder = "$baseDir\packages\NUnit.Runners.$nunitVersion\tools"
+$nunitExe = "$nunitFolder\nunit-console.exe"
+$year = (Get-Date).year
+
+# Environment settings:
+$databaseName = "BuildPipeline"
+$webRootName = "BuildPipeline"
+$serviceName = "Uncas.BuildPipeline.WindowsService"
+if ($environment -ne "prod") {
+    $databaseName = "develop_$databaseName"
+    $webRootName = "develop.$webRootName"
+    $serviceName = "develop-Uncas.BuildPipeline.WindowsService"
+}
 
 . "$baseDir\build_ext.ps1"
 . "$baseDir\build_log.ps1"
-
-$versionMajor = 1
-$versionMinor = 0
-$versionBuild = 0
-$year = (Get-Date).year
-
-$configuration = "Release"
-
-$webserver = "localhost"
-
-$solutionFile = "$baseDir\Uncas.BuildPipeline.sln"
-$nunitFolder = "$baseDir\packages\NUnit.Runners.2.6.0.12051\tools"
-$nunitExe = "$nunitFolder\nunit-console.exe"
 
 function Clean {
     Clean-Folder $collectDir
@@ -47,7 +59,7 @@ function Init {
     Generate-Assembly-Info `
         -file "$baseDir\src\VersionInfo.cs" `
         -company "Uncas" `
-        -product "Uncas.BuildPipeline" `
+        -product "$solutionName" `
         -version "$versionMajor.$versionMinor.$versionBuild" `
         -copyright "Copyright (c) $year, Uncas"
 }
@@ -83,7 +95,7 @@ function UpdateDb {
     if (!(Test-Path $script)) {
         DownloadFile $scriptSource $script
     }
-    . $script "Server=.\SqlExpress;Database=BuildPipeline;Integrated Security=true;" sql
+    . $script "Server=.\SqlExpress;Database=$databaseName;Integrated Security=true;" sql
 }
 
 function IntegrationTest {
@@ -133,11 +145,9 @@ function StopAndWriteStopwatch ($stopwatch, $description) {
 }
 
 function DeployService (
-        $serviceName = "Uncas.BuildPipeline.WindowsService",
         $destinationMachine = ".", 
         $destinationRootFolder = "C:\Services") {
-    if ($branch -ne "master") { return }
-
+    if ($environment -ne "prod") { return }
     $service = Get-Service -ComputerName $destinationMachine -Name "$serviceName*"
     if ($service -and ($service.Status -ne "Stopped")) {
         # Stopping service:
@@ -179,16 +189,10 @@ function DeployService (
     StopAndWriteStopwatch $sw "Start service"
 }
 
-function DeployWeb (
-    $webRootName = "BuildPipeline",
-    $sourceFolder = "$collectDir\Uncas.BuildPipeline.Web",
-    $webserver = $webserver ) {
-
+function DeployWeb {
+    $sourceFolder = "$collectDir\Uncas.BuildPipeline.Web"
     Import-Module WebAdministration
 
-    if ($branch -ne "master") {
-        $webRootName = "$webRootName-$branch"
-    }
     $siteName = $webRootName
     $relativeWebRoot = "inetpub\wwwroot\$webRootName"
     $remoteWebRoot = "\\$webserver\c$\$relativeWebRoot"
@@ -206,7 +210,8 @@ function DeployWeb (
     StopAndWriteStopwatch $sw "Deploy files to website"
 
     # Creating site if it does not already exist:
-    $site = gci "IIS:\Sites\$siteName"
+    Write-Host "Creating site if it does not already exist..."
+    $site = gci "IIS:\Sites\$siteName*"
     if (!$site) {
         $sw = GetAndStartStopwatch
         New-Item iis:\Sites\$siteName -bindings @{protocol="http";bindingInformation=":80:$siteName"} -physicalPath $localWebFolder
