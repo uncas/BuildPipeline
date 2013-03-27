@@ -191,7 +191,6 @@ function DeployService (
 
 function DeployWeb {
     $sourceFolder = "$collectDir\Uncas.BuildPipeline.Web"
-    Import-Module WebAdministration
 
     $siteName = $webRootName
     $relativeWebRoot = "inetpub\wwwroot\$webRootName"
@@ -209,12 +208,13 @@ function DeployWeb {
     Sync-Folders $sourceFolder $remoteWebFolder
     StopAndWriteStopwatch $sw "Deploy files to website"
 
+    Import-Module WebAdministration
+
     # Creating site if it does not already exist:
-    Write-Host "Creating site if it does not already exist..."
-    $site = gci "IIS:\Sites\$siteName*"
-    if (!$site) {
+    $iisPath = "IIS:\Sites\$siteName"
+    if (!(Test-Path $iisPath)) {
         $sw = GetAndStartStopwatch
-        New-Item iis:\Sites\$siteName -bindings @{protocol="http";bindingInformation=":80:$siteName"} -physicalPath $localWebFolder
+        New-Item $iisPath -bindings @{protocol="http";bindingInformation=":80:$siteName"} -physicalPath $localWebFolder
         StopAndWriteStopwatch $sw "Create website"
         return
     }
