@@ -16,15 +16,18 @@
     /// </summary>
     public class EnvironmentController : BaseController
     {
-        private readonly IDeploymentService deploymentService;
-        private readonly IEnvironmentRepository environmentRepository;
-        private readonly IPipelineRepository pipelineRepository;
+        private readonly IDeploymentService _deploymentService;
+        private readonly IEnvironmentRepository _environmentRepository;
+        private readonly IPipelineRepository _pipelineRepository;
 
-        public EnvironmentController()
+        public EnvironmentController(
+            IDeploymentService deploymentService,
+            IEnvironmentRepository environmentRepository,
+            IPipelineRepository pipelineRepository)
         {
-            environmentRepository = Bootstrapper.Resolve<IEnvironmentRepository>();
-            deploymentService = Bootstrapper.Resolve<IDeploymentService>();
-            pipelineRepository = Bootstrapper.Resolve<IPipelineRepository>();
+            _deploymentService = deploymentService;
+            _environmentRepository = environmentRepository;
+            _pipelineRepository = pipelineRepository;
         }
 
         public void AddEnvironmentIndexViewModel(
@@ -42,7 +45,7 @@
             }
 
             IEnumerable<Deployment> deployments =
-                deploymentService.GetDeploymentsByEnvironment(
+                _deploymentService.GetDeploymentsByEnvironment(
                     environment.Id);
             Deployment lastDeployment =
                 deployments.Where(d => d.Completed.HasValue).OrderByDescending(d => d.Completed).FirstOrDefault();
@@ -51,7 +54,7 @@
                 return;
             }
 
-            Pipeline pipeline = pipelineRepository.GetPipeline(lastDeployment.PipelineId);
+            Pipeline pipeline = _pipelineRepository.GetPipeline(lastDeployment.PipelineId);
             string currentSourceRevision = pipeline.SourceRevision;
             viewModels.Add(new EnvironmentIndexViewModel
                                {
@@ -65,7 +68,7 @@
         {
             const int PageSize = 30;
             IEnumerable<Environment> environments =
-                environmentRepository.GetEnvironments(new PagingInfo(PageSize));
+                _environmentRepository.GetEnvironments(new PagingInfo(PageSize));
             var viewModel = new List<EnvironmentIndexViewModel>();
             foreach (Environment environment in environments)
             {

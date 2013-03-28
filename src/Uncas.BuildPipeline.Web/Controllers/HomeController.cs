@@ -20,11 +20,14 @@
         private readonly IEnvironmentRepository _environmentRepository;
         private readonly IPipelineRepository _pipelineRepository;
 
-        public HomeController()
+        public HomeController(
+            IDeploymentService deploymentService,
+            IEnvironmentRepository environmentRepository,
+            IPipelineRepository pipelineRepository)
         {
-            _environmentRepository = Bootstrapper.Resolve<IEnvironmentRepository>();
-            _deploymentService = Bootstrapper.Resolve<IDeploymentService>();
-            _pipelineRepository = Bootstrapper.Resolve<IPipelineRepository>();
+            _deploymentService = deploymentService;
+            _environmentRepository = environmentRepository;
+            _pipelineRepository = pipelineRepository;
         }
 
         [HttpGet]

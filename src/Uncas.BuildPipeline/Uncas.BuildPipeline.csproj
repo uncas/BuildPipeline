@@ -82,6 +82,16 @@
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -91,6 +101,9 @@
     <Reference Include="Uncas.Core.External">
       <HintPath>..\..\packages\Uncas.Core.External.1.1.0.154\lib\net40\Uncas.Core.External.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="UnityConfiguration">
+      <HintPath>..\..\packages\UnityConfiguration.1.4.1\lib\net35\UnityConfiguration.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +115,7 @@
     <Compile Include="ApplicationServices\Results\BaseResult.cs" />
     <Compile Include="ApplicationServices\Results\ResultError.cs" />
     <Compile Include="ApplicationServices\Results\ScheduleDeploymentResult.cs" />
+    <Compile Include="SharedRegistry.cs" />
     <Compile Include="Repositories\BuildPipelineConnection.cs" />
     <Compile Include="Repositories\BuildPipelineSchemaRepository.cs" />
     <Compile Include="Repositories\WithConnection.cs" />

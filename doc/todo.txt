@@ -1,7 +1,4 @@
 ﻿Essentials:
-- Create and use other database when developing
-- Fix builds and deployments (only deploy for master)
-- Use Unity with auto registration (registry)
 - Change data structure:
 -- Pipeline: Rename: SourceUrl -> BranchName, SourceRevision -> Revision
 

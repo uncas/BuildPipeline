@@ -1,10 +1,28 @@
-﻿namespace Uncas.BuildPipeline.WindowsService
+﻿using Microsoft.Practices.Unity;
+using UnityConfiguration;
+
+namespace Uncas.BuildPipeline.WindowsService
 {
-    internal static class Bootstrapper
+    public static class Bootstrapper
     {
-        public static T Resolve<T>() where T : class
+        private static IUnityContainer _container;
+
+        public static void Initialize()
         {
-            return SharedBootstrapper.Resolve<T>();
+            _container = BuildUnityContainer();
+        }
+
+        public static T Resolve<T>()
+        {
+            return _container.Resolve<T>();
+        }
+
+        private static IUnityContainer BuildUnityContainer()
+        {
+            var container = new UnityContainer();
+            container.Configure(x => x.AddRegistry<SharedRegistry>());
+            container.Configure(x => x.AddRegistry<ServiceRegistry>());
+            return container;
         }
     }
 }

@@ -1,13 +1,11 @@
 using System;
-using System.Web.Mvc;
 using Funq;
-using ServiceStack.Mvc;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
-using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Web.ApiModels.Examples;
 using Uncas.BuildPipeline.Web.App_Start;
+using Uncas.BuildPipeline.Web.Configuration;
 using WebActivator;
 
 [assembly: PreApplicationStartMethod(typeof (AppHost), "Start")]
@@ -38,12 +36,7 @@ namespace Uncas.BuildPipeline.Web.App_Start
             Routes.Add<Hello>("/hello").Add<Hello>("/hello/{Name*}");
 
             //Register all your dependencies
-            container.Register(new TodoRepository());
-            container.Register(Bootstrapper.Resolve<IPipelineRepository>());
-
-            //Set MVC to use the same Funq IOC as ServiceStack
-            ControllerBuilder.Current.SetControllerFactory(
-                new FunqControllerFactory(container));
+            container.Adapter = new UnityContainerAdapter();
         }
 
         public static void Start()

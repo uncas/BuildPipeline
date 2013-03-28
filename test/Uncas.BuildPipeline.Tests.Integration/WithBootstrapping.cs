@@ -33,7 +33,7 @@ namespace Uncas.BuildPipeline.Tests.Integration
 
         public TU Resolve<TU>() where TU : class
         {
-            return SharedBootstrapper.Resolve<TU>();
+            return TestBootstrapper.Resolve<TU>();
         }
     }
 }
