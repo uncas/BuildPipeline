@@ -216,6 +216,12 @@ function DownloadFile ($from, $to) {
     Set-Content $to $script
 }
 
+function ThrowIfErrorOnLastExecution {
+    if ($LASTEXITCODE -ne 0) {
+        throw "Error - last exit code was $LASTEXITCODE!"
+    }
+}
+
 #function Replace-File
 #{
 #    param {
@@ -227,3 +233,16 @@ function DownloadFile ($from, $to) {
 #
 #    (cat $sourceFile) -replace '$originalValue', "$finalValue" > $targetFile
 #}
+
+
+# Notes on getting powershell IIS remoting to work:
+
+# On the client (build server):
+# - List trusted hosts: Get-Item WSMan:\localhost\Client\TrustedHosts
+# - Use server name, not IP.
+# - Configure trusted hosts: winrm set winrm/config/client '@{TrustedHosts="my-server"}'
+
+# On the host (web server):
+# - Install IIS WebAdministration powershell snapin, can be done with Web Platform Installer
+# - Check if there is a listener: Get-ChildItem WSMan:\localhost\Listener
+# - Add listener: Enable-PSRemoting –force

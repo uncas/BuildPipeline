@@ -19,11 +19,11 @@ $webserver = "localhost"
 # Environment settings:
 $databaseName = "BuildPipeline"
 $webRootName = "BuildPipeline"
-$serviceRootName = $serviceName
+$destinationServiceName = $serviceName
 if ($environment -ne "prod") {
     $databaseName = "develop_$databaseName"
     $webRootName = "develop.$webRootName"
-    $serviceRootName = "develop-$serviceName"
+    $destinationServiceName = "develop-$serviceName"
 }
 
 # Working variables:
@@ -67,12 +67,6 @@ function Init {
         -product "$solutionName" `
         -version "$versionMajor.$versionMinor.$versionBuild" `
         -copyright "Copyright (c) $year, Uncas"
-}
-
-function ThrowIfErrorOnLastExecution {
-    if ($LASTEXITCODE -ne 0) {
-        throw "Error - last exit code was $LASTEXITCODE!"
-    }
 }
 
 function Compile {
@@ -120,11 +114,12 @@ function Collect {
 }
 
 function DeployService (
-        $destinationMachine = ".", 
-        $destinationRootFolder = "C:\Services",
-        $serviceRootName) {
-    if ($environment -ne "prod") { return }
-    $service = Get-Service -ComputerName $destinationMachine -Name "$serviceRootName*"
+        $serviceName = $serviceName,
+        $sourceServiceFolder = "$collectDir\$serviceName",
+        $destinationMachine = ".",
+        $destinationServiceName = $destinationServiceName,
+        $destinationRootFolder = "C:\Services" ) {
+    $service = Get-Service -ComputerName $destinationMachine -Name "$destinationServiceName*"
     if ($service -and ($service.Status -ne "Stopped")) {
         # Stopping service:
         $sw = GetAndStartStopwatch
@@ -140,7 +135,7 @@ function DeployService (
             Start-Sleep -s $waitInterval
             $waited += $waitInterval
             if ($waited -gt $waitLimit) { break }
-            $service = Get-Service -ComputerName $destinationMachine -Name $serviceRootName
+            $service = Get-Service -ComputerName $destinationMachine -Name $destinationServiceName
         }
         # Extra time to wait, such that files are not in use anymore:
         Start-Sleep -s 5
@@ -148,16 +143,15 @@ function DeployService (
     }
 
     # Deploying files to service:
-    $destinationFolder = "$destinationRootFolder\$serviceRootName"
-    ReplaceConnectionString "$collectDir\$serviceName\$serviceName.exe.config" $connectionString
+    $destinationServiceFolder = "$destinationRootFolder\$destinationServiceName"
     $sw = GetAndStartStopwatch
-    Sync-Folders "$collectDir\$serviceName" $destinationFolder
+    Sync-Folders $sourceServiceFolder $destinationServiceFolder
     StopAndWriteStopwatch $sw "Deploy files to service"
 
     # Installing service:
     if (!$service) {
-        New-Service -name $serviceRootName -binaryPathName "$destinationFolder\$serviceName.exe"
-        $service = Get-Service -ComputerName $destinationMachine -Name $serviceRootName
+        New-Service -name $destinationServiceName -binaryPathName "$destinationServiceFolder\$serviceName.exe"
+        $service = Get-Service -ComputerName $destinationMachine -Name $destinationServiceName
     }
     
     # Starting service:
@@ -167,8 +161,11 @@ function DeployService (
 }
 
 function Deploy {
-    Collect
-    DeployService
+    #Collect
+    if ($environment -eq "prod") {
+        ReplaceConnectionString "$collectDir\$serviceName\$serviceName.exe.config" $connectionString
+        DeployService
+    }
     DeployWeb
 }
 
@@ -183,15 +180,3 @@ else {
 if ($LASTEXITCODE -ne 0) {
     throw "Build error - last exit code was $LASTEXITCODE!"
 }
-
-# Notes on getting powershell IIS remoting to work:
-
-# On the client (build server):
-# - List trusted hosts: Get-Item WSMan:\localhost\Client\TrustedHosts
-# - Use server name, not IP.
-# - Configure trusted hosts: winrm set winrm/config/client '@{TrustedHosts="my-server"}'
-
-# On the host (web server):
-# - Install IIS WebAdministration powershell snapin, can be done with Web Platform Installer
-# - Check if there is a listener: Get-ChildItem WSMan:\localhost\Listener
-# - Add listener: Enable-PSRemoting –force
