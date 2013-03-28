@@ -8,12 +8,23 @@
 
 # Constants for this solution:
 $solutionName = "Uncas.BuildPipeline"
+$serviceName = "Uncas.BuildPipeline.WindowsService"
 $nunitVersion = "2.6.0.12051"
 $versionMajor = 1
 $versionMinor = 0
 $versionBuild = 0
 $configuration = "Release"
 $webserver = "localhost"
+
+# Environment settings:
+$databaseName = "BuildPipeline"
+$webRootName = "BuildPipeline"
+$serviceRootName = $serviceName
+if ($environment -ne "prod") {
+    $databaseName = "develop_$databaseName"
+    $webRootName = "develop.$webRootName"
+    $serviceRootName = "develop-$serviceName"
+}
 
 # Working variables:
 $baseDir  = Resolve-Path .
@@ -25,16 +36,9 @@ $solutionFile = "$baseDir\$solutionName.sln"
 $nunitFolder = "$baseDir\packages\NUnit.Runners.$nunitVersion\tools"
 $nunitExe = "$nunitFolder\nunit-console.exe"
 $year = (Get-Date).year
-
-# Environment settings:
-$databaseName = "BuildPipeline"
-$webRootName = "BuildPipeline"
-$serviceName = "Uncas.BuildPipeline.WindowsService"
-if ($environment -ne "prod") {
-    $databaseName = "develop_$databaseName"
-    $webRootName = "develop.$webRootName"
-    $serviceName = "develop-Uncas.BuildPipeline.WindowsService"
-}
+$connectionString = "Server=.\SqlExpress;Database=$databaseName;Integrated Security=true;"
+$testDatabaseName = $databaseName + "_test"
+$testConnectionString = "Server=.\SqlExpress;Database=$testDatabaseName;Integrated Security=true;"
 
 . "$baseDir\build_ext.ps1"
 . "$baseDir\build_log.ps1"
@@ -88,19 +92,26 @@ function DownloadFile ($from, $to) {
     Set-Content $to $script
 }
 
-function UpdateDb {
-    UnitTest
+function UpdateDb ($connectionString) {
     $scriptSource = "https://raw.github.com/uncas/db-deployment/$dbScriptVersion/dbDeployment.ps1"
     $script = "packages\dbDeployment-$dbScriptVersion.ps1"
     if (!(Test-Path $script)) {
         DownloadFile $scriptSource $script
     }
-    . $script "Server=.\SqlExpress;Database=$databaseName;Integrated Security=true;" sql
+    . $script $connectionString sql
+}
+
+function UpdateDbs {
+    UpdateDb $connectionString
+    UpdateDb $testConnectionString
 }
 
 function IntegrationTest {
-    UpdateDb
-    Run-Test "Uncas.BuildPipeline.Tests.Integration" $outputDir
+    UnitTest
+    UpdateDbs
+    $testProjectName = "Uncas.BuildPipeline.Tests.Integration"
+    ReplaceConnectionString "$testDir\$testProjectName\bin\$configuration\$testProjectName.dll.config" $testConnectionString
+    Run-Test $testProjectName $outputDir
 }
 
 function Collect {
@@ -148,7 +159,7 @@ function DeployService (
         $destinationMachine = ".", 
         $destinationRootFolder = "C:\Services") {
     if ($environment -ne "prod") { return }
-    $service = Get-Service -ComputerName $destinationMachine -Name "$serviceName*"
+    $service = Get-Service -ComputerName $destinationMachine -Name "$serviceRootName*"
     if ($service -and ($service.Status -ne "Stopped")) {
         # Stopping service:
         $sw = GetAndStartStopwatch
@@ -164,7 +175,7 @@ function DeployService (
             Start-Sleep -s $waitInterval
             $waited += $waitInterval
             if ($waited -gt $waitLimit) { break }
-            $service = Get-Service -ComputerName $destinationMachine -Name $serviceName
+            $service = Get-Service -ComputerName $destinationMachine -Name $serviceRootName
         }
         # Extra time to wait, such that files are not in use anymore:
         Start-Sleep -s 5
@@ -172,15 +183,16 @@ function DeployService (
     }
 
     # Deploying files to service:
-    $destinationFolder = "$destinationRootFolder\$serviceName"
+    $destinationFolder = "$destinationRootFolder\$serviceRootName"
+    ReplaceConnectionString "$collectDir\$serviceName\$serviceName.exe.config" $connectionString
     $sw = GetAndStartStopwatch
     Sync-Folders "$collectDir\$serviceName" $destinationFolder
     StopAndWriteStopwatch $sw "Deploy files to service"
 
     # Installing service:
     if (!$service) {
-        New-Service -name $serviceName -binaryPathName "$destinationFolder\$serviceName.exe"
-        $service = Get-Service -ComputerName $destinationMachine -Name $serviceName
+        New-Service -name $serviceRootName -binaryPathName "$destinationFolder\$serviceName.exe"
+        $service = Get-Service -ComputerName $destinationMachine -Name $serviceRootName
     }
     
     # Starting service:
@@ -189,8 +201,16 @@ function DeployService (
     StopAndWriteStopwatch $sw "Start service"
 }
 
+function ReplaceConnectionString ($configFilePath, $connectionString) {
+    $xml = [xml](get-content $configFilePath)
+    $root = $xml.get_DocumentElement();
+    $root.connectionStrings.add.connectionString = $connectionString
+    $xml.Save($configFilePath)
+}
+
 function DeployWeb {
     $sourceFolder = "$collectDir\Uncas.BuildPipeline.Web"
+    ReplaceConnectionString "$sourceFolder\web.config" $connectionString
 
     $siteName = $webRootName
     $relativeWebRoot = "inetpub\wwwroot\$webRootName"
