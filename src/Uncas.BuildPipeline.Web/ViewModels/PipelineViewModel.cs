@@ -14,7 +14,7 @@
 
         public string SourceAuthor { get; set; }
 
-        public string SourceRevision { get; set; }
+        public string Revision { get; set; }
 
         public string SourceUrlRelative { get; set; }
 

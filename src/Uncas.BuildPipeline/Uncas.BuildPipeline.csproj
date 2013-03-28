@@ -117,7 +117,6 @@
     <Compile Include="ApplicationServices\Results\ScheduleDeploymentResult.cs" />
     <Compile Include="SharedRegistry.cs" />
     <Compile Include="Repositories\BuildPipelineConnection.cs" />
-    <Compile Include="Repositories\BuildPipelineSchemaRepository.cs" />
     <Compile Include="Repositories\WithConnection.cs" />
     <Compile Include="SharedBootstrapper.cs" />
     <Compile Include="GlobalSuppressions.cs" />

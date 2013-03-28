@@ -1,6 +1,6 @@
 ﻿Essentials:
-- Change data structure:
--- Pipeline: Rename: SourceUrl -> BranchName, SourceRevision -> Revision
+- Windows Service error...
+- Update view to link to github + display author + commit message
 
 Infrastructure:
 - Tests of existing logic, specs

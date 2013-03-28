@@ -16,8 +16,8 @@ namespace Uncas.BuildPipeline.Models
         public Pipeline(
             int pipelineId,
             string projectName,
-            string sourceRevision,
-            string sourceUrl,
+            string revision,
+            string branchName,
             string sourceUrlBase,
             DateTime created,
             string sourceAuthor,
@@ -25,8 +25,8 @@ namespace Uncas.BuildPipeline.Models
         {
             PipelineId = pipelineId;
             ProjectName = projectName;
-            SourceRevision = sourceRevision;
-            SourceUrl = sourceUrl;
+            Revision = revision;
+            BranchName = branchName;
             SourceUrlBase = sourceUrlBase;
             Created = created;
             SourceAuthor = sourceAuthor;
@@ -39,9 +39,9 @@ namespace Uncas.BuildPipeline.Models
 
         public string SourceAuthor { get; private set; }
 
-        public string SourceRevision { get; private set; }
+        public string Revision { get; private set; }
 
-        public string SourceUrl { get; private set; }
+        public string BranchName { get; private set; }
 
         public string SourceUrlBase { get; private set; }
 

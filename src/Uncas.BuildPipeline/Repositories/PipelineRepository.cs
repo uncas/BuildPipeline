@@ -15,10 +15,10 @@ namespace Uncas.BuildPipeline.Repositories
         {
             const string sql = @"
 SELECT Pr.ProjectName
-    , Pi.SourceRevision
+    , Pi.Revision
     , Pi.PipelineId
     , Pr.SourceUrlBase
-    , Pi.SourceUrl
+    , Pi.BranchName
     , Pi.Created
     , Pi.SourceAuthor
     , Pi.PackagePath
@@ -39,10 +39,10 @@ WHERE Pi.PipelineId = @PipelineId";
             const string sql = @"
 SELECT TOP (@PageSize)
     Pr.ProjectName
-    , Pi.SourceRevision
+    , Pi.Revision
     , Pi.PipelineId
     , Pr.SourceUrlBase
-    , Pi.SourceUrl
+    , Pi.BranchName
     , Pi.Created
     , Pi.SourceAuthor
     , Pi.PackagePath
@@ -64,15 +64,15 @@ ORDER BY Pi.Created DESC
 SELECT @pipelineId = PipelineId
 FROM Pipeline
 WHERE ProjectId = @projectId
-    AND SourceRevision = @sourceRevision
-    AND SourceUrl = @sourceUrl
+    AND Revision = @revision
+    AND BranchName = @branchName
 
 IF @pipelineId IS NULL
 BEGIN
     INSERT INTO Pipeline
-    (ProjectId, SourceRevision, SourceUrl, Created, SourceAuthor, PackagePath)
+    (ProjectId, Revision, BranchName, Created, SourceAuthor, PackagePath)
     VALUES
-    (@projectId, @sourceRevision, @sourceUrl, GETDATE(), @sourceAuthor, @packagePath)
+    (@projectId, @revision, @branchName, GETDATE(), @sourceAuthor, @packagePath)
 
     SET @pipelineId = Scope_Identity()
 END
@@ -88,8 +88,8 @@ END";
                 new
                     {
                         projectId,
-                        pipeline.SourceRevision,
-                        pipeline.SourceUrl,
+                        pipeline.Revision,
+                        pipeline.BranchName,
                         pipeline.SourceAuthor,
                         pipeline.PackagePath
                     };

@@ -17,7 +17,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
             var pipeline1 = new Pipeline(1,
                                          "myproject",
                                          "123812830",
-                                         "mySourceUrl",
+                                         "myBranchName",
                                          "mySourceUrlBase",
                                          DateTime.Now,
                                          "mySourceAuthor",
@@ -28,7 +28,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 
             Assert.NotNull(pipeline);
             Assert.AreEqual(pipeline1.ProjectName, pipeline.ProjectName);
-            Assert.AreEqual(pipeline1.SourceRevision, pipeline.SourceRevision);
+            Assert.AreEqual(pipeline1.Revision, pipeline.Revision);
         }
 
         [Test]

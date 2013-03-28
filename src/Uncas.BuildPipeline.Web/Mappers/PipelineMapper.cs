@@ -26,7 +26,7 @@
             }
 
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
-            string sourceUrlRelative = pipeline.SourceUrl.Replace(pipeline.SourceUrlBase, string.Empty);
+            string sourceUrlRelative = pipeline.BranchName.Replace(pipeline.SourceUrlBase, string.Empty);
             if (sourceUrlRelative.Contains("/"))
             {
                 sourceUrlRelative = sourceUrlRelative.Split('/').Last();
@@ -37,7 +37,7 @@
                                  PipelineId = pipeline.PipelineId,
                                  ProjectName = pipeline.ProjectName,
                                  SourceAuthor = pipeline.SourceAuthor,
-                                 SourceRevision = pipeline.SourceRevision,
+                                 Revision = pipeline.Revision,
                                  SourceUrlRelative = sourceUrlRelative,
                                  CreatedDisplay = createdDisplay,
                                  StatusText = pipeline.IsSuccessful ? "OK" : "Failed",

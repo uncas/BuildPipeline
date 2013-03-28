@@ -6,6 +6,6 @@
 
         public string EnvironmentName { get; set; }
 
-        public string CurrentSourceRevision { get; set; }
+        public string CurrentRevision { get; set; }
     }
 }

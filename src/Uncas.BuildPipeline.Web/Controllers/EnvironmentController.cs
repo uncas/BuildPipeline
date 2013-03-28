@@ -55,12 +55,12 @@
             }
 
             Pipeline pipeline = _pipelineRepository.GetPipeline(lastDeployment.PipelineId);
-            string currentSourceRevision = pipeline.SourceRevision;
+            string currentRevision = pipeline.Revision;
             viewModels.Add(new EnvironmentIndexViewModel
                                {
                                    EnvironmentId = environment.Id,
                                    EnvironmentName = environment.EnvironmentName,
-                                   CurrentSourceRevision = currentSourceRevision
+                                   CurrentRevision = currentRevision
                                });
         }
 

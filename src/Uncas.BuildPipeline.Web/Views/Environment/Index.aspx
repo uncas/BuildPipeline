@@ -21,7 +21,7 @@
                 <%:item.EnvironmentName%>
             </td>
             <td>
-                <%:item.CurrentSourceRevision%>
+                <%:item.CurrentRevision%>
             </td>
         </tr>
         <% } %>

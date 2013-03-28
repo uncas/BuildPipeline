@@ -12,7 +12,7 @@
     <td class="SourceDetails">
         <div class="<%:Model.CssClass%>" title="<%:Model.StatusText%>">
             revision
-            <%:Model.SourceRevision%>, by
+            <%:Model.Revision%>, by
             <%:Model.SourceAuthor%>
         </div>
         <div>
