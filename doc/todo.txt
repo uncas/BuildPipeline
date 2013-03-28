@@ -1,6 +1,8 @@
 ﻿Essentials:
-- Windows Service error...
+- Add logging of errors
 - Update view to link to github + display author + commit message
+- Topshelf?!
+- Test database for each environment (for running integration tests)
 
 Infrastructure:
 - Tests of existing logic, specs

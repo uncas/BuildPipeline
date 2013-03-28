@@ -5,16 +5,11 @@ namespace Uncas.BuildPipeline.WindowsService
 {
     public static class Bootstrapper
     {
-        private static IUnityContainer _container;
-
-        public static void Initialize()
-        {
-            _container = BuildUnityContainer();
-        }
+        private static readonly IUnityContainer Container = BuildUnityContainer();
 
         public static T Resolve<T>()
         {
-            return _container.Resolve<T>();
+            return Container.Resolve<T>();
         }
 
         private static IUnityContainer BuildUnityContainer()
