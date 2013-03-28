@@ -116,6 +116,106 @@ function Run-Test
     }
 }
 
+function GetAndStartStopwatch {
+    return [System.Diagnostics.Stopwatch]::StartNew()
+}
+
+function StopAndWriteStopwatch ($stopwatch, $description) {
+    $stopwatch.Stop()
+    $totalSeconds = $stopwatch.Elapsed.TotalSeconds
+    Write-Host "$totalSeconds seconds: $description"
+}
+
+function ReplaceConnectionString ($configFilePath, $connectionString) {
+    $xml = [xml](get-content $configFilePath)
+    $root = $xml.get_DocumentElement();
+    $root.connectionStrings.add.connectionString = $connectionString
+    $xml.Save($configFilePath)
+}
+
+function FlipRemoteWebSite($siteName, $physicalPath, $webserver) {
+    $session = New-PSSession -ComputerName $webserver
+    if (!$session) { return }
+    $block = { 
+        param($siteName, $physicalPath)
+        if (!$physicalPath -or !$siteName) { return }
+        Add-PSSnapin WebAdministration
+        Set-ItemProperty "IIS:\Sites\$siteName" -name physicalPath -value $physicalPath
+    }
+    Invoke-Command -Session $session -ScriptBlock $block -argumentlist $siteName, $physicalPath
+}
+
+function FlipWebSite($siteName, $physicalPath, $webserver = $webserver) {
+    if ($webserver -ne "localhost") {
+        FlipRemoteWebSite $siteName $physicalPath $webServer
+        return
+    }
+
+    Set-ItemProperty "IIS:\Sites\$siteName" -name physicalPath -value $physicalPath
+}
+
+function DeployWeb (
+        $sourceWebFolder = $sourceWebFolder,
+        $webRootName = $webRootName,
+        $webServer = $webServer,
+        $connectionString = $connectionString) {
+    ReplaceConnectionString "$sourceWebFolder\web.config" $connectionString
+
+    $siteName = $webRootName
+    $relativeWebRoot = "inetpub\wwwroot\$webRootName"
+    $remoteWebRoot = "\\$webserver\c$\$relativeWebRoot"
+
+    $sha = (git rev-parse HEAD)
+    $webFolder = "$sha"
+    $localWebFolder = "C:\$relativeWebRoot\$webFolder"
+    $remoteWebFolder = "$remoteWebRoot\$webFolder"
+
+    # Deploying files to website:
+    $sw = GetAndStartStopwatch
+    if (!(Test-Path $remoteWebRoot)) { mkdir $remoteWebRoot }
+    $previousWebsiteVersions = (gci $remoteWebRoot)
+    Sync-Folders $sourceWebFolder $remoteWebFolder
+    StopAndWriteStopwatch $sw "Deploy files to website"
+
+    Import-Module WebAdministration
+
+    # Creating site if it does not already exist:
+    $iisPath = "IIS:\Sites\$siteName"
+    if (!(Test-Path $iisPath)) {
+        $sw = GetAndStartStopwatch
+        New-Item $iisPath -bindings @{protocol="http";bindingInformation=":80:$siteName"} -physicalPath $localWebFolder
+        StopAndWriteStopwatch $sw "Create website"
+        return
+    }
+    
+    # TODO: Consider warming the new location up?
+
+    # Flipping website:
+    $sw = GetAndStartStopwatch
+    FlipWebSite $siteName $localWebFolder
+    StopAndWriteStopwatch $sw "Flip website"
+
+    # Removing old versions of website:
+    $sw = GetAndStartStopwatch
+    foreach ($item in $previousWebsiteVersions) {
+        if ($item.Mode -eq "d----") {
+            $fullName = $item.FullName
+            # Do not remove current version, relevant if we're re-deploying same version as last time:
+            if ($fullName.Contains($webFolder)) { continue }
+            Write-Host "Removing $fullName"
+            rmdir $fullName -force -recurse
+        }
+    }
+    StopAndWriteStopwatch $sw "Remove old versions of website"
+}
+
+function DownloadFile ($from, $to) {
+    Write-Host "Downloading file from '$from' to '$to'."
+    $webClient = New-Object System.Net.WebClient
+    $script = $webClient.DownloadString($from)
+    Set-Content $to $script
+}
+
 #function Replace-File
 #{
 #    param {
