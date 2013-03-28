@@ -1,8 +1,7 @@
 ﻿Essentials:
-- Add logging of errors
 - Update view to link to github + display author + commit message
+- Add logging of errors
 - Topshelf?!
-- Test database for each environment (for running integration tests)
 
 Infrastructure:
 - Tests of existing logic, specs
