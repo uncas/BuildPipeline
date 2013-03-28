@@ -1,7 +1,7 @@
 ﻿param (
     [string]$task = "Deploy",
     [string]$branch = (git rev-parse --abbrev-ref HEAD),
-    [string]$dbScriptVersion = "2bd39a55b503370845bcff52a29e1f57a9ff5526",
+    [string]$dbScriptVersion = "1db33b6ea826630b496e6b9a0d347eca425cf00b",
     [string]$environment = "develop",
     [string]$baseUrl = "http://localhost:51743"
 )
@@ -95,10 +95,11 @@ function DownloadFile ($from, $to) {
 function UpdateDb ($connectionString) {
     $scriptSource = "https://raw.github.com/uncas/db-deployment/$dbScriptVersion/dbDeployment.ps1"
     $script = "packages\dbDeployment-$dbScriptVersion.ps1"
+    #$script = "C:\Projects\OpenSource\db-deployment\dbDeployment.ps1"
     if (!(Test-Path $script)) {
         DownloadFile $scriptSource $script
     }
-    . $script $connectionString sql
+    . $script -connectionString $connectionString -scriptpath sql -clearScreenOnStart $false
 }
 
 function UpdateDbs {
