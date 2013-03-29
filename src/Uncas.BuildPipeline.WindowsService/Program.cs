@@ -15,8 +15,18 @@ namespace Uncas.BuildPipeline.WindowsService
         private static readonly Func<ServiceBase> GetServiceToRun =
             () => new DeployService();
 
-        private static readonly Action ActionToRun =
-            () => Bootstrapper.Resolve<IDeploymentService>().DeployDueDeployments();
+        private static void TheAction()
+        {
+            try
+            {
+                Bootstrapper.Resolve<IDeploymentService>().DeployDueDeployments();
+            }
+            catch (Exception e)
+            {
+                var logger = Bootstrapper.Resolve<ILogger>();
+                logger.Error(e, "Error when running actions.");
+            }
+        }
 
         /// <summary>
         /// The main entry point for the application.
@@ -27,7 +37,7 @@ namespace Uncas.BuildPipeline.WindowsService
             var logger = Bootstrapper.Resolve<ILogger>();
             logger.Info("Starting Windows service.");
             var programRunner = new ProgramRunner(
-                ActionToRun,
+                TheAction,
                 ServiceName,
                 GetServiceToRun);
 
