@@ -115,6 +115,7 @@
     <Compile Include="ApplicationServices\Results\BaseResult.cs" />
     <Compile Include="ApplicationServices\Results\ResultError.cs" />
     <Compile Include="ApplicationServices\Results\ScheduleDeploymentResult.cs" />
+    <Compile Include="MaybeMonad.cs" />
     <Compile Include="SharedRegistry.cs" />
     <Compile Include="Repositories\BuildPipelineConnection.cs" />
     <Compile Include="Repositories\WithConnection.cs" />
