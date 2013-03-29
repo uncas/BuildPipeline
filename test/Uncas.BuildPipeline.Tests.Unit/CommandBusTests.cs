@@ -2,8 +2,8 @@
 using Microsoft.Practices.ServiceLocation;
 using Moq;
 using NUnit.Framework;
-using Uncas.BuildPipeline.ApplicationServices;
 using Uncas.BuildPipeline.Commands;
+using Uncas.BuildPipeline.Utilities;
 
 namespace Uncas.BuildPipeline.Tests.Unit
 {
@@ -23,7 +23,8 @@ namespace Uncas.BuildPipeline.Tests.Unit
         public void Publish_HandlerRegistered_GetsResolvedOnce()
         {
             var mock = new Mock<IServiceLocator>();
-            mock.Setup(x => x.GetInstance(typeof (UpdateGitMirrorsHandler))).Returns(new UpdateGitMirrorsHandler());
+            mock.Setup(x => x.GetInstance(typeof (UpdateGitMirrorsHandler))).Returns(
+                new UpdateGitMirrorsHandler(new GitUtility()));
             var bus = new CommandBus(mock.Object);
 
             bus.Publish(new UpdateGitMirrors());

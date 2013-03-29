@@ -95,6 +95,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="Uncas.Core">
       <HintPath>..\..\packages\Uncas.Core.1.1.0.154\lib\net40\Uncas.Core.dll</HintPath>
     </Reference>
@@ -144,7 +145,11 @@
     <Compile Include="Repositories\IPipelineRepository.cs" />
     <Compile Include="Repositories\PipelineRepository.cs" />
     <Compile Include="Utilities\DeploymentUtility.cs" />
+    <Compile Include="Utilities\GitHubLink.cs" />
+    <Compile Include="Utilities\GitLog.cs" />
+    <Compile Include="Utilities\GitUtility.cs" />
     <Compile Include="Utilities\IDeploymentUtility.cs" />
+    <Compile Include="Utilities\IGitUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\BuildPipelineKey.snk">
