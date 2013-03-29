@@ -12,5 +12,10 @@
     # TODO: Post/Put file to web service
     $endpointUrl = "$baseUrl/api/pipelines?format=json"
     $url = "$endpointUrl&projectname=$projectName&branchName=$branchName&revision=$revision&stepname=$stepName&packagepath=$packagePath"
-    $pipelineId = (Invoke-RestMethod -Uri $url -Method POST)
+    try {
+        $pipelineId = (Invoke-RestMethod -Uri $url -Method POST)
+    }
+    catch {
+        # Logging shouldn't break the build.
+    }
 }
