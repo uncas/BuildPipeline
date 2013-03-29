@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Uncas.BuildPipeline.ApplicationServices;
@@ -82,6 +83,15 @@ namespace Uncas.BuildPipeline.Web.Controllers
         {
             _deploymentService.ScheduleDeployment(pipelineId, environmentId);
             return RedirectToAction("Deploy", new {PipelineId = pipelineId});
+        }
+
+        [HttpGet]
+        public ActionResult Download(string id)
+        {
+            string filePath = Path.Combine(CustomApiController.PackageFolder, id);
+            if (!System.IO.File.Exists(filePath))
+                return HttpNotFound("File not found."); 
+            return new FilePathResult(filePath, "application/zip");
         }
     }
 }

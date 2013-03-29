@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.PipelineViewModel>" %>
+<%@ Import Namespace="Uncas.BuildPipeline.Web.Models" %>
 <%@ Import Namespace="Uncas.BuildPipeline.Web.ViewModels" %>
 <tr class="BuildListView">
     <td>
@@ -12,7 +13,7 @@
     <td class="SourceDetails">
         <div class="<%:Model.CssClass%>" title="<%:Model.StatusText%>">
             revision
-            <%:Model.Revision%>, by
+            <%:Revision.Short(Model.Revision)%>, by
             <%:Model.SourceAuthor%>
         </div>
         <div>
@@ -27,5 +28,6 @@
     </td>
     <td>
         <%:Html.ActionLink("Deploy", "Deploy", new { pipelineId = Model.PipelineId })%>
+        <%:Html.ActionLink("Download", "Download", new { id = Model.PackagePath })%>
     </td>
 </tr>

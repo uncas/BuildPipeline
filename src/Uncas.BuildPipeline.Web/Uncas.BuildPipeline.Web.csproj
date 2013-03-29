@@ -202,6 +202,7 @@
     <Compile Include="ViewModels\PipelineViewModel.cs" />
     <Compile Include="Configuration\WebBootstrapper.cs" />
     <Compile Include="Configuration\WebRegistry.cs" />
+    <Compile Include="Models\Revision.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\BuildGreen_25.png" />

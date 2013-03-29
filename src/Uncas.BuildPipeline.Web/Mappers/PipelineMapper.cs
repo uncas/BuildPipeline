@@ -1,12 +1,12 @@
-﻿namespace Uncas.BuildPipeline.Web.Mappers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using Uncas.BuildPipeline.Models;
-    using Uncas.BuildPipeline.Web.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Uncas.BuildPipeline.Models;
+using Uncas.BuildPipeline.Web.ViewModels;
 
+namespace Uncas.BuildPipeline.Web.Mappers
+{
     /// <summary>
     /// Maps pipeline info.
     /// </summary>
@@ -14,7 +14,7 @@
     {
         public static PipelineIndexViewModel MapToPipelineIndexViewModel(IEnumerable<Pipeline> pipelines)
         {
-            var result = new PipelineIndexViewModel { Pipelines = MapToPipelineViewModels(pipelines) };
+            var result = new PipelineIndexViewModel {Pipelines = MapToPipelineViewModels(pipelines)};
             return result;
         }
 
@@ -33,17 +33,18 @@
             }
 
             var result = new PipelineViewModel
-                             {
-                                 PipelineId = pipeline.PipelineId,
-                                 ProjectName = pipeline.ProjectName,
-                                 SourceAuthor = pipeline.SourceAuthor,
-                                 Revision = pipeline.Revision,
-                                 SourceUrlRelative = sourceUrlRelative,
-                                 CreatedDisplay = createdDisplay,
-                                 StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
-                                 CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed",
-                                 Steps = pipeline.Steps.Select(MapToBuildStepViewModel)
-                             };
+                {
+                    PipelineId = pipeline.PipelineId,
+                    ProjectName = pipeline.ProjectName,
+                    SourceAuthor = pipeline.SourceAuthor,
+                    Revision = pipeline.Revision,
+                    SourceUrlRelative = sourceUrlRelative,
+                    CreatedDisplay = createdDisplay,
+                    StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
+                    CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed",
+                    Steps = pipeline.Steps.Select(MapToBuildStepViewModel),
+                    PackagePath = pipeline.PackagePath
+                };
             return result;
         }
 
@@ -55,17 +56,17 @@
             if (timeSince.TotalDays >= 1d)
             {
                 dateTimeLabel = "day";
-                dateTimeDisplayNumber = (int)timeSince.TotalDays;
+                dateTimeDisplayNumber = (int) timeSince.TotalDays;
             }
             else if (timeSince.TotalHours >= 1d)
             {
                 dateTimeLabel = "hour";
-                dateTimeDisplayNumber = (int)timeSince.TotalHours;
+                dateTimeDisplayNumber = (int) timeSince.TotalHours;
             }
             else
             {
                 dateTimeLabel = "minute";
-                dateTimeDisplayNumber = (int)timeSince.TotalMinutes;
+                dateTimeDisplayNumber = (int) timeSince.TotalMinutes;
             }
 
             string pluralis = dateTimeDisplayNumber == 1
@@ -83,11 +84,11 @@
             MapToBuildStepViewModel(BuildStep step)
         {
             return new BuildStepViewModel
-                       {
-                           StatusText = step.IsSuccessful ? "OK" : "Failed",
-                           StepName = step.StepName,
-                           CssClass = step.IsSuccessful ? "BuildGreen" : "BuildRed"
-                       };
+                {
+                    StatusText = step.IsSuccessful ? "OK" : "Failed",
+                    StepName = step.StepName,
+                    CssClass = step.IsSuccessful ? "BuildGreen" : "BuildRed"
+                };
         }
 
         private static IEnumerable<PipelineViewModel>
