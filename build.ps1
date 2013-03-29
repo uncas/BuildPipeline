@@ -80,7 +80,7 @@ function UnitTest {
     Run-Test "Uncas.BuildPipeline.Tests.Unit" $outputDir
 }
 
-function UpdateDb ($connectionString) {
+function UpdateDb ($connectionString = $connectionString) {
     $scriptSource = "https://raw.github.com/uncas/db-deployment/$dbScriptVersion/dbDeployment.ps1"
     $script = "packages\dbDeployment-$dbScriptVersion.ps1"
     #$script = "C:\Projects\OpenSource\db-deployment\dbDeployment.ps1"
@@ -90,14 +90,18 @@ function UpdateDb ($connectionString) {
     . $script -connectionString $connectionString -scriptpath sql -clearScreenOnStart $false
 }
 
-function UpdateDbs {
-    UpdateDb $connectionString
+function UpdateTestDb {
     UpdateDb $testConnectionString
+}
+
+function UpdateDbs {
+    UpdateTestDb
+    UpdateDb
 }
 
 function IntegrationTest {
     UnitTest
-    UpdateDbs
+    UpdateTestDb
     $testProjectName = "Uncas.BuildPipeline.Tests.Integration"
     ReplaceConnectionString "$testDir\$testProjectName\bin\$configuration\$testProjectName.dll.config" $testConnectionString
     Run-Test $testProjectName $outputDir
@@ -161,7 +165,8 @@ function DeployService (
 }
 
 function Deploy {
-    #Collect
+    Collect
+    UpdateDb
     if ($environment -eq "prod") {
         ReplaceConnectionString "$collectDir\$serviceName\$serviceName.exe.config" $connectionString
         DeployService
