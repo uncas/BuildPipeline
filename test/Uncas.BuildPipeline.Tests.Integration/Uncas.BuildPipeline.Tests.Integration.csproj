@@ -114,6 +114,7 @@
     <Compile Include="ApplicationServices\DeploymentServiceTests.cs" />
     <Compile Include="Repositories\DeploymentRepositoryTests.cs" />
     <Compile Include="TestBootstrapper.cs" />
+    <Compile Include="Utilities\GitUtility.cs" />
     <Compile Include="WithBootstrapping.cs" />
     <Compile Include="Utilities\DeploymentUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -20,19 +20,16 @@ namespace Uncas.BuildPipeline.Web.Controllers
 
         private readonly IDeploymentService _deploymentService;
         private readonly IEnvironmentRepository _environmentRepository;
-        private readonly ILogger _logger;
         private readonly IPipelineRepository _pipelineRepository;
 
         public HomeController(
             IDeploymentService deploymentService,
             IEnvironmentRepository environmentRepository,
-            IPipelineRepository pipelineRepository,
-            ILogger logger)
+            IPipelineRepository pipelineRepository)
         {
             _deploymentService = deploymentService;
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
-            _logger = logger;
         }
 
         [HttpGet]

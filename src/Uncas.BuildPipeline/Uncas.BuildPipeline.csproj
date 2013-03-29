@@ -112,10 +112,16 @@
     </Compile>
     <Compile Include="ApplicationServices\DeploymentService.cs" />
     <Compile Include="ApplicationServices\IDeploymentService.cs" />
+    <Compile Include="Commands\CommandBus.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\ICommandBus.cs" />
+    <Compile Include="Commands\ICommandHandler.cs" />
+    <Compile Include="Commands\UpdateGitMirrorsHandler.cs" />
     <Compile Include="ApplicationServices\Results\BaseResult.cs" />
     <Compile Include="ApplicationServices\Results\ResultError.cs" />
     <Compile Include="ApplicationServices\Results\ScheduleDeploymentResult.cs" />
     <Compile Include="ApplicationVersion.cs" />
+    <Compile Include="Commands\UpdateGitMirrors.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MaybeMonad.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ServiceProcess;
 using Uncas.BuildPipeline.ApplicationServices;
+using Uncas.BuildPipeline.Commands;
 using Uncas.Core.Services;
 
 namespace Uncas.BuildPipeline.WindowsService
@@ -20,6 +21,7 @@ namespace Uncas.BuildPipeline.WindowsService
             try
             {
                 Bootstrapper.Resolve<IDeploymentService>().DeployDueDeployments();
+                Bootstrapper.Resolve<ICommandBus>().Publish(new UpdateGitMirrors());
             }
             catch (Exception e)
             {

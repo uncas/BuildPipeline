@@ -1,4 +1,7 @@
 using System;
+using System.Reflection;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using UnityConfiguration;
 
 namespace Uncas.BuildPipeline
@@ -8,11 +11,13 @@ namespace Uncas.BuildPipeline
     {
         public SharedRegistry()
         {
+            Assembly assembly = typeof (SharedRegistry).Assembly;
             Scan(scan =>
                 {
-                    scan.Assembly(typeof (SharedRegistry).Assembly);
-                    scan.With<NamingConvention>();
+                    scan.Assembly(assembly);
+                    scan.WithNamingConvention();
                 });
+            Register<IServiceLocator, UnityServiceLocator>();
         }
     }
 }
