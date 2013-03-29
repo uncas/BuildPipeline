@@ -1,9 +1,7 @@
 ﻿Essentials:
-- Download package
+- Update view to link to github + display author + commit message
 - Review existing read logic vs. write logic
 - Write vs. read (commands and read models)
-- Update view to link to github + display author + commit message
-- Add logging of errors
 
 Infrastructure:
 - Tests of existing logic, specs

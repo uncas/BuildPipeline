@@ -20,16 +20,19 @@ namespace Uncas.BuildPipeline.Web.Controllers
 
         private readonly IDeploymentService _deploymentService;
         private readonly IEnvironmentRepository _environmentRepository;
+        private readonly ILogger _logger;
         private readonly IPipelineRepository _pipelineRepository;
 
         public HomeController(
             IDeploymentService deploymentService,
             IEnvironmentRepository environmentRepository,
-            IPipelineRepository pipelineRepository)
+            IPipelineRepository pipelineRepository,
+            ILogger logger)
         {
             _deploymentService = deploymentService;
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -90,7 +93,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
         {
             string filePath = Path.Combine(CustomApiController.PackageFolder, id);
             if (!System.IO.File.Exists(filePath))
-                return HttpNotFound("File not found."); 
+                return HttpNotFound("File not found.");
             return new FilePathResult(filePath, "application/zip");
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -37,6 +38,19 @@ namespace Uncas.BuildPipeline.Web
             WebBootstrapper.InitialiseForWeb();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
+            WebBootstrapper.Resolve<ILogger>().Info("Starting website.");
+        }
+
+        public override void Init()
+        {
+            Error += OnError;
+            base.Init();
+        }
+
+        private void OnError(object sender, EventArgs e)
+        {
+            Exception lastError = Server.GetLastError();
+            WebBootstrapper.Resolve<ILogger>().Error(lastError, "Unhandled exception occurred.");
         }
     }
 }
