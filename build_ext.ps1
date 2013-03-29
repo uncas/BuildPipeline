@@ -63,6 +63,13 @@ function Get-Git-CommitCount
     return $gitLog.length
 }
 
+function Get-FullVersion ($version) {
+    $commitCount = Get-Git-CommitCount
+    $fullVersion = "$version.$commitCount"
+    Write-Host "Full version: $fullVersion (commit log count: $commitCount)"
+    return "$version.$commitCount"
+}
+
 function Generate-Assembly-Info
 {
 param(
@@ -73,10 +80,8 @@ param(
 	[string]$file = $(throw "file is a required parameter.")
 )
   $commit = Get-Git-Commit
-  $commitCount = Get-Git-CommitCount
-  $fullVersion = "$version.$commitCount"
-  $script:fullVersion = $fullVersion
-  "Version $fullVersion (commit hash: $commit, commit log count: $commitCount)"
+  Write-Host "Commit hash: $commit"
+  $fullVersion = Get-FullVersion $version
   $asmInfo = "using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -220,6 +225,12 @@ function ThrowIfErrorOnLastExecution {
     if ($LASTEXITCODE -ne 0) {
         throw "Error - last exit code was $LASTEXITCODE!"
     }
+}
+
+function Create-Zip([string] $directory, [string] $zipfile){
+    $pathToZipExe = "C:\Program Files\7-zip\7z.exe"
+    [Array]$arguments = "a", "-tzip", "$zipfile", "$directory", "-r";
+    & $pathToZipExe $arguments;
 }
 
 #function Replace-File

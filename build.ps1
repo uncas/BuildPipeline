@@ -41,9 +41,12 @@ $connectionString = "Server=.\SqlExpress;Database=$databaseName;Integrated Secur
 $testDatabaseName = $databaseName + "_test"
 $testConnectionString = "Server=.\SqlExpress;Database=$testDatabaseName;Integrated Security=true;"
 $sourceWebFolder = "$collectDir\$webProjectName"
+$version = "$versionMajor.$versionMinor.$versionBuild"
 
 . "$baseDir\build_ext.ps1"
 . "$baseDir\build_log.ps1"
+
+$fullVersion = Get-FullVersion $version
 
 function Clean {
     Clean-Folder $collectDir
@@ -66,7 +69,7 @@ function Init {
         -file "$baseDir\src\VersionInfo.cs" `
         -company "Uncas" `
         -product "$solutionName" `
-        -version "$versionMajor.$versionMinor.$versionBuild" `
+        -version $version `
         -copyright "Copyright (c) $year, Uncas"
 }
 
@@ -114,7 +117,11 @@ function Collect {
     Copy-WebApplication $srcDir $webProjectName $collectDir
     copy $srcDir\$serviceName\bin\$configuration $collectDir\$serviceName -recurse
 
-    $params = @{branchName=$branch; packagePath="none.zip"; baseUrl=$baseUrl}
+    $packageFileName = "BuildPipeline-$fullVersion.zip"
+    $packageFilePath = "$outputDir\$packageFileName"
+    Create-Zip $collectDir $packageFilePath
+    
+    $params = @{branchName=$branch; packagePath=$packageFilePath; baseUrl=$baseUrl}
     LogPackage @params
 }
 
