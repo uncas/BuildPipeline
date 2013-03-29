@@ -9,6 +9,7 @@
 # Constants for this solution:
 $solutionName = "Uncas.BuildPipeline"
 $serviceName = "Uncas.BuildPipeline.WindowsService"
+$webProjectName = "Uncas.BuildPipeline.Web"
 $nunitVersion = "2.6.0.12051"
 $versionMajor = 1
 $versionMinor = 0
@@ -39,7 +40,7 @@ $year = (Get-Date).year
 $connectionString = "Server=.\SqlExpress;Database=$databaseName;Integrated Security=true;"
 $testDatabaseName = $databaseName + "_test"
 $testConnectionString = "Server=.\SqlExpress;Database=$testDatabaseName;Integrated Security=true;"
-$sourceWebFolder = "$collectDir\Uncas.BuildPipeline.Web"
+$sourceWebFolder = "$collectDir\$webProjectName"
 
 . "$baseDir\build_ext.ps1"
 . "$baseDir\build_log.ps1"
@@ -109,9 +110,9 @@ function IntegrationTest {
 
 function Collect {
     IntegrationTest
-    
-    Copy-WebApplication $srcDir "Uncas.BuildPipeline.Web" $collectDir
-    copy $srcDir\Uncas.BuildPipeline.WindowsService\bin\$configuration $collectDir\Uncas.BuildPipeline.WindowsService -recurse
+
+    Copy-WebApplication $srcDir $webProjectName $collectDir
+    copy $srcDir\$serviceName\bin\$configuration $collectDir\$serviceName -recurse
 
     $params = @{branchName=$branch; packagePath="none.zip"; baseUrl=$baseUrl}
     LogPackage @params
