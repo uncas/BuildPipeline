@@ -1,10 +1,10 @@
-﻿namespace Uncas.BuildPipeline.WindowsService
-{
-    using System;
-    using System.ServiceProcess;
-    using Uncas.BuildPipeline.ApplicationServices;
-    using Uncas.Core.Services;
+﻿using System;
+using System.ServiceProcess;
+using Uncas.BuildPipeline.ApplicationServices;
+using Uncas.Core.Services;
 
+namespace Uncas.BuildPipeline.WindowsService
+{
     internal static class Program
     {
         /// <summary>
@@ -24,11 +24,23 @@
         /// <param name="args">The command-line arguments.</param>
         public static void Main(string[] args)
         {
+            var logger = Bootstrapper.Resolve<ILogger>();
+            logger.Info("Starting Windows service.");
             var programRunner = new ProgramRunner(
                 ActionToRun,
                 ServiceName,
                 GetServiceToRun);
-            programRunner.RunProgram(args);
+
+            try
+            {
+                programRunner.RunProgram(args);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Unhandled exception in Windows service.");
+            }
+
+            logger.Info("Stopping Windows service.");
         }
     }
 }
