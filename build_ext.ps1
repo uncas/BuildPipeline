@@ -216,9 +216,21 @@ function DeployWeb (
 
 function DownloadFile ($from, $to) {
     Write-Host "Downloading file from '$from' to '$to'."
-    $webClient = New-Object System.Net.WebClient
-    $script = $webClient.DownloadString($from)
+    $client = New-Object System.Net.WebClient
+    $script = $client.DownloadString($from)
     Set-Content $to $script
+}
+
+function UploadFile ($sourceFilePath, $destinationUrl, $webMethod = "POST") {
+    Write-Host "Uploading file from '$sourceFilePath' to '$destinationUrl'."
+    $client = New-Object System.Net.WebClient
+    try {
+        $responseBytes = $client.UploadFile($destinationUrl, $webMethod, $sourceFilePath)
+    }
+    catch {
+        Write-Host $_.Exception
+        throw
+    }
 }
 
 function ThrowIfErrorOnLastExecution {

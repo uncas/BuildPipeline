@@ -1,11 +1,9 @@
 ﻿Essentials:
-- Upload package
 - Download package
 - Review existing read logic vs. write logic
 - Write vs. read (commands and read models)
 - Update view to link to github + display author + commit message
 - Add logging of errors
-- Topshelf?!
 
 Infrastructure:
 - Tests of existing logic, specs
@@ -13,6 +11,7 @@ Infrastructure:
 -- EventStore (AggregateName, AggregateId, EventName, EventTime, SequenceNumber, Data)
 --- Aggregates: Pipeline, Deployment, Environment
 -- PipelineReadStore
+- Job host
 
 Features:
 - Show github links.

@@ -117,7 +117,9 @@ function Collect {
     Copy-WebApplication $srcDir $webProjectName $collectDir
     copy $srcDir\$serviceName\bin\$configuration $collectDir\$serviceName -recurse
 
-    $packageFileName = "BuildPipeline-$fullVersion.zip"
+    $sha = (git rev-parse HEAD)
+    $shortSha = $sha.Substring(0, 10)
+    $packageFileName = "BuildPipeline-$fullVersion-$shortSha.zip"
     $packageFilePath = "$outputDir\$packageFileName"
     Create-Zip $collectDir $packageFilePath
     

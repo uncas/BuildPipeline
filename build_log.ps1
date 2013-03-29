@@ -16,11 +16,15 @@
 
     $packageFile = gci $packagePath
     $packageFileName = $packageFile.Name
-    # TODO: Post/Put file to web service
-    $endpointUrl = "$baseUrl/api/pipelines?format=json"
-    $url = "$endpointUrl&projectname=$projectName&branchName=$branchName&revision=$revision&stepname=$stepName&packagepath=$packagePath"
+
     try {
-        $pipelineId = (Invoke-RestMethod -Uri $url -Method POST)
+        $filePostUrl = "$baseUrl/customapi/packages/$packageFileName"
+        UploadFile $packagePath $filePostUrl
+        
+        $logBaseUrl = "$baseUrl/api/pipelines?format=json"
+        $logParameters = "projectname=$projectName&branchName=$branchName&revision=$revision&stepname=$stepName&packagepath=$packageFileName"
+        $logUrl = "$logBaseUrl&$logParameters"
+        $pipelineId = (Invoke-RestMethod -Uri $logUrl -Method POST)
     }
     catch {
         # Logging shouldn't break the build.
