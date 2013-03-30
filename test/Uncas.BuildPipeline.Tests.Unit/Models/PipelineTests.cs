@@ -15,7 +15,6 @@
                 "My project",
                 "12",
                 "https://svn/test/trunk",
-                "https://svn/test/",
                 DateTime.Now,
                 "N.N.",
                 @"C:\temp.zip");

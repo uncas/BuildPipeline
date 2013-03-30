@@ -29,7 +29,6 @@ namespace Uncas.BuildPipeline.Web.ApiModels
                                         request.ProjectName,
                                         request.Revision,
                                         request.BranchName,
-                                        request.BranchName,
                                         DateTime.Now,
                                         "NN",
                                         request.PackagePath);

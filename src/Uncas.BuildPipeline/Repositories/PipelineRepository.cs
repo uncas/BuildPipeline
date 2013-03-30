@@ -17,7 +17,6 @@ namespace Uncas.BuildPipeline.Repositories
 SELECT Pr.ProjectName
     , Pi.Revision
     , Pi.PipelineId
-    , Pr.SourceUrlBase
     , Pi.BranchName
     , Pi.Created
     , Pi.SourceAuthor
@@ -41,7 +40,6 @@ SELECT TOP (@PageSize)
     Pr.ProjectName
     , Pi.Revision
     , Pi.PipelineId
-    , Pr.SourceUrlBase
     , Pi.BranchName
     , Pi.Created
     , Pi.SourceAuthor
@@ -59,7 +57,7 @@ ORDER BY Pi.Created DESC
 
         public void AddPipeline(Pipeline pipeline)
         {
-            int projectId = AddProject(pipeline.ProjectName, "someUrl");
+            int projectId = AddProject(pipeline.ProjectName);
             const string sql = @"
 SELECT @pipelineId = PipelineId
 FROM Pipeline
@@ -99,12 +97,12 @@ END";
 
         #endregion
 
-        private int AddProject(string projectName, string sourceUrlBase)
+        private int AddProject(string projectName)
         {
             const string sql = @"
 IF NOT EXISTS (SELECT * FROM Project WHERE ProjectName = @ProjectName)
 BEGIN
-    INSERT INTO Project (ProjectName, SourceUrlBase) VALUES (@ProjectName, @SourceUrlBase)
+    INSERT INTO Project (ProjectName) VALUES (@ProjectName)
     SELECT @ProjectId = Scope_Identity()
 END
 ELSE
@@ -112,7 +110,7 @@ BEGIN
     SELECT @ProjectId = ProjectId FROM Project WHERE ProjectName = @ProjectName
 END";
             return _connection.ExecuteAndGetGeneratedId(sql,
-                                                        new {projectName, sourceUrlBase},
+                                                        new {projectName},
                                                         "ProjectId");
         }
 

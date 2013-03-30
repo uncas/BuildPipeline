@@ -3,3 +3,4 @@ Pipeline-ChangeRevisionToText
 Pipeline-RenameSourceUrlAndSourceRevision
 stp_Build_Add-RemoveStoredProcedure
 LogEntry-CreateTable
+Project-DropSourceUrlBaseAndCreateGitFields

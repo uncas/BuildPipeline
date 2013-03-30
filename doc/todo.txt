@@ -1,4 +1,6 @@
 ﻿Essentials:
+- Complete logic to create relevant git mirrors
+-- Create mirrors from available projects, based on GitRemoteUrl
 - Update view to link to github + display author + commit message
 - Review existing read logic vs. write logic
 - Write vs. read (commands and read models)

@@ -26,7 +26,7 @@ namespace Uncas.BuildPipeline.Web.Mappers
             }
 
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
-            string sourceUrlRelative = pipeline.BranchName.Replace(pipeline.SourceUrlBase, string.Empty);
+            string sourceUrlRelative = pipeline.BranchName;
             if (sourceUrlRelative.Contains("/"))
             {
                 sourceUrlRelative = sourceUrlRelative.Split('/').Last();

@@ -17,7 +17,6 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
                                         "Bla",
                                         "1",
                                         "bla",
-                                        "bla",
                                         DateTime.Now,
                                         "bla",
                                         "bla");

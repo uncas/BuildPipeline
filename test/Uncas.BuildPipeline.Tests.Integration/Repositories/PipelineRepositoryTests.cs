@@ -18,7 +18,6 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
                                          "myproject",
                                          "123812830",
                                          "myBranchName",
-                                         "mySourceUrlBase",
                                          DateTime.Now,
                                          "mySourceAuthor",
                                          "myPackagePath");
