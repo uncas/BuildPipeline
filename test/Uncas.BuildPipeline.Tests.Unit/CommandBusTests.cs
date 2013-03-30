@@ -1,23 +1,21 @@
-﻿using System;
-using Microsoft.Practices.ServiceLocation;
+﻿using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using Uncas.BuildPipeline.Commands;
-using Uncas.BuildPipeline.Repositories;
-using Uncas.BuildPipeline.Utilities;
 
 namespace Uncas.BuildPipeline.Tests.Unit
 {
     [TestFixture]
-    public class CommandBusTests
+    public class CommandBusTests : WithFixture<CommandBus>
     {
         [Test]
         public void Publish_HandlerNotRegisterd_ThrowsInvalidOperationException()
         {
-            var mock = new Mock<IServiceLocator>();
-            var bus = new CommandBus(mock.Object);
+            Fixture.Register<IServiceLocator>(() => new UnityServiceLocator(new UnityContainer()));
 
-            Assert.Throws<InvalidOperationException>(() => bus.Publish(new UpdateGitMirrors()));
+            Assert.Throws<ActivationException>(() => Sut.Publish(Fixture.Create<UpdateGitMirrors>()));
         }
 
         [Test]
@@ -25,10 +23,10 @@ namespace Uncas.BuildPipeline.Tests.Unit
         {
             var mock = new Mock<IServiceLocator>();
             mock.Setup(x => x.GetInstance(typeof (UpdateGitMirrorsHandler))).Returns(
-                new UpdateGitMirrorsHandler(new GitUtility(), new ProjectReadStore()));
-            var bus = new CommandBus(mock.Object);
+                Fixture.Create<UpdateGitMirrorsHandler>());
+            Fixture.Register(() => mock.Object);
 
-            bus.Publish(new UpdateGitMirrors());
+            Sut.Publish(Fixture.Create<UpdateGitMirrors>());
 
             mock.Verify(x => x.GetInstance(typeof (UpdateGitMirrorsHandler)), Times.Once());
         }
