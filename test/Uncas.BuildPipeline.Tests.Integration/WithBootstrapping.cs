@@ -1,18 +1,11 @@
 using System.Transactions;
 using NUnit.Framework;
+using Uncas.BuildPipeline.Tests.Unit;
 
 namespace Uncas.BuildPipeline.Tests.Integration
 {
-    public abstract class WithBootstrapping<T> where T : class
+    public abstract class WithBootstrapping<T> : WithFixture where T : class
     {
-        private TransactionScope _scope;
-        private T _sut;
-
-        public T Sut
-        {
-            get { return _sut ?? (_sut = Resolve<T>()); }
-        }
-
         #region Setup/Teardown
 
         [SetUp]
@@ -30,6 +23,14 @@ namespace Uncas.BuildPipeline.Tests.Integration
         }
 
         #endregion
+
+        private TransactionScope _scope;
+        private T _sut;
+
+        public T Sut
+        {
+            get { return _sut ?? (_sut = Resolve<T>()); }
+        }
 
         public TU Resolve<TU>() where TU : class
         {

@@ -129,6 +129,10 @@
       <Project>{742A2BCE-EC0B-4DA3-A31B-89F84351ECB2}</Project>
       <Name>Uncas.BuildPipeline</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Uncas.BuildPipeline.Tests.Unit\Uncas.BuildPipeline.Tests.Unit.csproj">
+      <Project>{C0066A3B-97D4-4E46-88B1-44F2F1FABB3A}</Project>
+      <Name>Uncas.BuildPipeline.Tests.Unit</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
