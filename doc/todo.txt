@@ -6,6 +6,7 @@
 - Review existing read logic vs. write logic
 - Write vs. read (commands and read models)
 - Create package that can be deployed to a remote webserver.
+- Page to edit projects
 
 Infrastructure:
 - Tests of existing logic, specs
