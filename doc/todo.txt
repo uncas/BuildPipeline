@@ -1,9 +1,11 @@
 ﻿Essentials:
+- Deployment logic
 - Complete logic to create relevant git mirrors
 -- Create mirrors from available projects, based on GitRemoteUrl
 - Update view to link to github + display author + commit message
 - Review existing read logic vs. write logic
 - Write vs. read (commands and read models)
+- Create package that can be deployed to a remote webserver.
 
 Infrastructure:
 - Tests of existing logic, specs
