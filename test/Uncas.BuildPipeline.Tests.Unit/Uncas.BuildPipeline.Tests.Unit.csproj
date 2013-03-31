@@ -95,7 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationServices\DeploymentServiceTests.cs" />
-    <Compile Include="CommandBusTests.cs" />
+    <Compile Include="Commands\CommandBusTests.cs" />
+    <Compile Include="Commands\UpdateGitMirrorsHandlerTests.cs" />
     <Compile Include="FixtureExtensions.cs" />
     <Compile Include="Models\PipelineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

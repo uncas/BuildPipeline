@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Ploeh.AutoFixture;
 using Uncas.BuildPipeline.Commands;
 
-namespace Uncas.BuildPipeline.Tests.Unit
+namespace Uncas.BuildPipeline.Tests.Unit.Commands
 {
     [TestFixture]
     public class CommandBusTests : WithFixture<CommandBus>
