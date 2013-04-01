@@ -17,6 +17,8 @@ namespace Uncas.BuildPipeline.WindowsService
 
         private static void TheAction()
         {
+            var logger = Bootstrapper.Resolve<ILogger>();
+            logger.Debug("Starting action.");
             try
             {
                 var commandBus = Bootstrapper.Resolve<ICommandBus>();
@@ -25,9 +27,10 @@ namespace Uncas.BuildPipeline.WindowsService
             }
             catch (Exception e)
             {
-                var logger = Bootstrapper.Resolve<ILogger>();
                 logger.Error(e, "Error when running actions.");
             }
+
+            logger.Debug("Completed action.");
         }
 
         /// <summary>

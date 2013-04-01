@@ -4,7 +4,8 @@ namespace Uncas.BuildPipeline
 {
     public interface ILogger
     {
-        void Info(string description);
-        void Error(Exception exception, string description);
+        void Debug(string descriptionFormat, params object[] args);
+        void Info(string descriptionFormat, params object[] args);
+        void Error(Exception exception, string descriptionFormat, params object[] args);
     }
 }

@@ -11,24 +11,40 @@ namespace Uncas.BuildPipeline
     {
         #region ILogger Members
 
-        public void Info(string description)
+        public void Debug(string descriptionFormat, params object[] args)
         {
-            const int skipFrames = 1;
-            var stackTraceWithFileInfo = new StackTrace(skipFrames, true);
-            var stackTraceWithoutFileInfo = new StackTrace(skipFrames, false);
-            Log(LogType.Info, description, stackTraceWithFileInfo, stackTraceWithoutFileInfo);
+            LogNoException(LogType.Debug, 2, descriptionFormat, args);
         }
 
-        public void Error(Exception exception, string description)
+        public void Info(string descriptionFormat, params object[] args)
+        {
+            LogNoException(LogType.Info, 2, descriptionFormat, args);
+        }
+
+        public void Error(Exception exception, string descriptionFormat, params object[] args)
         {
             var stackTraceWithFileInfo = new StackTrace(exception, true);
             var stackTraceWithoutFileInfo = new StackTrace(exception, false);
             string exceptionType = exception.GetType().ToString();
-            Log(LogType.Error, description, stackTraceWithFileInfo, stackTraceWithoutFileInfo, exceptionType,
+            Log(LogType.Error, GetDescription(descriptionFormat, args), stackTraceWithFileInfo,
+                stackTraceWithoutFileInfo, exceptionType,
                 exception.Message, exception.ToString());
         }
 
         #endregion
+
+        private void LogNoException(LogType logType, int skipFrames, string descriptionFormat, object[] args)
+        {
+            var stackTraceWithFileInfo = new StackTrace(skipFrames, true);
+            var stackTraceWithoutFileInfo = new StackTrace(skipFrames, false);
+            Log(logType, GetDescription(descriptionFormat, args), stackTraceWithFileInfo,
+                stackTraceWithoutFileInfo);
+        }
+
+        private static string GetDescription(string descriptionFormat, params object[] args)
+        {
+            return string.Format(descriptionFormat, args);
+        }
 
         private void Log(LogType logType, string description, StackTrace withFileInfo, StackTrace withoutFileInfo,
                          string exceptionType = null, string exceptionMessage = null, string fullException = null)
