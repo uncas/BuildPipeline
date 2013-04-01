@@ -188,6 +188,7 @@
     <Compile Include="ViewModels\EnvironmentIndexViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\PipelineIndexViewModel.cs" />
+    <Compile Include="ViewModels\PipelineListItemViewModel.cs" />
     <Compile Include="ViewModels\PipelineViewModel.cs" />
     <Compile Include="Configuration\WebBootstrapper.cs" />
     <Compile Include="Configuration\WebRegistry.cs" />

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.PipelineViewModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.PipelineListItemViewModel>" %>
 <%@ Import Namespace="Uncas.BuildPipeline.Models" %>
 <%@ Import Namespace="Uncas.BuildPipeline.Web.ViewModels" %>
 <tr class="BuildListView">
@@ -7,7 +7,7 @@
             <%:Model.ProjectName%>
         </div>
         <div>
-            <%:Model.SourceUrlRelative%>
+            <%:Model.BranchName%>
         </div>
     </td>
     <td class="SourceDetails">

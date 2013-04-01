@@ -7,20 +7,16 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <table>
         <tr>
-            <th>
-                Project
+            <th>Project
             </th>
-            <th>
-                Activity
+            <th>Activity
             </th>
-            <th>
-                Build stages
+            <th>Build stages
             </th>
-            <th>
-                Deployment
+            <th>Deployment
             </th>
         </tr>
-        <% foreach (PipelineViewModel pipeline in Model.Pipelines)
+        <% foreach (PipelineListItemViewModel pipeline in Model.Pipelines)
            {
                Html.RenderPartial("PipelineListView", pipeline);
            } %>

@@ -17,15 +17,36 @@ namespace Uncas.BuildPipeline.Web.Mappers
             return new PipelineIndexViewModel {Pipelines = MapToPipelineViewModels(pipelines)};
         }
 
+        public static PipelineListItemViewModel MapToPipelineListItemViewModel(Pipeline pipeline)
+        {
+            if (pipeline == null)
+                throw new ArgumentNullException("pipeline");
+
+            string createdDisplay = GetDateTimeDisplay(pipeline.Created);
+
+            var result = new PipelineListItemViewModel
+                {
+                    PipelineId = pipeline.PipelineId,
+                    ProjectName = pipeline.ProjectName,
+                    SourceAuthor = "Unknown",
+                    Revision = pipeline.Revision,
+                    BranchName = pipeline.BranchName,
+                    CreatedDisplay = createdDisplay,
+                    StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
+                    CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed",
+                    Steps = pipeline.Steps.Select(MapToBuildStepViewModel),
+                    PackagePath = pipeline.PackagePath,
+                    CommitLink = "UNDONE"
+                };
+            return result;
+        }
+
         public static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
             if (pipeline == null)
                 throw new ArgumentNullException("pipeline");
 
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
-            string sourceUrlRelative = pipeline.BranchName;
-            if (sourceUrlRelative.Contains("/"))
-                sourceUrlRelative = sourceUrlRelative.Split('/').Last();
 
             var result = new PipelineViewModel
                 {
@@ -33,7 +54,7 @@ namespace Uncas.BuildPipeline.Web.Mappers
                     ProjectName = pipeline.ProjectName,
                     SourceAuthor = "Unknown",
                     Revision = pipeline.Revision,
-                    SourceUrlRelative = sourceUrlRelative,
+                    BranchName = pipeline.BranchName,
                     CreatedDisplay = createdDisplay,
                     StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
                     CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed",
@@ -87,10 +108,10 @@ namespace Uncas.BuildPipeline.Web.Mappers
                 };
         }
 
-        private static IEnumerable<PipelineViewModel>
+        private static IEnumerable<PipelineListItemViewModel>
             MapToPipelineViewModels(IEnumerable<Pipeline> pipelines)
         {
-            return pipelines.Select(MapToPipelineViewModel);
+            return pipelines.Select(MapToPipelineListItemViewModel);
         }
     }
 }

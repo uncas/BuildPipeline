@@ -10,7 +10,7 @@ namespace Uncas.BuildPipeline.Web.ViewModels
         public string ProjectName { get; set; }
         public string SourceAuthor { get; set; }
         public string Revision { get; set; }
-        public string SourceUrlRelative { get; set; }
+        public string BranchName { get; set; }
         public string StatusText { get; set; }
         public IEnumerable<BuildStepViewModel> Steps { get; set; }
         public string PackagePath { get; set; }

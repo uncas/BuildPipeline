@@ -4,7 +4,7 @@
     <%:Model.ProjectName%>
 </div>
 <div>
-    <%:Model.SourceUrlRelative%>
+    <%:Model.BranchName%>
 </div>
 <div class="<%:Model.CssClass%>" title="<%:Model.StatusText%>">
     revision
