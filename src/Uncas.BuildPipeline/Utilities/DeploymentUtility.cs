@@ -24,15 +24,10 @@ namespace Uncas.BuildPipeline.Utilities
         public void Deploy(
             string packagePath,
             string workingDirectory,
-            Environment environment)
+            Environment environment,
+            string customScript)
         {
             _zipUtility.ExtractZipFile(packagePath, workingDirectory);
-
-            // TODO: Load custom script per project:
-            const string customScript = @"
-$content = ""bla bla $environmentName""
-Set-Content C:\Temp\ThisIsATest.txt $content";
-
             string scriptContents = string.Format(@"
 param ($environmentName)
 {0}", customScript);

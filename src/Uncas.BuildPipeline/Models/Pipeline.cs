@@ -29,6 +29,7 @@ namespace Uncas.BuildPipeline.Models
             Created = created;
             SourceAuthor = sourceAuthor;
             PackagePath = packagePath;
+            ProjectId = 0;
         }
 
         public int PipelineId { get; private set; }
@@ -37,6 +38,7 @@ namespace Uncas.BuildPipeline.Models
         public string BranchName { get; private set; }
         public DateTime Created { get; private set; }
         public string PackagePath { get; private set; }
+        public int ProjectId { get; private set; }
 
         public string SourceAuthor { get; private set; }
 

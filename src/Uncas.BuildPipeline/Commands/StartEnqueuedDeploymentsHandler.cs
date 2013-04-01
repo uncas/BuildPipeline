@@ -19,18 +19,21 @@ namespace Uncas.BuildPipeline.Commands
         private readonly IEnvironmentRepository _environmentRepository;
         private readonly ILogger _logger;
         private readonly IPipelineRepository _pipelineRepository;
+        private readonly IProjectReadStore _projectReadStore;
 
         public StartEnqueuedDeploymentsHandler(
             IEnvironmentRepository environmentRepository,
             IPipelineRepository pipelineRepository,
             IDeploymentRepository deploymentRepository,
             IDeploymentUtility deploymentUtility,
+            IProjectReadStore projectReadStore,
             ILogger logger)
         {
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
             _deploymentRepository = deploymentRepository;
             _deploymentUtility = deploymentUtility;
+            _projectReadStore = projectReadStore;
             _logger = logger;
         }
 
@@ -80,11 +83,22 @@ namespace Uncas.BuildPipeline.Commands
                     "The id does not correspond to an existing environment.",
                     "environmentId");
 
+            ProjectReadModel project = _projectReadStore.GetProjectById(pipeline.ProjectId);
+            if (project == null)
+                throw new InvalidOperationException("Cannot deploy without a project.");
             string packagePath = Path.Combine(DeploymentUtility.PackageFolder, pipeline.PackagePath);
+            string deploymentScript = project.DeploymentScript;
+            if (string.IsNullOrWhiteSpace(deploymentScript))
+            {
+                _logger.Debug("No deployment script for project '{0}'.", project.ProjectName);
+                return;
+            }
+
             _deploymentUtility.Deploy(
                 packagePath,
                 WorkingDirectory,
-                environment);
+                environment,
+                deploymentScript);
         }
     }
 }

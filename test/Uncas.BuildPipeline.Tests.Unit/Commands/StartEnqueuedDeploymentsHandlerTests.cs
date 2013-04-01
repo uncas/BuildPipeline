@@ -35,6 +35,9 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             pipelineRepositoryMock.Setup(
                 pr => pr.GetPipeline(pipelineId)).Returns(
                     pipeline);
+            Mock<IProjectReadStore> projectReadStoreMock = Fixture.FreezeMock<IProjectReadStore>();
+            projectReadStoreMock.Setup(x => x.GetProjectById(It.IsAny<int>())).Returns(new ProjectReadModel
+                {DeploymentScript = "bla"});
         }
 
         private void WithDeployments(
@@ -54,7 +57,7 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             Sut.Handle(new StartEnqueuedDeployments());
 
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>()),
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
                 Times.Never());
         }
 
@@ -71,14 +74,14 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             WithDeployments(deployment);
             Sut.Handle(new StartEnqueuedDeployments());
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>()),
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
                 Times.Once());
             WithDeployments();
 
             Sut.Handle(new StartEnqueuedDeployments());
 
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>()),
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
                 Times.Once());
         }
 
@@ -97,7 +100,7 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             Sut.Handle(new StartEnqueuedDeployments());
 
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>()),
+                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
                 Times.Once());
         }
     }

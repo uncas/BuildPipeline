@@ -15,7 +15,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Utilities
             const string packagePath =
                 @"C:\Builds\BuildPipeline\Artifacts\Unit\packages\Uncas.BuildPipeline-0.1.35.966.zip";
 
-            Sut.Deploy(packagePath, workingDirectory, new Environment());
+            Sut.Deploy(packagePath, workingDirectory, new Environment(), "Write-Host Hello");
         }
     }
 }

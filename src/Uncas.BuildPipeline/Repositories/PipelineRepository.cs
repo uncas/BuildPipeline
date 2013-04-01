@@ -21,6 +21,7 @@ SELECT Pr.ProjectName
     , Pi.Created
     , Pi.SourceAuthor
     , Pi.PackagePath
+    , Pi.ProjectId
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
@@ -44,6 +45,7 @@ SELECT TOP (@PageSize)
     , Pi.Created
     , Pi.SourceAuthor
     , Pi.PackagePath
+    , Pi.ProjectId
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId

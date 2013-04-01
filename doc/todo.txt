@@ -1,21 +1,29 @@
-﻿Essentials:
-- Deployment logic
+﻿Features:
 - Complete logic to create relevant git mirrors
 -- Create mirrors from available projects, based on GitRemoteUrl
 - Update view to link to github + display author + commit message
-- Review existing read logic vs. write logic
-- Write vs. read (commands and read models)
+- Show github links.
+- Show diffs (via local mirror of github repo).
 - Create package that can be deployed to a remote webserver.
-- Page to edit projects
+- Deployment: Override the deployment script per environment
+  (such that there is a default deployment script for a project,
+  but this can be overridden for individual environment(s))
 
 Infrastructure:
 - Tests of existing logic, specs
+- Cleanup in dependencies Uncas.Core.*
+- Logging: version incorrect
+- Upgrade NUnit to 2.6.2
+- Display full version including short hash in footer on website.
+
+Architecture:
 - Events & readmodels
 -- EventStore (AggregateName, AggregateId, EventName, EventTime, SequenceNumber, Data)
 --- Aggregates: Pipeline, Deployment, Environment
 -- PipelineReadStore
 - Job host
+- Review existing read logic vs. write logic
+- Write vs. read (commands and read models)
 
-Features:
-- Show github links.
-- Show diffs (via local mirror of github repo).
+Documentation:
+- Create dummy project for testing how to use it: BuildPipeline-Example
