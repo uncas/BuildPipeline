@@ -1,8 +1,8 @@
-﻿namespace Uncas.BuildPipeline.Web.ViewModels
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-    public class PipelineIndexViewModel : BaseViewModel
+namespace Uncas.BuildPipeline.Web.ViewModels
+{
+    public class PipelineIndexViewModel
     {
         public IEnumerable<PipelineViewModel> Pipelines { get; set; }
     }

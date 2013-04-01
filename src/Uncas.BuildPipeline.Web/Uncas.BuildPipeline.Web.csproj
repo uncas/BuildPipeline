@@ -182,7 +182,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Mappers\PipelineMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BuildStepViewModel.cs" />
     <Compile Include="ViewModels\DeploymentViewModel.cs" />
     <Compile Include="ViewModels\DeployViewModel.cs" />

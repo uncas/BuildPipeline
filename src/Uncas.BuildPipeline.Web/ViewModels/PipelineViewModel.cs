@@ -2,7 +2,7 @@
 
 namespace Uncas.BuildPipeline.Web.ViewModels
 {
-    public class PipelineViewModel : BaseViewModel
+    public class PipelineViewModel
     {
         public string CreatedDisplay { get; set; }
         public string CssClass { get; set; }
@@ -14,5 +14,6 @@ namespace Uncas.BuildPipeline.Web.ViewModels
         public string StatusText { get; set; }
         public IEnumerable<BuildStepViewModel> Steps { get; set; }
         public string PackagePath { get; set; }
+        public string CommitLink { get; set; }
     }
 }

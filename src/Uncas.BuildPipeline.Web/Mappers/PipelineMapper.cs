@@ -14,23 +14,18 @@ namespace Uncas.BuildPipeline.Web.Mappers
     {
         public static PipelineIndexViewModel MapToPipelineIndexViewModel(IEnumerable<Pipeline> pipelines)
         {
-            var result = new PipelineIndexViewModel {Pipelines = MapToPipelineViewModels(pipelines)};
-            return result;
+            return new PipelineIndexViewModel {Pipelines = MapToPipelineViewModels(pipelines)};
         }
 
         public static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
             if (pipeline == null)
-            {
                 throw new ArgumentNullException("pipeline");
-            }
 
             string createdDisplay = GetDateTimeDisplay(pipeline.Created);
             string sourceUrlRelative = pipeline.BranchName;
             if (sourceUrlRelative.Contains("/"))
-            {
                 sourceUrlRelative = sourceUrlRelative.Split('/').Last();
-            }
 
             var result = new PipelineViewModel
                 {
@@ -43,7 +38,8 @@ namespace Uncas.BuildPipeline.Web.Mappers
                     StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
                     CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed",
                     Steps = pipeline.Steps.Select(MapToBuildStepViewModel),
-                    PackagePath = pipeline.PackagePath
+                    PackagePath = pipeline.PackagePath,
+                    CommitLink = "UNDONE"
                 };
             return result;
         }
@@ -94,9 +90,7 @@ namespace Uncas.BuildPipeline.Web.Mappers
         private static IEnumerable<PipelineViewModel>
             MapToPipelineViewModels(IEnumerable<Pipeline> pipelines)
         {
-            IEnumerable<PipelineViewModel> viewModels = pipelines.Select(
-                MapToPipelineViewModel);
-            return viewModels;
+            return pipelines.Select(MapToPipelineViewModel);
         }
     }
 }
