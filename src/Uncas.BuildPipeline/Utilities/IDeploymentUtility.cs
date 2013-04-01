@@ -1,7 +1,7 @@
-﻿namespace Uncas.BuildPipeline.Utilities
-{
-    using Uncas.BuildPipeline.Models;
+﻿using Uncas.BuildPipeline.Models;
 
+namespace Uncas.BuildPipeline.Utilities
+{
     public interface IDeploymentUtility
     {
         void Deploy(

@@ -152,6 +152,10 @@
     <Compile Include="Utilities\GitUtility.cs" />
     <Compile Include="Utilities\IDeploymentUtility.cs" />
     <Compile Include="Utilities\IGitUtility.cs" />
+    <Compile Include="Utilities\IPowershellUtility.cs" />
+    <Compile Include="Utilities\IZipUtility.cs" />
+    <Compile Include="Utilities\PowershellUtility.cs" />
+    <Compile Include="Utilities\ZipUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\BuildPipelineKey.snk">
