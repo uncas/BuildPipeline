@@ -5,6 +5,7 @@ using System.Threading;
 using NUnit.Framework;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
+using Uncas.Core.Data;
 
 namespace Uncas.BuildPipeline.Tests.Integration.Repositories
 {
@@ -41,6 +42,12 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         public void GetByEnvironment_X()
         {
             Sut.GetByEnvironment(1);
+        }
+
+        [Test]
+        public void GetDueDeployments_X()
+        {
+            Sut.GetDueDeployments(new PagingInfo(10));
         }
 
         [Test]

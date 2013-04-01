@@ -47,8 +47,7 @@ SELECT TOP (@PageSize)
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
-ORDER BY Pi.Created DESC
---LIMIT @PageSize";
+ORDER BY Pi.Created DESC";
             IEnumerable<Pipeline> pipelines = _connection.Query<Pipeline>(sql,
                                                                           new {pageSize});
             AddSteps(pipelines);

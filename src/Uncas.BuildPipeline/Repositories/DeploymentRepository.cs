@@ -89,7 +89,8 @@ ORDER BY Created ASC";
             }
 
             const string sql = @"
-SELECT DeploymentId
+SELECT TOP (@PageSize)
+    DeploymentId
     , PipelineId
     , EnvironmentId
     , Created
@@ -98,8 +99,7 @@ SELECT DeploymentId
 FROM Deployment
 WHERE Started IS NULL 
     OR Completed IS NULL
-ORDER BY Created ASC
-LIMIT @PageSize";
+ORDER BY Created ASC";
             return _connection.Query<Deployment>(sql, new {pagingInfo.PageSize});
         }
 
