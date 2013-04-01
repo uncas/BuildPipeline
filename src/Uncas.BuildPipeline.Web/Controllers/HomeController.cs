@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Uncas.BuildPipeline.Commands;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
+using Uncas.BuildPipeline.Utilities;
 using Uncas.BuildPipeline.Web.Mappers;
 using Uncas.BuildPipeline.Web.ViewModels;
 using Uncas.Core.Data;
@@ -91,7 +92,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
         [HttpGet]
         public ActionResult Download(string id)
         {
-            string filePath = Path.Combine(CustomApiController.PackageFolder, id);
+            string filePath = Path.Combine(DeploymentUtility.PackageFolder, id);
             if (!System.IO.File.Exists(filePath))
                 return HttpNotFound("File not found.");
             return new FilePathResult(filePath, "application/zip");

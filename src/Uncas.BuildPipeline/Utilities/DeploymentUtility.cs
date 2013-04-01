@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Configuration;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
@@ -8,6 +9,9 @@ namespace Uncas.BuildPipeline.Utilities
 {
     public class DeploymentUtility : IDeploymentUtility
     {
+        public static readonly string PackageFolder =
+            ConfigurationManager.AppSettings["DeploymentPackageFolder"] ?? @"C:\Temp\DeploymentPackages";
+
         #region IDeploymentUtility Members
 
         public void Deploy(

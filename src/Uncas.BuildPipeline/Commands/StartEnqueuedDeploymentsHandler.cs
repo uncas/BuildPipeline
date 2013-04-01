@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Utilities;
@@ -67,7 +68,7 @@ namespace Uncas.BuildPipeline.Commands
                     "The id does not correspond to an existing environment.",
                     "environmentId");
 
-            string packagePath = pipeline.PackagePath;
+            string packagePath = Path.Combine(DeploymentUtility.PackageFolder, pipeline.PackagePath);
             _deploymentUtility.Deploy(
                 packagePath,
                 WorkingDirectory,
