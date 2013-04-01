@@ -19,7 +19,6 @@ SELECT Pr.ProjectName
     , Pi.PipelineId
     , Pi.BranchName
     , Pi.Created
-    , Pi.SourceAuthor
     , Pi.PackagePath
     , Pi.ProjectId
 FROM Pipeline AS Pi
@@ -43,7 +42,6 @@ SELECT TOP (@PageSize)
     , Pi.PipelineId
     , Pi.BranchName
     , Pi.Created
-    , Pi.SourceAuthor
     , Pi.PackagePath
     , Pi.ProjectId
 FROM Pipeline AS Pi
@@ -69,9 +67,9 @@ WHERE ProjectId = @projectId
 IF @pipelineId IS NULL
 BEGIN
     INSERT INTO Pipeline
-    (ProjectId, Revision, BranchName, Created, SourceAuthor, PackagePath)
+    (ProjectId, Revision, BranchName, Created, PackagePath)
     VALUES
-    (@projectId, @revision, @branchName, GETDATE(), @sourceAuthor, @packagePath)
+    (@projectId, @revision, @branchName, GETDATE(), @packagePath)
 
     SET @pipelineId = Scope_Identity()
 END
@@ -79,7 +77,6 @@ ELSE
 BEGIN
     UPDATE Pipeline
     SET Modified = GETDATE()
-        , SourceAuthor = @sourceAuthor
         , PackagePath = @packagePath
     WHERE PipelineId = @pipelineId
 END";
@@ -89,7 +86,6 @@ END";
                         projectId,
                         pipeline.Revision,
                         pipeline.BranchName,
-                        pipeline.SourceAuthor,
                         pipeline.PackagePath
                     };
             int pipelineId = _connection.ExecuteAndGetGeneratedId(sql, param, "PipelineId");

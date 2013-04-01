@@ -1,23 +1,17 @@
-﻿namespace Uncas.BuildPipeline.Tests.Unit.Models
-{
-    using System;
-    using System.Threading;
-    using NUnit.Framework;
-    using Uncas.BuildPipeline.Models;
+﻿using System;
+using System.Threading;
+using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Uncas.BuildPipeline.Models;
 
+namespace Uncas.BuildPipeline.Tests.Unit.Models
+{
     [TestFixture]
-    public class PipelineTests
+    public class PipelineTests : WithFixture
     {
-        private static Pipeline GetPipeline()
+        private Pipeline GetPipeline()
         {
-            return new Pipeline(
-                1,
-                "My project",
-                "12",
-                "https://svn/test/trunk",
-                DateTime.Now,
-                "N.N.",
-                @"C:\temp.zip");
+            return Fixture.Create<Pipeline>();
         }
 
         private static BuildStep GetBuildStep(bool isSuccessful)

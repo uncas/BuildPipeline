@@ -30,7 +30,6 @@ namespace Uncas.BuildPipeline.Web.ApiModels
                                         request.Revision,
                                         request.BranchName,
                                         DateTime.Now,
-                                        "NN",
                                         request.PackagePath);
             Repository.AddPipeline(pipeline);
             return pipeline.PipelineId;

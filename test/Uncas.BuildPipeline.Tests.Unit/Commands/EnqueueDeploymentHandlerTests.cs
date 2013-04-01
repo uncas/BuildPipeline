@@ -1,6 +1,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using Uncas.BuildPipeline.Commands;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
@@ -15,14 +16,8 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             int environmentId)
         {
             var environment = new Environment();
-            var pipeline = new Pipeline(
-                pipelineId,
-                "A",
-                "1",
-                "x",
-                DateTime.Now,
-                "x",
-                "x");
+            Fixture.Inject(pipelineId);
+            var pipeline = Fixture.Create<Pipeline>();
             Mock<IEnvironmentRepository> environmentRepositoryMock = Fixture.FreezeMock<IEnvironmentRepository>();
             environmentRepositoryMock.Setup(
                 er => er.GetEnvironment(environmentId)).Returns(

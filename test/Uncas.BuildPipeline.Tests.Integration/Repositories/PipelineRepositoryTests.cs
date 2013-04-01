@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 
@@ -14,13 +14,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         public void GetPipelines_PageSize1_PipelineIsIncluded()
         {
             const int pageSize = 1;
-            var pipeline1 = new Pipeline(1,
-                                         "myproject",
-                                         "123812830",
-                                         "myBranchName",
-                                         DateTime.Now,
-                                         "mySourceAuthor",
-                                         "myPackagePath");
+            var pipeline1 = Fixture.Create<Pipeline>();
             Sut.AddPipeline(pipeline1);
 
             Pipeline pipeline = Sut.GetPipelines(pageSize).FirstOrDefault();

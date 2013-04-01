@@ -4,6 +4,11 @@
 - Build stages + deployment stages on front page...
 - Show diffs (via local mirror).
 - Create package that can be deployed to a remote webserver.
+- Deployment: DeploymentMethod=FTP
+- Deployment: DeploymentMethod=OutOfProcess
+-- OutOfProcess: Enqueue in some external rollout system,
+   where the external rollout system sends status updates back to BuildPipeline
+-- Alternative: BuildPipeline polls the external ssytem for status updates...
 - Deployment: Override the deployment script per environment
   (such that there is a default deployment script for a project,
   but this can be overridden for individual environment(s))

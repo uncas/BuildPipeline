@@ -36,7 +36,7 @@ namespace Uncas.BuildPipeline.Web.Mappers
                 {
                     PipelineId = pipeline.PipelineId,
                     ProjectName = pipeline.ProjectName,
-                    SourceAuthor = pipeline.SourceAuthor,
+                    SourceAuthor = "Unknown",
                     Revision = pipeline.Revision,
                     SourceUrlRelative = sourceUrlRelative,
                     CreatedDisplay = createdDisplay,

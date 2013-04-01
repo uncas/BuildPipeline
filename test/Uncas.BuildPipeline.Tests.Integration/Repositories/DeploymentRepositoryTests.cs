@@ -19,7 +19,6 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
                                         "1",
                                         "bla",
                                         DateTime.Now,
-                                        "bla",
                                         "bla");
             Resolve<IPipelineRepository>().AddPipeline(pipeline);
             return pipeline.PipelineId;

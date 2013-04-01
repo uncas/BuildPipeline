@@ -19,7 +19,6 @@ namespace Uncas.BuildPipeline.Models
             string revision,
             string branchName,
             DateTime created,
-            string sourceAuthor,
             string packagePath) : this()
         {
             PipelineId = pipelineId;
@@ -27,7 +26,6 @@ namespace Uncas.BuildPipeline.Models
             Revision = revision;
             BranchName = branchName;
             Created = created;
-            SourceAuthor = sourceAuthor;
             PackagePath = packagePath;
             ProjectId = 0;
         }
@@ -39,8 +37,6 @@ namespace Uncas.BuildPipeline.Models
         public DateTime Created { get; private set; }
         public string PackagePath { get; private set; }
         public int ProjectId { get; private set; }
-
-        public string SourceAuthor { get; private set; }
 
         public IEnumerable<BuildStep> Steps
         {
