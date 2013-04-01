@@ -1,23 +1,25 @@
-﻿namespace Uncas.BuildPipeline.Utilities
-{
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Text;
-    using ICSharpCode.SharpZipLib.Zip;
-    using Uncas.BuildPipeline.Models;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using ICSharpCode.SharpZipLib.Zip;
+using Uncas.BuildPipeline.Models;
 
+namespace Uncas.BuildPipeline.Utilities
+{
     public class DeploymentUtility : IDeploymentUtility
     {
+        #region IDeploymentUtility Members
+
         public void Deploy(
             string packagePath,
             string workingDirectory,
             Environment environment)
         {
             ExtractZipFile(packagePath, workingDirectory);
-            WriteEnvironmentProperties(environment, workingDirectory);
             DeployPackage(workingDirectory);
         }
+
+        #endregion
 
         private static void DeployPackage(string workingDirectory)
         {
@@ -27,7 +29,7 @@
             // Runs command on package:
             var startInfo =
                 new ProcessStartInfo(
-                    "Deploy.cmd") { WorkingDirectory = workingDirectory };
+                    "Deploy.cmd") {WorkingDirectory = workingDirectory};
             Process.Start(startInfo);
         }
 
@@ -106,29 +108,6 @@
                     }
                 }
             }
-        }
-
-        private static void WriteEnvironmentProperties(
-            Environment environment,
-            string workingDirectory)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("<?xml version=\"1.0\"?>");
-            sb.AppendLine("<properties>");
-            foreach (EnvironmentProperty property in environment.Properties)
-            {
-                sb.AppendFormat(
-                    "  <property name=\"{0}\" value=\"{1}\" />",
-                    property.Key,
-                    property.Value);
-                sb.AppendLine();
-            }
-
-            sb.AppendLine("</properties>");
-            string properties = sb.ToString();
-            string filePath =
-                Path.Combine(workingDirectory, "local.properties.xml");
-            File.WriteAllText(filePath, properties);
         }
     }
 }
