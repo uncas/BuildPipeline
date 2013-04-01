@@ -1,9 +1,10 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
-using Uncas.BuildPipeline.Models;
+using Environment = Uncas.BuildPipeline.Models.Environment;
 
 namespace Uncas.BuildPipeline.Utilities
 {
@@ -20,20 +21,34 @@ namespace Uncas.BuildPipeline.Utilities
             Environment environment)
         {
             ExtractZipFile(packagePath, workingDirectory);
-            DeployPackage(workingDirectory);
+            DeployPackage(workingDirectory, environment.EnvironmentName);
         }
 
         #endregion
 
-        private static void DeployPackage(string workingDirectory)
+        private static void DeployPackage(string workingDirectory, string environmentName)
         {
-            // TODO: Low Priority: Consider fallback to use the following command if Deploy.cmd is not found:
-            // "C:\Program Files (x86)\NAnt\nant.exe" -buildfile:BuildActions.build deploy
+            // TODO: Load custom script per project:
+            const string customScript = @"
+$content = ""bla bla $environmentName""
+Set-Content C:\Temp\ThisIsATest.txt $content";
 
-            // Runs command on package:
+            string scriptContents = string.Format(@"
+param ($environmentName)
+{0}", customScript);
+            string scriptTempPath
+                = Path.Combine(workingDirectory, Guid.NewGuid().ToString() + ".ps1");
+            File.WriteAllText(scriptTempPath, scriptContents);
+            string arguments = string.Format(@"-NonInteractive -File {0} -environmentName ""{1}""", scriptTempPath,
+                                             environmentName);
+            const string powershellExe = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
             var startInfo =
                 new ProcessStartInfo(
-                    "Deploy.cmd") {WorkingDirectory = workingDirectory};
+                    powershellExe)
+                    {
+                        WorkingDirectory = workingDirectory,
+                        Arguments = arguments
+                    };
             Process.Start(startInfo);
         }
 
