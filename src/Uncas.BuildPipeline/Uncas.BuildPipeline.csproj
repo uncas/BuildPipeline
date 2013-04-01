@@ -120,6 +120,7 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\StartEnqueuedDeployments.cs" />
     <Compile Include="Commands\StartEnqueuedDeploymentsHandler.cs" />
+    <Compile Include="Configuration\ConfigurationAppSetting.cs" />
     <Compile Include="Repositories\IProjectReadStore.cs" />
     <Compile Include="Repositories\ProjectReadModel.cs" />
     <Compile Include="Commands\UpdateGitMirrorsHandler.cs" />

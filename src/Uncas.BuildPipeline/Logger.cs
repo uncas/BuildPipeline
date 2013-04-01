@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
+using Uncas.BuildPipeline.Configuration;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.Core.Logging;
 
@@ -9,21 +9,18 @@ namespace Uncas.BuildPipeline
 {
     public class Logger : ILogger
     {
-        private Assembly _callingAssembly;
-
         #region ILogger Members
 
         public void Info(string description)
         {
-            _callingAssembly = Assembly.GetCallingAssembly();
-            var stackTraceWithFileInfo = new StackTrace(1, true);
-            var stackTraceWithoutFileInfo = new StackTrace(1, false);
+            const int skipFrames = 1;
+            var stackTraceWithFileInfo = new StackTrace(skipFrames, true);
+            var stackTraceWithoutFileInfo = new StackTrace(skipFrames, false);
             Log(LogType.Info, description, stackTraceWithFileInfo, stackTraceWithoutFileInfo);
         }
 
         public void Error(Exception exception, string description)
         {
-            _callingAssembly = Assembly.GetCallingAssembly();
             var stackTraceWithFileInfo = new StackTrace(exception, true);
             var stackTraceWithoutFileInfo = new StackTrace(exception, false);
             string exceptionType = exception.GetType().ToString();
@@ -36,8 +33,8 @@ namespace Uncas.BuildPipeline
         private void Log(LogType logType, string description, StackTrace withFileInfo, StackTrace withoutFileInfo,
                          string exceptionType = null, string exceptionMessage = null, string fullException = null)
         {
-            const int serviceId = 1;
-            string version = ApplicationVersion.GetVersion(_callingAssembly);
+            int serviceId = ConfigurationAppSetting.Int32("ServiceId", 0);
+            string version = ApplicationVersion.GetVersion(GetType().Assembly);
             StackFrame stackFrame = withFileInfo.GetFrame(0);
             string relativeFileName = GetFileName(stackFrame);
             int? lineNumber =
