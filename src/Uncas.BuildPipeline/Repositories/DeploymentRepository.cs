@@ -114,8 +114,8 @@ ORDER BY Created ASC";
 UPDATE Deployment
 SET Started = @Started
     , Completed = @Completed
-WHERE DeploymentId = @id";
-            var param = new {deployment.Started, deployment.Completed, deployment.Id};
+WHERE DeploymentId = @DeploymentId";
+            var param = new {deployment.Started, deployment.Completed, deployment.DeploymentId};
             _connection.Execute(sql, param);
         }
 

@@ -22,7 +22,7 @@ namespace Uncas.BuildPipeline.Models
             Created = DateTime.Now;
         }
 
-        public int? Id { get; private set; }
+        public int? DeploymentId { get; private set; }
         public int EnvironmentId { get; private set; }
         public int PipelineId { get; private set; }
         public DateTime Created { get; private set; }
@@ -49,7 +49,7 @@ namespace Uncas.BuildPipeline.Models
             var deployment = new Deployment(
                 pipelineId,
                 environmentId);
-            deployment.Id = id;
+            deployment.DeploymentId = id;
             deployment.Created = created;
             deployment.Started = started;
             deployment.Completed = completed;
@@ -74,7 +74,7 @@ namespace Uncas.BuildPipeline.Models
 
         internal void ChangeId(int newId)
         {
-            Id = newId;
+            DeploymentId = newId;
         }
     }
 }
