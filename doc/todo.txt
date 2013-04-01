@@ -8,12 +8,12 @@
   (such that there is a default deployment script for a project,
   but this can be overridden for individual environment(s))
 
-Infrastructure:
+Infrastructure / minor things:
 - Tests of existing logic, specs
 - Cleanup in dependencies Uncas.Core.*
-- Logging: version incorrect
-- Upgrade NUnit to 2.6.2
 - Display full version including short hash in footer on website.
+- Logging: Take file name + line number from inner-most exception.
+- TopShelf service instead of home-brewed service...
 
 Architecture:
 - Events & readmodels

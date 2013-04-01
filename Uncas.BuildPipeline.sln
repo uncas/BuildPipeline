@@ -17,6 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Shared Layer", "2 - Sha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.BuildPipeline.WindowsService", "src\Uncas.BuildPipeline.WindowsService\Uncas.BuildPipeline.WindowsService.csproj", "{A33479F9-3FC5-44C6-857E-2EDDB3B09E14}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A8DA5D7F-9B01-4114-9CE3-8925D01F42B4}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

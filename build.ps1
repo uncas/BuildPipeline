@@ -10,7 +10,7 @@
 $solutionName = "Uncas.BuildPipeline"
 $serviceName = "Uncas.BuildPipeline.WindowsService"
 $webProjectName = "Uncas.BuildPipeline.Web"
-$nunitVersion = "2.6.0.12051"
+$nunitVersion = "2.6.2"
 $versionMajor = 1
 $versionMinor = 0
 $versionBuild = 0
@@ -81,6 +81,7 @@ function Compile {
 
 function UnitTest {
     Compile
+    .nuget\nuget.exe install .nuget\packages.config -OutputDirectory packages
     Run-Test "Uncas.BuildPipeline.Tests.Unit" $outputDir
 }
 
