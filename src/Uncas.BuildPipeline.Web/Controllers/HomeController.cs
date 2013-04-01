@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Uncas.BuildPipeline.ApplicationServices;
+using Uncas.BuildPipeline.Commands;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Web.Mappers;
@@ -17,6 +18,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
     public class HomeController : BaseController
     {
         private const int BuildPageSize = 10;
+        private readonly ICommandBus _commandBus;
 
         private readonly IDeploymentService _deploymentService;
         private readonly IEnvironmentRepository _environmentRepository;
@@ -25,11 +27,13 @@ namespace Uncas.BuildPipeline.Web.Controllers
         public HomeController(
             IDeploymentService deploymentService,
             IEnvironmentRepository environmentRepository,
-            IPipelineRepository pipelineRepository)
+            IPipelineRepository pipelineRepository,
+            ICommandBus commandBus)
         {
             _deploymentService = deploymentService;
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
+            _commandBus = commandBus;
         }
 
         [HttpGet]
@@ -81,7 +85,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
         [HttpPost]
         public ActionResult Deploy(int environmentId, int pipelineId)
         {
-            _deploymentService.ScheduleDeployment(pipelineId, environmentId);
+            _commandBus.Publish(new EnqueueDeployment(pipelineId, environmentId));
             return RedirectToAction("Deploy", new {PipelineId = pipelineId});
         }
 

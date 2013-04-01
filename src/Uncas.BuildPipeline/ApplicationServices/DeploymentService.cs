@@ -1,22 +1,21 @@
-﻿namespace Uncas.BuildPipeline.ApplicationServices
-{
-    using System;
-    using System.Collections.Generic;
-    using Uncas.BuildPipeline.ApplicationServices.Results;
-    using Uncas.BuildPipeline.Models;
-    using Uncas.BuildPipeline.Repositories;
-    using Uncas.BuildPipeline.Utilities;
-    using Uncas.Core.Data;
-    using Environment = Uncas.BuildPipeline.Models.Environment;
+﻿using System;
+using System.Collections.Generic;
+using Uncas.BuildPipeline.Models;
+using Uncas.BuildPipeline.Repositories;
+using Uncas.BuildPipeline.Utilities;
+using Uncas.Core.Data;
+using Environment = Uncas.BuildPipeline.Models.Environment;
 
+namespace Uncas.BuildPipeline.ApplicationServices
+{
     public class DeploymentService : IDeploymentService
     {
         private const string WorkingDirectory = @"C:\temp\DeploymentWork";
 
-        private readonly IDeploymentRepository deploymentRepository;
-        private readonly IDeploymentUtility deploymentUtility;
-        private readonly IEnvironmentRepository environmentRepository;
-        private readonly IPipelineRepository pipelineRepository;
+        private readonly IDeploymentRepository _deploymentRepository;
+        private readonly IDeploymentUtility _deploymentUtility;
+        private readonly IEnvironmentRepository _environmentRepository;
+        private readonly IPipelineRepository _pipelineRepository;
 
         public DeploymentService(
             IEnvironmentRepository environmentRepository,
@@ -24,18 +23,20 @@
             IDeploymentRepository deploymentRepository,
             IDeploymentUtility deploymentUtility)
         {
-            this.deploymentRepository = deploymentRepository;
-            this.environmentRepository = environmentRepository;
-            this.pipelineRepository = pipelineRepository;
-            this.deploymentUtility = deploymentUtility;
+            _deploymentRepository = deploymentRepository;
+            _environmentRepository = environmentRepository;
+            _pipelineRepository = pipelineRepository;
+            _deploymentUtility = deploymentUtility;
         }
+
+        #region IDeploymentService Members
 
         public void Deploy(
             int pipelineId,
             int environmentId)
         {
             Pipeline pipeline =
-                pipelineRepository.GetPipeline(pipelineId);
+                _pipelineRepository.GetPipeline(pipelineId);
             if (pipeline == null)
             {
                 throw new ArgumentException(
@@ -44,7 +45,7 @@
             }
 
             Environment environment =
-                environmentRepository.GetEnvironment(environmentId);
+                _environmentRepository.GetEnvironment(environmentId);
             if (environment == null)
             {
                 throw new ArgumentException(
@@ -53,7 +54,7 @@
             }
 
             string packagePath = pipeline.PackagePath;
-            deploymentUtility.Deploy(
+            _deploymentUtility.Deploy(
                 packagePath,
                 WorkingDirectory,
                 environment);
@@ -61,69 +62,39 @@
 
         public void DeployDueDeployments()
         {
-            const int PageSize = 30;
+            const int pageSize = 30;
             IEnumerable<Deployment> dueDeployments =
-                deploymentRepository.GetDueDeployments(new PagingInfo(PageSize));
+                _deploymentRepository.GetDueDeployments(new PagingInfo(pageSize));
             foreach (Deployment deployment in dueDeployments)
             {
                 deployment.Start();
-                deploymentRepository.UpdateDeployment(deployment);
+                _deploymentRepository.UpdateDeployment(deployment);
                 Deploy(
                     deployment.PipelineId,
                     deployment.EnvironmentId);
                 deployment.Complete();
-                deploymentRepository.UpdateDeployment(deployment);
+                _deploymentRepository.UpdateDeployment(deployment);
             }
         }
 
         public IEnumerable<Deployment> GetDeployments(int pipelineId)
         {
-            return deploymentRepository.GetDeployments(
+            return _deploymentRepository.GetDeployments(
                 pipelineId);
         }
 
         public IEnumerable<Deployment> GetDeploymentsByEnvironment(
             int environmentId)
         {
-            return deploymentRepository.GetByEnvironment(
+            return _deploymentRepository.GetByEnvironment(
                 environmentId);
         }
 
         public IEnumerable<Deployment> GetDueDeployments(PagingInfo pagingInfo)
         {
-            return deploymentRepository.GetDueDeployments(pagingInfo);
+            return _deploymentRepository.GetDueDeployments(pagingInfo);
         }
 
-        public ScheduleDeploymentResult ScheduleDeployment(
-            int pipelineId,
-            int environmentId)
-        {
-            var result = new ScheduleDeploymentResult();
-
-            Pipeline pipeline =
-                pipelineRepository.GetPipeline(pipelineId);
-            if (pipeline == null)
-            {
-                result.AddError(new ResultError("The id does not correspond to an existing pipeline."));
-            }
-
-            Environment environment =
-                environmentRepository.GetEnvironment(environmentId);
-            if (environment == null)
-            {
-                result.AddError(new ResultError("The id does not correspond to an existing environment."));
-            }
-
-            if (result.HasErrors)
-            {
-                return result;
-            }
-
-            var deployment = new Deployment(
-                pipelineId,
-                environmentId);
-            deploymentRepository.AddDeployment(deployment);
-            return new ScheduleDeploymentResult(deployment);
-        }
+        #endregion
     }
 }

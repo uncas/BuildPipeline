@@ -4,7 +4,6 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Uncas.BuildPipeline.ApplicationServices;
-using Uncas.BuildPipeline.ApplicationServices.Results;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Utilities;
@@ -130,9 +129,6 @@ namespace Uncas.BuildPipeline.Tests.Unit.ApplicationServices
             deploymentRepositoryMock.Setup(
                 dr => dr.GetDeployments(pipelineId))
                 .Returns(new List<Deployment> {deployment});
-            Sut.ScheduleDeployment(
-                pipelineId,
-                environmentId);
 
             List<Deployment> scheduledDeployments =
                 Sut.GetDeployments(
@@ -153,9 +149,6 @@ namespace Uncas.BuildPipeline.Tests.Unit.ApplicationServices
                 pipelineId,
                 environmentId);
             WithDeployments(deployment);
-            Sut.ScheduleDeployment(
-                pipelineId,
-                environmentId);
 
             List<Deployment> scheduledDeployments =
                 Sut.GetDueDeployments(null).ToList();
@@ -163,52 +156,6 @@ namespace Uncas.BuildPipeline.Tests.Unit.ApplicationServices
             Assert.NotNull(scheduledDeployments);
             Assert.True(scheduledDeployments.Count > 0);
             Assert.True(scheduledDeployments.Any(d => d.PipelineId == pipelineId));
-        }
-
-        [Test]
-        public void ScheduleDeployment_NonExistingInput_IsNotScheduled()
-        {
-            const int pipelineId = 1;
-            const int environmentId = 1;
-            Mock<IDeploymentRepository> deploymentRepositoryMock = Fixture.FreezeMock<IDeploymentRepository>();
-            Mock<IPipelineRepository> pipelineRepositoryMock = Fixture.FreezeMock<IPipelineRepository>();
-            pipelineRepositoryMock.Setup(
-                pr => pr.GetPipeline(pipelineId)).Returns(
-                    (Pipeline) null);
-
-            ScheduleDeploymentResult result =
-                Sut.ScheduleDeployment(
-                    pipelineId,
-                    environmentId);
-
-            Assert.False(result.Success);
-            Assert.Null(result.Deployment);
-            Assert.AreEqual(1, result.Errors.Count());
-            deploymentRepositoryMock.Verify(
-                dr => dr.AddDeployment(It.IsAny<Deployment>()),
-                Times.Never());
-        }
-
-        [Test]
-        public void ScheduleDeployment_ValidCommand_IsScheduled()
-        {
-            const int pipelineId = 1;
-            const int environmentId = 1;
-            SetupRepositories(pipelineId, environmentId);
-            Mock<IDeploymentRepository> deploymentRepositoryMock = Fixture.FreezeMock<IDeploymentRepository>();
-
-            ScheduleDeploymentResult result =
-                Sut.ScheduleDeployment(
-                    pipelineId,
-                    environmentId);
-
-            Assert.True(result.Success);
-            Assert.NotNull(result.Deployment);
-            Assert.AreEqual(pipelineId, result.Deployment.PipelineId);
-            Assert.AreEqual(environmentId, result.Deployment.EnvironmentId);
-            deploymentRepositoryMock.Verify(
-                dr => dr.AddDeployment(It.IsAny<Deployment>()),
-                Times.Once());
         }
     }
 }
