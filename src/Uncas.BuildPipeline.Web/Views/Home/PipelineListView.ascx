@@ -4,20 +4,20 @@
 <tr class="BuildListView">
     <td>
         <div>
-            <%:Model.ProjectName%>
+            <%: Model.ProjectName %>
         </div>
         <div>
-            <%:Model.BranchName%>
+            <%: Model.BranchName %>
         </div>
     </td>
     <td class="SourceDetails">
-        <div class="<%:Model.CssClass%>" title="<%:Model.StatusText%>">
+        <div class="<%: Model.CssClass %>" title="<%: Model.StatusText %>">
             revision
-            <%:Revision.Short(Model.Revision)%>, by
-            <%:Model.SourceAuthor%>
+            <a href="<%: Model.CommitLink %>"><%: Revision.Short(Model.Revision) %></a>, by
+            <%: Model.SourceAuthor %>
         </div>
         <div>
-            <%:Model.CreatedDisplay%>
+            <%: Model.CreatedDisplay %>
         </div>
     </td>
     <td>
@@ -27,7 +27,7 @@
            } %>
     </td>
     <td>
-        <%:Html.ActionLink("Deploy", "Deploy", new { pipelineId = Model.PipelineId })%>
-        <%:Html.ActionLink("Download", "Download", new { id = Model.PackagePath })%>
+        <%: Html.ActionLink("Deploy", "Deploy", new {pipelineId = Model.PipelineId}) %>
+        <%: Html.ActionLink("Download", "Download", new {id = Model.PackagePath}) %>
     </td>
 </tr>

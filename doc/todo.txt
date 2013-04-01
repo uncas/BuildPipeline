@@ -1,5 +1,4 @@
 ﻿Features:
-- Links to github.
 - Display author + commit message (via local mirror).
 - Build stages + deployment stages on front page...
 - Show diffs (via local mirror).

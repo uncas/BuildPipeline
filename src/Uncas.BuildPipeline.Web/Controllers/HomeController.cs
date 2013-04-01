@@ -7,6 +7,7 @@ using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Utilities;
 using Uncas.BuildPipeline.Web.Mappers;
+using Uncas.BuildPipeline.Web.QueryServices;
 using Uncas.BuildPipeline.Web.ViewModels;
 using Uncas.Core.Data;
 
@@ -22,25 +23,28 @@ namespace Uncas.BuildPipeline.Web.Controllers
 
         private readonly IDeploymentRepository _deploymentRepository;
         private readonly IEnvironmentRepository _environmentRepository;
+        private readonly IPipelineQueryService _pipelineQueryService;
         private readonly IPipelineRepository _pipelineRepository;
 
         public HomeController(
             IDeploymentRepository deploymentRepository,
             IEnvironmentRepository environmentRepository,
             IPipelineRepository pipelineRepository,
+            IPipelineQueryService pipelineQueryService,
             ICommandBus commandBus)
         {
             _deploymentRepository = deploymentRepository;
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
+            _pipelineQueryService = pipelineQueryService;
             _commandBus = commandBus;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            IEnumerable<Pipeline> pipelines = _pipelineRepository.GetPipelines(BuildPageSize);
-            PipelineIndexViewModel viewModel = PipelineMapper.MapToPipelineIndexViewModel(pipelines);
+            IEnumerable<PipelineListItemViewModel> pipelines = _pipelineQueryService.GetPipelines(BuildPageSize);
+            var viewModel = new PipelineIndexViewModel {Pipelines = pipelines};
             return View(viewModel);
         }
 

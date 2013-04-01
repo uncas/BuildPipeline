@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Uncas.BuildPipeline.Models;
@@ -12,35 +11,6 @@ namespace Uncas.BuildPipeline.Web.Mappers
     /// </summary>
     public static class PipelineMapper
     {
-        public static PipelineIndexViewModel MapToPipelineIndexViewModel(IEnumerable<Pipeline> pipelines)
-        {
-            return new PipelineIndexViewModel {Pipelines = MapToPipelineViewModels(pipelines)};
-        }
-
-        public static PipelineListItemViewModel MapToPipelineListItemViewModel(Pipeline pipeline)
-        {
-            if (pipeline == null)
-                throw new ArgumentNullException("pipeline");
-
-            string createdDisplay = GetDateTimeDisplay(pipeline.Created);
-
-            var result = new PipelineListItemViewModel
-                {
-                    PipelineId = pipeline.PipelineId,
-                    ProjectName = pipeline.ProjectName,
-                    SourceAuthor = "Unknown",
-                    Revision = pipeline.Revision,
-                    BranchName = pipeline.BranchName,
-                    CreatedDisplay = createdDisplay,
-                    StatusText = pipeline.IsSuccessful ? "OK" : "Failed",
-                    CssClass = pipeline.IsSuccessful ? "PipelineGreen" : "PipelineRed",
-                    Steps = pipeline.Steps.Select(MapToBuildStepViewModel),
-                    PackagePath = pipeline.PackagePath,
-                    CommitLink = "UNDONE"
-                };
-            return result;
-        }
-
         public static PipelineViewModel MapToPipelineViewModel(Pipeline pipeline)
         {
             if (pipeline == null)
@@ -65,7 +35,7 @@ namespace Uncas.BuildPipeline.Web.Mappers
             return result;
         }
 
-        private static string GetDateTimeDisplay(DateTime dateTime)
+        public static string GetDateTimeDisplay(DateTime dateTime)
         {
             TimeSpan timeSince = DateTime.Now.Subtract(dateTime);
             string dateTimeLabel;
@@ -97,7 +67,7 @@ namespace Uncas.BuildPipeline.Web.Mappers
                 pluralis);
         }
 
-        private static BuildStepViewModel
+        public static BuildStepViewModel
             MapToBuildStepViewModel(BuildStep step)
         {
             return new BuildStepViewModel
@@ -106,12 +76,6 @@ namespace Uncas.BuildPipeline.Web.Mappers
                     StepName = step.StepName,
                     CssClass = step.IsSuccessful ? "BuildGreen" : "BuildRed"
                 };
-        }
-
-        private static IEnumerable<PipelineListItemViewModel>
-            MapToPipelineViewModels(IEnumerable<Pipeline> pipelines)
-        {
-            return pipelines.Select(MapToPipelineListItemViewModel);
         }
     }
 }
