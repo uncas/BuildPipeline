@@ -29,7 +29,22 @@ namespace Uncas.BuildPipeline.Web.Controllers
             _pipelineRepository = pipelineRepository;
         }
 
-        public void AddEnvironmentIndexViewModel(
+        [HttpGet]
+        public ActionResult Index()
+        {
+            const int pageSize = 30;
+            IEnumerable<Environment> environments =
+                _environmentRepository.GetEnvironments(new PagingInfo(pageSize));
+            var viewModel = new List<EnvironmentIndexViewModel>();
+            foreach (Environment environment in environments)
+            {
+                AddEnvironmentIndexViewModel(viewModel, environment);
+            }
+
+            return View(viewModel);
+        }
+
+        private void AddEnvironmentIndexViewModel(
             IList<EnvironmentIndexViewModel> viewModels,
             Environment environment)
         {
@@ -61,20 +76,6 @@ namespace Uncas.BuildPipeline.Web.Controllers
                     EnvironmentName = environment.EnvironmentName,
                     CurrentRevision = currentRevision
                 });
-        }
-
-        public ActionResult Index()
-        {
-            const int pageSize = 30;
-            IEnumerable<Environment> environments =
-                _environmentRepository.GetEnvironments(new PagingInfo(pageSize));
-            var viewModel = new List<EnvironmentIndexViewModel>();
-            foreach (Environment environment in environments)
-            {
-                AddEnvironmentIndexViewModel(viewModel, environment);
-            }
-
-            return View(viewModel);
         }
     }
 }

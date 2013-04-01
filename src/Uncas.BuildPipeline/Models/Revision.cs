@@ -1,4 +1,4 @@
-namespace Uncas.BuildPipeline.Web.Models
+namespace Uncas.BuildPipeline.Models
 {
     public class Revision
     {

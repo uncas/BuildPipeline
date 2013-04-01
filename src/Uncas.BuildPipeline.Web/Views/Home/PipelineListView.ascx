@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Uncas.BuildPipeline.Web.ViewModels.PipelineViewModel>" %>
-<%@ Import Namespace="Uncas.BuildPipeline.Web.Models" %>
+<%@ Import Namespace="Uncas.BuildPipeline.Models" %>
 <%@ Import Namespace="Uncas.BuildPipeline.Web.ViewModels" %>
 <tr class="BuildListView">
     <td>
