@@ -12,8 +12,7 @@
         <div class="page">
             <div id="header">
                 <div id="title">
-                    <h1>
-                        Build Pipelines</h1>
+                    <h1>Build Pipelines</h1>
                 </div>
                 <div id="logindisplay">
                     <% Html.RenderPartial("LogOnUserControl"); %>
@@ -21,11 +20,13 @@
                 <div id="menucontainer">
                     <ul id="menu">
                         <li>
-                            <%:Html.ActionLink("Pipelines", "Index", "Home")%></li>
+                            <%: Html.ActionLink("Pipelines", "Index", "Home") %></li>
                         <li>
-                            <%:Html.ActionLink("Environments", "Index", "Environment")%></li>
+                            <%: Html.ActionLink("Environments", "Index", "Environment") %></li>
                         <li>
-                            <%:Html.ActionLink("About", "About", "Home")%></li>
+                            <%: Html.ActionLink("Projects", "Index", "Project") %></li>
+                        <li>
+                            <%: Html.ActionLink("About", "About", "Home") %></li>
                     </ul>
                 </div>
             </div>
@@ -33,7 +34,7 @@
                 <asp:ContentPlaceHolder ID="MainContent" runat="server" />
                 <div id="footer">
                     Version
-                    <%:ViewData["Version"]%>
+                    <%: ViewData["Version"] %>
                 </div>
             </div>
         </div>

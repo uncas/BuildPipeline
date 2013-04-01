@@ -4,3 +4,4 @@ Pipeline-RenameSourceUrlAndSourceRevision
 stp_Build_Add-RemoveStoredProcedure
 LogEntry-CreateTable
 Project-DropSourceUrlBaseAndCreateGitFields
+Project-AddDeploymentScriptField
