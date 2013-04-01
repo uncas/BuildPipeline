@@ -1,9 +1,8 @@
 ﻿Features:
-- Complete logic to create relevant git mirrors
--- Create mirrors from available projects, based on GitRemoteUrl
-- Update view to link to github + display author + commit message
-- Show github links.
-- Show diffs (via local mirror of github repo).
+- Links to github.
+- Display author + commit message (via local mirror).
+- Build stages + deployment stages on front page...
+- Show diffs (via local mirror).
 - Create package that can be deployed to a remote webserver.
 - Deployment: Override the deployment script per environment
   (such that there is a default deployment script for a project,
@@ -26,4 +25,4 @@ Architecture:
 - Write vs. read (commands and read models)
 
 Documentation:
-- Create dummy project for testing how to use it: BuildPipeline-Example
+- Create dummy project for testing/demonstrating how to use it: BuildPipeline-Example
