@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using Uncas.BuildPipeline.ApplicationServices;
 using Uncas.BuildPipeline.Commands;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
@@ -20,17 +19,17 @@ namespace Uncas.BuildPipeline.Web.Controllers
         private const int BuildPageSize = 10;
         private readonly ICommandBus _commandBus;
 
-        private readonly IDeploymentService _deploymentService;
+        private readonly IDeploymentRepository _deploymentRepository;
         private readonly IEnvironmentRepository _environmentRepository;
         private readonly IPipelineRepository _pipelineRepository;
 
         public HomeController(
-            IDeploymentService deploymentService,
+            IDeploymentRepository deploymentRepository,
             IEnvironmentRepository environmentRepository,
             IPipelineRepository pipelineRepository,
             ICommandBus commandBus)
         {
-            _deploymentService = deploymentService;
+            _deploymentRepository = deploymentRepository;
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
             _commandBus = commandBus;
@@ -57,7 +56,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
             IEnumerable<Environment> environments =
                 _environmentRepository.GetEnvironments(new PagingInfo(pageSize));
             Pipeline pipeline = _pipelineRepository.GetPipeline(pipelineId);
-            IEnumerable<Deployment> deployments = _deploymentService.GetDeployments(pipelineId);
+            IEnumerable<Deployment> deployments = _deploymentRepository.GetDeployments(pipelineId);
             IEnumerable<EnvironmentViewModel> environmentViewModels = environments.Select(
                 e => new EnvironmentViewModel
                     {

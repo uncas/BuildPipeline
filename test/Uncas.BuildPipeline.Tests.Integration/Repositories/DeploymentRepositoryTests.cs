@@ -50,7 +50,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
             var added = new Deployment(pipelineId, 1);
             Sut.AddDeployment(added);
             Thread.Sleep(10);
-            added.Start();
+            added.MarkAsStarted();
             int deploymentId = added.Id.Value;
 
             Sut.UpdateDeployment(added);

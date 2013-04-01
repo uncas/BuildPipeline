@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ServiceProcess;
-using Uncas.BuildPipeline.ApplicationServices;
 using Uncas.BuildPipeline.Commands;
 using Uncas.Core.Services;
 
@@ -14,14 +13,15 @@ namespace Uncas.BuildPipeline.WindowsService
         private const string ServiceName = "DeployService";
 
         private static readonly Func<ServiceBase> GetServiceToRun =
-            () => new DeployService();
+            () => new DeployService(TheAction);
 
         private static void TheAction()
         {
             try
             {
-                Bootstrapper.Resolve<IDeploymentService>().DeployDueDeployments();
-                Bootstrapper.Resolve<ICommandBus>().Publish(new UpdateGitMirrors());
+                var commandBus = Bootstrapper.Resolve<ICommandBus>();
+                commandBus.Publish(new UpdateGitMirrors());
+                commandBus.Publish(new StartEnqueuedDeployments());
             }
             catch (Exception e)
             {

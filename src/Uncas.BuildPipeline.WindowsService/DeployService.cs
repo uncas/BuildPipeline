@@ -1,25 +1,25 @@
-﻿namespace Uncas.BuildPipeline.WindowsService
-{
-    using System.ServiceProcess;
-    using System.Timers;
-    using Uncas.BuildPipeline.ApplicationServices;
+﻿using System;
+using System.ServiceProcess;
+using System.Timers;
 
+namespace Uncas.BuildPipeline.WindowsService
+{
     /// <summary>
     /// Service for deploying.
     /// </summary>
     public partial class DeployService : ServiceBase
     {
-        private readonly IDeploymentService _deploymentService;
+        private readonly Action _action;
         private readonly Timer _timer;
 
-        public DeployService()
+        public DeployService(Action action)
         {
+            _action = action;
             InitializeComponent();
-            const int IntervalSeconds = 10;
-            _timer = new Timer(IntervalSeconds * 1000);
+            const int intervalSeconds = 10;
+            _timer = new Timer(intervalSeconds*1000);
             _timer.Elapsed +=
                 TimerElapsed;
-            _deploymentService = Bootstrapper.Resolve<IDeploymentService>();
         }
 
         protected override void OnStart(string[] args)
@@ -34,7 +34,7 @@
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            _deploymentService.DeployDueDeployments();
+            _action();
         }
     }
 }

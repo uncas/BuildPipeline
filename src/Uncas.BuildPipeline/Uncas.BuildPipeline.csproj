@@ -111,14 +111,14 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="ApplicationServices\DeploymentService.cs" />
-    <Compile Include="ApplicationServices\IDeploymentService.cs" />
     <Compile Include="Commands\CommandBus.cs" />
     <Compile Include="Commands\EnqueueDeployment.cs" />
     <Compile Include="Commands\EnqueueDeploymentHandler.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandBus.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
+    <Compile Include="Commands\StartEnqueuedDeployments.cs" />
+    <Compile Include="Commands\StartEnqueuedDeploymentsHandler.cs" />
     <Compile Include="Repositories\IProjectReadStore.cs" />
     <Compile Include="Repositories\ProjectReadModel.cs" />
     <Compile Include="Commands\UpdateGitMirrorsHandler.cs" />
@@ -131,7 +131,6 @@
     <Compile Include="SharedRegistry.cs" />
     <Compile Include="Repositories\BuildPipelineConnection.cs" />
     <Compile Include="Repositories\WithConnection.cs" />
-    <Compile Include="SharedBootstrapper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\BuildStep.cs" />
     <Compile Include="Models\Deployment.cs" />

@@ -1,8 +1,8 @@
-﻿namespace Uncas.BuildPipeline.Models
-{
-    using System;
-    using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
+namespace Uncas.BuildPipeline.Models
+{
     [SuppressMessage(
         "Microsoft.Naming",
         "CA1724:TypeNamesShouldNotMatchNamespaces",
@@ -23,15 +23,10 @@
         }
 
         public int? Id { get; private set; }
-
-        public DateTime Created { get; private set; }
-
         public int EnvironmentId { get; private set; }
-
         public int PipelineId { get; private set; }
-
+        public DateTime Created { get; private set; }
         public DateTime? Started { get; private set; }
-
         public DateTime? Completed { get; private set; }
 
         public bool HasRun
@@ -61,7 +56,7 @@
             return deployment;
         }
 
-        public void Complete()
+        public void MarkAsCompleted()
         {
             if (!Started.HasValue)
             {
@@ -72,7 +67,7 @@
             Completed = DateTime.Now;
         }
 
-        public void Start()
+        public void MarkAsStarted()
         {
             Started = DateTime.Now;
         }

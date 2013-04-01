@@ -1,31 +1,30 @@
-﻿namespace Uncas.BuildPipeline.Web.Controllers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Uncas.BuildPipeline.ApplicationServices;
-    using Uncas.BuildPipeline.Models;
-    using Uncas.BuildPipeline.Repositories;
-    using Uncas.BuildPipeline.Web.ViewModels;
-    using Uncas.Core.Data;
-    using Environment = Uncas.BuildPipeline.Models.Environment;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Uncas.BuildPipeline.Models;
+using Uncas.BuildPipeline.Repositories;
+using Uncas.BuildPipeline.Web.ViewModels;
+using Uncas.Core.Data;
+using Environment = Uncas.BuildPipeline.Models.Environment;
 
+namespace Uncas.BuildPipeline.Web.Controllers
+{
     /// <summary>
     /// Handles environments.
     /// </summary>
     public class EnvironmentController : BaseController
     {
-        private readonly IDeploymentService _deploymentService;
+        private readonly IDeploymentRepository _deploymentRepository;
         private readonly IEnvironmentRepository _environmentRepository;
         private readonly IPipelineRepository _pipelineRepository;
 
         public EnvironmentController(
-            IDeploymentService deploymentService,
+            IDeploymentRepository deploymentRepository,
             IEnvironmentRepository environmentRepository,
             IPipelineRepository pipelineRepository)
         {
-            _deploymentService = deploymentService;
+            _deploymentRepository = deploymentRepository;
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
         }
@@ -45,7 +44,7 @@
             }
 
             IEnumerable<Deployment> deployments =
-                _deploymentService.GetDeploymentsByEnvironment(
+                _deploymentRepository.GetByEnvironment(
                     environment.Id);
             Deployment lastDeployment =
                 deployments.Where(d => d.Completed.HasValue).OrderByDescending(d => d.Completed).FirstOrDefault();
@@ -57,18 +56,18 @@
             Pipeline pipeline = _pipelineRepository.GetPipeline(lastDeployment.PipelineId);
             string currentRevision = pipeline.Revision;
             viewModels.Add(new EnvironmentIndexViewModel
-                               {
-                                   EnvironmentId = environment.Id,
-                                   EnvironmentName = environment.EnvironmentName,
-                                   CurrentRevision = currentRevision
-                               });
+                {
+                    EnvironmentId = environment.Id,
+                    EnvironmentName = environment.EnvironmentName,
+                    CurrentRevision = currentRevision
+                });
         }
 
         public ActionResult Index()
         {
-            const int PageSize = 30;
+            const int pageSize = 30;
             IEnumerable<Environment> environments =
-                _environmentRepository.GetEnvironments(new PagingInfo(PageSize));
+                _environmentRepository.GetEnvironments(new PagingInfo(pageSize));
             var viewModel = new List<EnvironmentIndexViewModel>();
             foreach (Environment environment in environments)
             {
