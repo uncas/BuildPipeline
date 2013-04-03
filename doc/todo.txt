@@ -1,15 +1,18 @@
-﻿Features:
-- Build stages + deployment stages on front page...
-- Show diffs (via local mirror).
-- Create package that can be deployed to a remote webserver.
-- Deployment: DeploymentMethod=FTP
+﻿Current priorities:
+- Deployment metod: FTP
+- Configure which environments are available for each project.
+- Display build stages + deployment stages on front page
+- Attach release notes to commits.
+- Show commits and release notes per deployment (via local mirror).
+
+Feature ideas:
+- API endpoint: Log start, Log success, Log failure, Log package
 - Deployment: DeploymentMethod=OutOfProcess
 -- OutOfProcess: Enqueue in some external rollout system,
    where the external rollout system sends status updates back to BuildPipeline
 -- Alternative: BuildPipeline polls the external ssytem for status updates...
-- Deployment: Override the deployment script per environment
-  (such that there is a default deployment script for a project,
-  but this can be overridden for individual environment(s))
+- Override deploy script per environment.
+- Create package that can be deployed to a remote webserver.
 
 Infrastructure / minor things:
 - Tests of existing logic, specs

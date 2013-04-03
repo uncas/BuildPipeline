@@ -7,13 +7,16 @@ Current features:
 - Website that lists builds and deployment packages.
 - API endpoint and powershell script to log builds and packages
   from a build server.
-- Trigger deployment to a specific environment, 
-  using a powershell script to perform the deployment,
+- Trigger deployment to a specific environment.
+- Deployment method: use a powershell script to perform the deployment,
   where the powershell script can be defined by the user in the website.
+- Quick-link to Github.
+- Display commit info for projects that depend on a git repository.
+- Configuration of github URL and remote Git URL for projects.
 
 Planned features:
-- Quick-links to Github.
-- Display commit info for projects that depend on a git repository.
+- Deployment method: FTP
+- See further feature ideas in doc/todo.txt
 
 
 Installation
