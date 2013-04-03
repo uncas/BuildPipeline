@@ -23,6 +23,7 @@ namespace Uncas.BuildPipeline.WindowsService
             {
                 var commandBus = Bootstrapper.Resolve<ICommandBus>();
                 commandBus.Publish(new UpdateGitMirrors());
+                commandBus.Publish(new UpdateCommits());
                 commandBus.Publish(new StartEnqueuedDeployments());
             }
             catch (Exception e)

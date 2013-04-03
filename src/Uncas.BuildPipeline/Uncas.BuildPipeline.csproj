@@ -113,13 +113,18 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Commands\CommandBus.cs" />
+    <Compile Include="Models\CommitReadModel.cs" />
+    <Compile Include="Repositories\CommitRepository.cs" />
     <Compile Include="Commands\EnqueueDeployment.cs" />
     <Compile Include="Commands\EnqueueDeploymentHandler.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandBus.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
+    <Compile Include="Repositories\ICommitRepository.cs" />
     <Compile Include="Commands\StartEnqueuedDeployments.cs" />
     <Compile Include="Commands\StartEnqueuedDeploymentsHandler.cs" />
+    <Compile Include="Commands\UpdateCommits.cs" />
+    <Compile Include="Commands\UpdateCommitsHandler.cs" />
     <Compile Include="Configuration\ConfigurationAppSetting.cs" />
     <Compile Include="Models\Revision.cs" />
     <Compile Include="Repositories\IProjectReadStore.cs" />

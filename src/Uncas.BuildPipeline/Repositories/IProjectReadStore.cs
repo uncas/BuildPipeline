@@ -7,5 +7,6 @@ namespace Uncas.BuildPipeline.Repositories
         IEnumerable<ProjectReadModel> GetProjects();
         ProjectReadModel GetProjectById(int projectId);
         void Update(ProjectReadModel project);
+        int AddProject(string projectName);
     }
 }

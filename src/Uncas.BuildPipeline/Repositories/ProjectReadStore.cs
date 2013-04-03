@@ -41,6 +41,23 @@ WHERE ProjectId = @projectId";
             _connection.Execute(sql, project);
         }
 
+        public int AddProject(string projectName)
+        {
+            const string sql = @"
+IF NOT EXISTS (SELECT * FROM Project WHERE ProjectName = @ProjectName)
+BEGIN
+    INSERT INTO Project (ProjectName) VALUES (@ProjectName)
+    SELECT @ProjectId = Scope_Identity()
+END
+ELSE
+BEGIN
+    SELECT @ProjectId = ProjectId FROM Project WHERE ProjectName = @ProjectName
+END";
+            return _connection.ExecuteAndGetGeneratedId(sql,
+                                                        new {projectName},
+                                                        "ProjectId");
+        }
+
         #endregion
     }
 }

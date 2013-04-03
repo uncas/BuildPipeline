@@ -6,6 +6,8 @@ namespace Uncas.BuildPipeline.Commands
 {
     public class UpdateGitMirrorsHandler : ICommandHandler<UpdateGitMirrors>
     {
+        public const string MirrorsFolder = @"C:\Temp\Mirrors";
+
         private readonly IGitUtility _gitUtility;
         private readonly IProjectReadStore _projectReadStore;
 
@@ -21,14 +23,13 @@ namespace Uncas.BuildPipeline.Commands
 
         public void Handle(UpdateGitMirrors command)
         {
-            const string mirrorsFolder = @"C:\Temp\Mirrors";
             IEnumerable<ProjectReadModel> projects = _projectReadStore.GetProjects();
             foreach (ProjectReadModel project in projects)
             {
                 string remoteUrl = project.GitRemoteUrl;
                 if (string.IsNullOrWhiteSpace(remoteUrl))
                     continue;
-                _gitUtility.Mirror(remoteUrl, mirrorsFolder, project.ProjectName);
+                _gitUtility.Mirror(remoteUrl, MirrorsFolder, project.ProjectName);
             }
         }
 

@@ -6,3 +6,4 @@ LogEntry-CreateTable
 Project-DropSourceUrlBaseAndCreateGitFields
 Project-AddDeploymentScriptField
 Pipeline-DropSourceAuthorField
+SourceCommit-CreateTable

@@ -119,6 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repositories\CommitRepositoryTests.cs" />
     <Compile Include="Repositories\DeploymentRepositoryTests.cs" />
     <Compile Include="TestBootstrapper.cs" />
     <Compile Include="Utilities\GitUtilityTests.cs" />

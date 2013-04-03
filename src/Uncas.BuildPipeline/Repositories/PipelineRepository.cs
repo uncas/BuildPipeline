@@ -9,6 +9,13 @@ namespace Uncas.BuildPipeline.Repositories
         private readonly BuildPipelineConnection _connection =
             new BuildPipelineConnection();
 
+        private readonly IProjectReadStore _projectReadStore;
+
+        public PipelineRepository(IProjectReadStore projectReadStore)
+        {
+            _projectReadStore = projectReadStore;
+        }
+
         #region IPipelineRepository Members
 
         public Pipeline GetPipeline(int pipelineId)
@@ -56,7 +63,7 @@ ORDER BY Pi.Created DESC";
 
         public void AddPipeline(Pipeline pipeline)
         {
-            int projectId = AddProject(pipeline.ProjectName);
+            int projectId = _projectReadStore.AddProject(pipeline.ProjectName);
             const string sql = @"
 SELECT @pipelineId = PipelineId
 FROM Pipeline
@@ -93,23 +100,6 @@ END";
         }
 
         #endregion
-
-        private int AddProject(string projectName)
-        {
-            const string sql = @"
-IF NOT EXISTS (SELECT * FROM Project WHERE ProjectName = @ProjectName)
-BEGIN
-    INSERT INTO Project (ProjectName) VALUES (@ProjectName)
-    SELECT @ProjectId = Scope_Identity()
-END
-ELSE
-BEGIN
-    SELECT @ProjectId = ProjectId FROM Project WHERE ProjectName = @ProjectName
-END";
-            return _connection.ExecuteAndGetGeneratedId(sql,
-                                                        new {projectName},
-                                                        "ProjectId");
-        }
 
         private void AddSteps(IEnumerable<Pipeline> pipelines)
         {
