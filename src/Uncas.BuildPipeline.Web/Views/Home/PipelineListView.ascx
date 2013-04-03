@@ -17,7 +17,8 @@
             <%: Model.SourceAuthor %>
         </div>
         <div>
-            <%: Model.CreatedDisplay %>
+            <%: Model.CreatedDisplay %>:
+            <%: Model.SourceSubject %>
         </div>
     </td>
     <td>

@@ -24,9 +24,14 @@ SELECT TOP (@PageSize)
     , Pr.ProjectId
     , Pr.ProjectName
     , Pr.GithubUrl
+    , SC.AuthorName AS SourceAuthor
+    , SC.Subject AS SourceSubject
 FROM Pipeline AS Pi
 JOIN Project AS Pr
     ON Pi.ProjectId = Pr.ProjectId
+LEFT JOIN SourceCommit AS SC
+    ON Pi.ProjectId = SC.ProjectId
+    AND Pi.Revision = SC.Revision
 ORDER BY Pi.Created DESC";
             var param = new {pageSize};
             IEnumerable<PipelineListItemViewModel> pipelines = _connection.Query<PipelineListItemViewModel>(sql,

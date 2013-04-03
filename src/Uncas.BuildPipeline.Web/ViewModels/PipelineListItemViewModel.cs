@@ -20,6 +20,7 @@ namespace Uncas.BuildPipeline.Web.ViewModels
         public string GithubUrl { get; set; }
 
         public string SourceAuthor { get; set; }
+        public string SourceSubject { get; set; }
 
         public string CommitLink
         {

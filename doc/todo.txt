@@ -1,5 +1,4 @@
 ﻿Features:
-- Display author + commit message (via local mirror).
 - Build stages + deployment stages on front page...
 - Show diffs (via local mirror).
 - Create package that can be deployed to a remote webserver.
@@ -18,6 +17,7 @@ Infrastructure / minor things:
 - Display full version including short hash in footer on website.
 - Logging: Take file name + line number from inner-most exception.
 - TopShelf service instead of home-brewed service...
+- Change remote URL of mirror (compare remote URL with the one defined for the project)
 
 Architecture:
 - Events & readmodels
