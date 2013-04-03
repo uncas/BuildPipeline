@@ -80,24 +80,40 @@ namespace Uncas.BuildPipeline.Utilities
             return ExecuteGitCommandAndGetResults(repository, command).ExitCode == 0;
         }
 
-        public void Mirror(string sourceUrl, string mirrorsFolder, string mirrorName)
+        public void Mirror(string remoteUrl, string mirrorsFolder, string mirrorName)
         {
             if (!Directory.Exists(mirrorsFolder))
                 Directory.CreateDirectory(mirrorsFolder);
             string mirrorFolder = Path.Combine(mirrorsFolder, mirrorName);
             if (Directory.Exists(mirrorFolder))
-            {
-                const string command = "remote update";
-                ExecuteGitCommand(mirrorFolder, command);
-            }
+                UpdateMirror(mirrorFolder, remoteUrl);
             else
-            {
-                string command = string.Format("clone {0} {1} --mirror", sourceUrl, mirrorName);
-                ExecuteGitCommand(mirrorsFolder, command);
-            }
+                CreateMirror(remoteUrl, mirrorsFolder, mirrorName);
         }
 
         #endregion
+
+        private void CreateMirror(
+            string remoteUrl,
+            string mirrorsFolder,
+            string mirrorName)
+        {
+            string command = string.Format("clone {0} {1} --mirror", remoteUrl, mirrorName);
+            ExecuteGitCommand(mirrorsFolder, command);
+        }
+
+        private void UpdateMirror(string mirrorFolder, string remoteUrl)
+        {
+            UpdateRemoteUrl(mirrorFolder, remoteUrl);
+            const string command = "remote update";
+            ExecuteGitCommand(mirrorFolder, command);
+        }
+
+        private void UpdateRemoteUrl(string mirrorFolder, string remoteUrl)
+        {
+            string command = string.Format("remote set-url origin {0}", remoteUrl);
+            ExecuteGitCommand(mirrorFolder, command);
+        }
 
         private static string SanatizeOutput(string output)
         {
@@ -164,7 +180,8 @@ namespace Uncas.BuildPipeline.Utilities
                 gitProcess.Close();
             }
 
-            return new ProcessResult {ExitCode = exitCode, StandardOutput = standardOutput};
+            return new ProcessResult
+                {ExitCode = exitCode, StandardOutput = standardOutput};
         }
 
         private Process GetGitProcess(string repository, string command)

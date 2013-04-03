@@ -17,7 +17,6 @@ Infrastructure / minor things:
 - Display full version including short hash in footer on website.
 - Logging: Take file name + line number from inner-most exception.
 - TopShelf service instead of home-brewed service...
-- Change remote URL of mirror (compare remote URL with the one defined for the project)
 
 Architecture:
 - Events & readmodels

@@ -27,6 +27,6 @@ namespace Uncas.BuildPipeline.Utilities
         /// <returns>True if the first commit contains the second commit.</returns>
         bool ContainsCommit(string repository, string first, string second);
 
-        void Mirror(string sourceUrl, string mirrorsFolder, string mirrorName);
+        void Mirror(string remoteUrl, string mirrorsFolder, string mirrorName);
     }
 }
