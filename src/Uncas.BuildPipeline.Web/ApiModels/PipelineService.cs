@@ -31,6 +31,7 @@ namespace Uncas.BuildPipeline.Web.ApiModels
                                         request.BranchName,
                                         DateTime.Now,
                                         request.PackagePath);
+            pipeline.AddStep(new BuildStep(true, request.StepName, DateTime.Now));
             Repository.AddPipeline(pipeline);
             return pipeline.PipelineId;
         }

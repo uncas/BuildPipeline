@@ -36,7 +36,7 @@ WHERE Pi.PipelineId = @PipelineId";
                 _connection.Query<Pipeline>(sql, new {pipelineId}).SingleOrDefault();
             if (pipeline == null)
                 return null;
-            AddSteps(pipeline);
+            AppendSteps(pipeline);
             return pipeline;
         }
 
@@ -57,7 +57,7 @@ JOIN Project AS Pr
 ORDER BY Pi.Created DESC";
             IEnumerable<Pipeline> pipelines = _connection.Query<Pipeline>(sql,
                                                                           new {pageSize});
-            AddSteps(pipelines);
+            AppendSteps(pipelines);
             return pipelines;
         }
 
@@ -97,17 +97,29 @@ END";
                     };
             int pipelineId = _connection.ExecuteAndGetGeneratedId(sql, param, "PipelineId");
             pipeline.AssignId(pipelineId);
+            foreach (BuildStep step in pipeline.Steps)
+                AddStep(pipeline.PipelineId, step);
         }
 
         #endregion
 
-        private void AddSteps(IEnumerable<Pipeline> pipelines)
+        private void AddStep(int pipelineId, BuildStep step)
         {
-            foreach (Pipeline pipeline in pipelines)
-                AddSteps(pipeline);
+            const string sql = @"
+INSERT INTO BuildStep
+(PipelineId, IsSuccessful, StepName)
+VALUES
+(@pipelineId, @isSuccessful, @stepName)";
+            _connection.Execute(sql, new {pipelineId, step.IsSuccessful, step.StepName});
         }
 
-        private void AddSteps(Pipeline pipeline)
+        private void AppendSteps(IEnumerable<Pipeline> pipelines)
+        {
+            foreach (Pipeline pipeline in pipelines)
+                AppendSteps(pipeline);
+        }
+
+        private void AppendSteps(Pipeline pipeline)
         {
             const string sql = @"
 SELECT IsSuccessful, StepName, Created

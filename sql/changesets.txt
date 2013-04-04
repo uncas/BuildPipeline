@@ -7,3 +7,4 @@ Project-DropSourceUrlBaseAndCreateGitFields
 Project-AddDeploymentScriptField
 Pipeline-DropSourceAuthorField
 SourceCommit-CreateTable
+BuildStep-BuildNumber-Remove

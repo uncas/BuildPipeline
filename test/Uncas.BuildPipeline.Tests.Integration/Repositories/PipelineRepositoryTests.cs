@@ -15,6 +15,7 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         {
             const int pageSize = 1;
             var pipeline1 = Fixture.Create<Pipeline>();
+            pipeline1.AddStep(Fixture.Create<BuildStep>());
             Sut.AddPipeline(pipeline1);
 
             Pipeline pipeline = Sut.GetPipelines(pageSize).FirstOrDefault();
