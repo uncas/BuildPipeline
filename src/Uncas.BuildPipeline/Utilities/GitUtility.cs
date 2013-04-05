@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -27,7 +26,7 @@ namespace Uncas.BuildPipeline.Utilities
             IEnumerable<string> branchesMerged =
                 mergeStatements.Select(ExtractMergeSource).Where(
                     x => !string.IsNullOrWhiteSpace(x)).Select(RemoveRemoteName).Distinct()
-                    .OrderBy(x => x).Where(x => x != "origin");
+                    .OrderBy(x => x).Where(x => x != "origin").ToList();
             if (excludeBranches == null || excludeBranches.Length == 0)
                 return branchesMerged;
             return branchesMerged.Where(x => !excludeBranches.Contains(x));
@@ -176,42 +175,13 @@ namespace Uncas.BuildPipeline.Utilities
         private ProcessResult ExecuteGitCommandAndGetResults(
             string repository, string command)
         {
-            int exitCode;
-            string standardOutput;
-            using (Process gitProcess = GetGitProcess(repository, command))
-            {
-                gitProcess.Start();
-                standardOutput = gitProcess.StandardOutput.ReadToEnd();
-                gitProcess.WaitForExit();
-                exitCode = gitProcess.ExitCode;
-                if (!gitProcess.HasExited)
-                {
-                    gitProcess.Kill();
-                    _logger.Error(
-                        "Git was hanging with the command '{0}' on repository '{1}'.",
-                        command, repository);
-                }
-
-                gitProcess.Close();
-            }
-
-            return new ProcessResult
-                {ExitCode = exitCode, StandardOutput = standardOutput};
-        }
-
-        private Process GetGitProcess(string repository, string command)
-        {
-            var startInfo = new ProcessStartInfo
-                {
-                    CreateNoWindow = true,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    FileName = @"C:\Program Files (x86)\Git\bin\git.exe",
-                    UseShellExecute = false,
-                    Arguments = command,
-                    WorkingDirectory = repository
-                };
-            return new Process {StartInfo = startInfo};
+            return ProcessRunner.ExecuteCommandAndGetResults(
+                repository,
+                @"C:\Program Files (x86)\Git\bin\git.exe",
+                command,
+                () => _logger.Error(
+                    "Git was hanging with the command '{0}' on repository '{1}'.",
+                    command, repository));
         }
 
         #region Nested type: GitLogXmlEntry
@@ -244,16 +214,6 @@ namespace Uncas.BuildPipeline.Utilities
             [XmlArray("entries")]
             [XmlArrayItem("entry", typeof (GitLogXmlEntry))]
             public List<GitLogXmlEntry> Entries { get; set; }
-        }
-
-        #endregion
-
-        #region Nested type: ProcessResult
-
-        private class ProcessResult
-        {
-            public int ExitCode { get; set; }
-            public string StandardOutput { get; set; }
         }
 
         #endregion

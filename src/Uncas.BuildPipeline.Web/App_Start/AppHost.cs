@@ -3,7 +3,6 @@ using Funq;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
-using Uncas.BuildPipeline.Web.ApiModels.Examples;
 using Uncas.BuildPipeline.Web.App_Start;
 using Uncas.BuildPipeline.Web.Configuration;
 using WebActivator;
@@ -29,13 +28,7 @@ namespace Uncas.BuildPipeline.Web.App_Start
 
         public override void Configure(Container container)
         {
-            //Set JSON web services to return idiomatic JSON camelCase properties
             JsConfig.EmitCamelCaseNames = true;
-
-            //Configure User Defined REST Paths
-            Routes.Add<Hello>("/hello").Add<Hello>("/hello/{Name*}");
-
-            //Register all your dependencies
             container.Adapter = new UnityContainerAdapter();
         }
 

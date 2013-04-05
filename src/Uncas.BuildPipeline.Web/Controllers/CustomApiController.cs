@@ -13,7 +13,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
         {
             string packageFolder = DeploymentUtility.PackageFolder;
             HttpFileCollectionBase files = Request.Files;
-            if (files.Count == 0)
+            if (files.Maybe(x => x.Count) == 0)
                 throw new InvalidOperationException("No file...");
             HttpPostedFileBase file = files[0];
             if (file == null)

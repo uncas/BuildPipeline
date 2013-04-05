@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,8 +35,7 @@ namespace Uncas.BuildPipeline.Commands
                 _projectReadStore.GetProjects().Where(
                     x => !string.IsNullOrWhiteSpace(x.GitRemoteUrl));
             IEnumerable<CommitReadModel> revisionsWithoutCommits =
-                _commitRepository.GetRevisionsWithoutCommits(projectsWithGitRemote.Select(
-                    x => x.ProjectId));
+                GetRevisionsWithoutCommits(projectsWithGitRemote);
             _logger.Info("Found {0} revisions without commits.",
                          revisionsWithoutCommits.Count());
             foreach (CommitReadModel commitReadModel in revisionsWithoutCommits)
@@ -44,6 +44,13 @@ namespace Uncas.BuildPipeline.Commands
         }
 
         #endregion
+
+        private IEnumerable<CommitReadModel> GetRevisionsWithoutCommits(
+            IEnumerable<ProjectReadModel> projectsWithGitRemote)
+        {
+            IEnumerable<int> projectIds = projectsWithGitRemote.Select(x => x.ProjectId);
+            return _commitRepository.GetRevisionsWithoutCommits(projectIds);
+        }
 
         private void GetAndAddCommit(
             IEnumerable<ProjectReadModel> projects,
@@ -54,7 +61,8 @@ namespace Uncas.BuildPipeline.Commands
                 projects.SingleOrDefault(
                     x => x.ProjectId == projectId);
             if (project == null)
-                return;
+                throw new ArgumentException("Cannot get commits for missing project.",
+                                            "projectId");
             string localMirror = Path.Combine(UpdateGitMirrorsHandler.MirrorsFolder,
                                               project.ProjectName);
             GitLog gitLog = _gitUtility.GetLogs(localMirror,

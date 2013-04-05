@@ -23,6 +23,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
 
         private readonly IDeploymentRepository _deploymentRepository;
         private readonly IEnvironmentRepository _environmentRepository;
+        private readonly IFileUtility _fileUtility;
         private readonly IPipelineQueryService _pipelineQueryService;
         private readonly IPipelineRepository _pipelineRepository;
 
@@ -31,19 +32,22 @@ namespace Uncas.BuildPipeline.Web.Controllers
             IEnvironmentRepository environmentRepository,
             IPipelineRepository pipelineRepository,
             IPipelineQueryService pipelineQueryService,
+            IFileUtility fileUtility,
             ICommandBus commandBus)
         {
             _deploymentRepository = deploymentRepository;
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
             _pipelineQueryService = pipelineQueryService;
+            _fileUtility = fileUtility;
             _commandBus = commandBus;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            IEnumerable<PipelineListItemViewModel> pipelines = _pipelineQueryService.GetPipelines(BuildPageSize);
+            IEnumerable<PipelineListItemViewModel> pipelines =
+                _pipelineQueryService.GetPipelines(BuildPageSize);
             var viewModel = new PipelineIndexViewModel {Pipelines = pipelines};
             return View(viewModel);
         }
@@ -57,18 +61,22 @@ namespace Uncas.BuildPipeline.Web.Controllers
         [HttpGet]
         public ActionResult Deploy(int pipelineId)
         {
+            Pipeline pipeline = _pipelineRepository.GetPipeline(pipelineId);
+            if (pipeline == null)
+                return HttpNotFound();
             const int pageSize = 30;
             IEnumerable<Environment> environments =
                 _environmentRepository.GetEnvironments(new PagingInfo(pageSize));
-            Pipeline pipeline = _pipelineRepository.GetPipeline(pipelineId);
-            IEnumerable<Deployment> deployments = _deploymentRepository.GetDeployments(pipelineId);
+            IEnumerable<Deployment> deployments =
+                _deploymentRepository.GetDeployments(pipelineId);
             IEnumerable<EnvironmentViewModel> environmentViewModels = environments.Select(
                 e => new EnvironmentViewModel
                     {
                         EnvironmentId = e.Id,
                         EnvironmentName = e.EnvironmentName
                     });
-            PipelineViewModel pipelineViewModel = PipelineMapper.MapToPipelineViewModel(pipeline);
+            PipelineViewModel pipelineViewModel =
+                PipelineMapper.MapToPipelineViewModel(pipeline);
             var deployViewModel = new DeployViewModel
                 {
                     Environments = environmentViewModels,
@@ -79,7 +87,8 @@ namespace Uncas.BuildPipeline.Web.Controllers
                                 Started = d.Started,
                                 Completed = d.Completed,
                                 EnvironmentName = environments.FirstOrDefault(
-                                    e => e.Id == d.EnvironmentId).Maybe(x => x.EnvironmentName)
+                                    e => e.Id == d.EnvironmentId).Maybe(
+                                        x => x.EnvironmentName)
                             }),
                     Pipeline = pipelineViewModel
                 };
@@ -97,7 +106,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
         public ActionResult Download(string id)
         {
             string filePath = Path.Combine(DeploymentUtility.PackageFolder, id);
-            if (!System.IO.File.Exists(filePath))
+            if (!_fileUtility.FileExists(filePath))
                 return HttpNotFound("File not found.");
             return new FilePathResult(filePath, "application/zip");
         }

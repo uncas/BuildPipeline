@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Uncas.BuildPipeline.Repositories.ProjectReadModel>>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Uncas.BuildPipeline.Models.ProjectReadModel>>" %>
+<%@ Import Namespace="Uncas.BuildPipeline.Models" %>
 <%@ Import Namespace="Uncas.BuildPipeline.Repositories" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">

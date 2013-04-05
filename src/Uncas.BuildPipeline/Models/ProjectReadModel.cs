@@ -1,4 +1,4 @@
-namespace Uncas.BuildPipeline.Repositories
+namespace Uncas.BuildPipeline.Models
 {
     public class ProjectReadModel
     {

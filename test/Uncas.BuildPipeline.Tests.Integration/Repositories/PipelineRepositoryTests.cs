@@ -11,6 +11,24 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
     public class PipelineRepositoryTests : WithBootstrapping<IPipelineRepository>
     {
         [Test]
+        public void GetPipeline_ExistingId_GetsExisting()
+        {
+            var original = Fixture.Create<Pipeline>();
+            Sut.AddPipeline(original);
+
+            Pipeline retrieved = Sut.GetPipeline(original.PipelineId);
+
+            Assert.NotNull(retrieved);
+        }
+
+        [Test]
+        public void GetPipeline_NonExistingId_GetsNull()
+        {
+            Pipeline pipeline = Sut.GetPipeline(-1);
+            Assert.Null(pipeline);
+        }
+
+        [Test]
         public void GetPipelines_PageSize1_PipelineIsIncluded()
         {
             const int pageSize = 1;

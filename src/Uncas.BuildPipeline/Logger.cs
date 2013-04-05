@@ -4,11 +4,19 @@ using System.Linq;
 using Uncas.BuildPipeline.Configuration;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.Core.Logging;
+using ILogRepository = Uncas.BuildPipeline.Repositories.ILogRepository;
 
 namespace Uncas.BuildPipeline
 {
     public class Logger : ILogger
     {
+        private readonly ILogRepository _logRepository;
+
+        public Logger(ILogRepository logRepository)
+        {
+            _logRepository = logRepository;
+        }
+
         #region ILogger Members
 
         public void Debug(string descriptionFormat, params object[] args)
@@ -63,44 +71,34 @@ namespace Uncas.BuildPipeline
             int serviceId = ConfigurationAppSetting.Int32("ServiceId", 0);
             string version = ApplicationVersion.GetVersion(GetType().Assembly);
             StackFrame stackFrame = withFileInfo.GetFrame(0);
-            string relativeFileName = GetFileName(stackFrame);
+            string fileName = GetFileName(stackFrame);
             int? lineNumber =
-                string.IsNullOrWhiteSpace(relativeFileName)
+                string.IsNullOrWhiteSpace(fileName)
                     ? (int?) null
                     : stackFrame.GetFileLineNumber();
             string stackTrace = withFileInfo.ToString();
             string simpleStackTrace = withoutFileInfo.ToString();
-            var connection = new BuildPipelineConnection();
-            const string sql = @"
-INSERT INTO LogEntry
-(ServiceId, Version, LogType, Description
-    , FileName, LineNumber, SimpleStackTrace, StackTrace
-    , ExceptionType, ExceptionMessage, FullException)
-VALUES
-(@ServiceId, @Version, @LogType, @Description
-    , @FileName, @LineNumber, @SimpleStackTrace, @StackTrace
-    , @ExceptionType, @ExceptionMessage, @FullException)
-";
-            var param = new
+            var logData = new LogData
                 {
-                    serviceId,
-                    version,
-                    logType,
-                    description,
-                    fileName = relativeFileName,
-                    lineNumber,
-                    simpleStackTrace,
-                    stackTrace,
-                    exceptionType,
-                    exceptionMessage,
-                    fullException
+                    ServiceId = serviceId,
+                    Version = version,
+                    LogType = logType,
+                    Description = description,
+                    FileName = fileName,
+                    LineNumber = lineNumber,
+                    SimpleStackTrace = simpleStackTrace,
+                    StackTrace = stackTrace,
+                    ExceptionType = exceptionType,
+                    ExceptionMessage = exceptionMessage,
+                    FullException = fullException
                 };
-            connection.Execute(sql,
-                               param);
+            _logRepository.Add(logData);
         }
 
         private static string GetFileName(StackFrame stackFrame)
         {
+            if (stackFrame == null)
+                return null;
             string fileName = stackFrame.GetFileName();
             if (string.IsNullOrWhiteSpace(fileName))
                 return null;

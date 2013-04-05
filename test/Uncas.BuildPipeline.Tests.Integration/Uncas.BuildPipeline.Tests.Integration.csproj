@@ -65,6 +65,10 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -104,10 +108,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QueryServices\PipelineQueryServiceTests.cs" />
     <Compile Include="Repositories\CommitRepositoryTests.cs" />
     <Compile Include="Repositories\DeploymentRepositoryTests.cs" />
+    <Compile Include="Repositories\EnvironmentRepositoryTests.cs" />
+    <Compile Include="Repositories\LogRepositoryTests.cs" />
+    <Compile Include="Repositories\ProjectReadStoreTests.cs" />
     <Compile Include="TestBootstrapper.cs" />
+    <Compile Include="Utilities\FileUtilityTests.cs" />
     <Compile Include="Utilities\GitUtilityTests.cs" />
+    <Compile Include="Utilities\PowershellUtilityTests.cs" />
+    <Compile Include="Utilities\ZipUtilityTests.cs" />
     <Compile Include="WithBootstrapping.cs" />
     <Compile Include="Utilities\DeploymentUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

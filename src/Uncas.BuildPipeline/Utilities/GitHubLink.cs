@@ -11,6 +11,8 @@ namespace Uncas.BuildPipeline.Utilities
 
         public static string Compare(string repo, string branch)
         {
+            if (string.IsNullOrWhiteSpace(repo))
+                return string.Empty;
             return string.Format("{0}/compare/{1}?w=1", repo, branch);
         }
 

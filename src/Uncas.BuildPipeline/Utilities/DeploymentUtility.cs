@@ -8,15 +8,21 @@ namespace Uncas.BuildPipeline.Utilities
     public class DeploymentUtility : IDeploymentUtility
     {
         public static readonly string PackageFolder =
-            ConfigurationManager.AppSettings["DeploymentPackageFolder"] ?? @"C:\Temp\DeploymentPackages";
+            ConfigurationManager.AppSettings["DeploymentPackageFolder"] ??
+            @"C:\Temp\DeploymentPackages";
 
+        private readonly IFileUtility _fileUtility;
         private readonly IPowershellUtility _powershellUtility;
         private readonly IZipUtility _zipUtility;
 
-        public DeploymentUtility(IZipUtility zipUtility, IPowershellUtility powershellUtility)
+        public DeploymentUtility(
+            IZipUtility zipUtility,
+            IPowershellUtility powershellUtility,
+            IFileUtility fileUtility)
         {
             _zipUtility = zipUtility;
             _powershellUtility = powershellUtility;
+            _fileUtility = fileUtility;
         }
 
         #region IDeploymentUtility Members
@@ -33,9 +39,11 @@ param ($environmentName)
 {0}", customScript);
             string scriptTempPath
                 = Path.Combine(workingDirectory, Guid.NewGuid().ToString() + ".ps1");
-            File.WriteAllText(scriptTempPath, scriptContents);
-            string arguments = string.Format(@"-NonInteractive -File {0} -environmentName ""{1}""", scriptTempPath,
-                                             environment.EnvironmentName);
+            _fileUtility.WriteAllText(scriptTempPath, scriptContents);
+            string arguments =
+                string.Format(@"-NonInteractive -File {0} -environmentName ""{1}""",
+                              scriptTempPath,
+                              environment.EnvironmentName);
 
             // TODO: Collect errors from powershell execution...
             _powershellUtility.RunPowershell(workingDirectory, arguments);

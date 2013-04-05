@@ -123,14 +123,17 @@
     <Compile Include="Commands\UpdateCommitsHandler.cs" />
     <Compile Include="Configuration\ConfigurationAppSetting.cs" />
     <Compile Include="Models\Revision.cs" />
+    <Compile Include="Repositories\ILogRepository.cs" />
     <Compile Include="Repositories\IProjectReadStore.cs" />
-    <Compile Include="Repositories\ProjectReadModel.cs" />
+    <Compile Include="Models\ProjectReadModel.cs" />
     <Compile Include="Commands\UpdateGitMirrorsHandler.cs" />
     <Compile Include="ApplicationVersion.cs" />
     <Compile Include="Commands\UpdateGitMirrors.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MaybeMonad.cs" />
+    <Compile Include="Repositories\LogData.cs" />
+    <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="Repositories\ProjectReadStore.cs" />
     <Compile Include="SharedRegistry.cs" />
     <Compile Include="Repositories\BuildPipelineConnection.cs" />
@@ -149,14 +152,18 @@
     <Compile Include="Repositories\IPipelineRepository.cs" />
     <Compile Include="Repositories\PipelineRepository.cs" />
     <Compile Include="Utilities\DeploymentUtility.cs" />
+    <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\GitHubLink.cs" />
     <Compile Include="Utilities\GitLog.cs" />
     <Compile Include="Utilities\GitUtility.cs" />
     <Compile Include="Utilities\IDeploymentUtility.cs" />
+    <Compile Include="Utilities\IFileUtility.cs" />
     <Compile Include="Utilities\IGitUtility.cs" />
     <Compile Include="Utilities\IPowershellUtility.cs" />
     <Compile Include="Utilities\IZipUtility.cs" />
     <Compile Include="Utilities\PowershellUtility.cs" />
+    <Compile Include="Utilities\ProcessResult.cs" />
+    <Compile Include="Utilities\ProcessRunner.cs" />
     <Compile Include="Utilities\ZipUtility.cs" />
   </ItemGroup>
   <ItemGroup>

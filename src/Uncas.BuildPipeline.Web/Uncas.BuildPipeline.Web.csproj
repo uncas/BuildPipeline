@@ -160,16 +160,9 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="ApiModels\Examples\Hello.cs" />
-    <Compile Include="ApiModels\Examples\HelloResponse.cs" />
-    <Compile Include="ApiModels\Examples\HelloService.cs" />
-    <Compile Include="ApiModels\Examples\Todo.cs" />
-    <Compile Include="ApiModels\Examples\Todos.cs" />
-    <Compile Include="ApiModels\Examples\TodosService.cs" />
     <Compile Include="ApiModels\PipelineRequest.cs" />
     <Compile Include="ApiModels\PipelineService.cs" />
     <Compile Include="App_Start\AppHost.cs" />
-    <Compile Include="ApiModels\Examples\TodoRepository.cs" />
     <Compile Include="Configuration\UnityContainerAdapter.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EnvironmentController.cs" />

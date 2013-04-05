@@ -29,33 +29,6 @@ namespace Uncas.BuildPipeline.Models
         public DateTime? Started { get; private set; }
         public DateTime? Completed { get; private set; }
 
-        public bool HasRun
-        {
-            get
-            {
-                return Started.HasValue &&
-                       Completed.HasValue;
-            }
-        }
-
-        public static Deployment Reconstruct(
-            int id,
-            DateTime created,
-            int pipelineId,
-            int environmentId,
-            DateTime? started,
-            DateTime? completed)
-        {
-            var deployment = new Deployment(
-                pipelineId,
-                environmentId);
-            deployment.DeploymentId = id;
-            deployment.Created = created;
-            deployment.Started = started;
-            deployment.Completed = completed;
-            return deployment;
-        }
-
         public void MarkAsCompleted()
         {
             if (!Started.HasValue)

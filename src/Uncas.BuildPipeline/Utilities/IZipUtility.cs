@@ -5,5 +5,9 @@
         void ExtractZipFile(
             string sourcePackagePath,
             string destinationRootFolderPath);
+
+        void CreateZipFile(
+            string sourceFolderPath,
+            string zipFilePath);
     }
 }

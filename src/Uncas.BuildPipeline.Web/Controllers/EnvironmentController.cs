@@ -37,9 +37,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
                 _environmentRepository.GetEnvironments(new PagingInfo(pageSize));
             var viewModel = new List<EnvironmentIndexViewModel>();
             foreach (Environment environment in environments)
-            {
                 AddEnvironmentIndexViewModel(viewModel, environment);
-            }
 
             return View(viewModel);
         }
@@ -49,24 +47,19 @@ namespace Uncas.BuildPipeline.Web.Controllers
             Environment environment)
         {
             if (environment == null)
-            {
                 throw new ArgumentNullException("environment");
-            }
 
             if (viewModels == null)
-            {
                 throw new ArgumentNullException("viewModels");
-            }
 
             IEnumerable<Deployment> deployments =
                 _deploymentRepository.GetByEnvironment(
                     environment.Id);
             Deployment lastDeployment =
-                deployments.Where(d => d.Completed.HasValue).OrderByDescending(d => d.Completed).FirstOrDefault();
+                deployments.Where(d => d.Completed.HasValue).OrderByDescending(
+                    d => d.Completed).FirstOrDefault();
             if (lastDeployment == null)
-            {
                 return;
-            }
 
             Pipeline pipeline = _pipelineRepository.GetPipeline(lastDeployment.PipelineId);
             string currentRevision = pipeline.Revision;

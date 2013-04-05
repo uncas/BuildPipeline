@@ -34,8 +34,9 @@ LEFT JOIN SourceCommit AS SC
     AND Pi.Revision = SC.Revision
 ORDER BY Pi.Created DESC";
             var param = new {pageSize};
-            IEnumerable<PipelineListItemViewModel> pipelines = _connection.Query<PipelineListItemViewModel>(sql,
-                                                                                                            param);
+            IEnumerable<PipelineListItemViewModel> pipelines =
+                _connection.Query<PipelineListItemViewModel>(sql,
+                                                             param);
             AddSteps(pipelines);
             return pipelines;
         }

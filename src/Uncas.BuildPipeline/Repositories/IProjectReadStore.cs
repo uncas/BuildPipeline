@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Uncas.BuildPipeline.Models;
 
 namespace Uncas.BuildPipeline.Repositories
 {

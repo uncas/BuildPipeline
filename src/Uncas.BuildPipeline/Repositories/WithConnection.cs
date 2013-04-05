@@ -13,10 +13,6 @@ namespace Uncas.BuildPipeline.Repositories
     {
         private readonly Lazy<string> _connectionString;
 
-        public WithConnection(string connectionString) : this(() => connectionString)
-        {
-        }
-
         public WithConnection(Func<string> connectionStringFetcher)
         {
             _connectionString = new Lazy<string>(connectionStringFetcher);
@@ -61,7 +57,7 @@ namespace Uncas.BuildPipeline.Repositories
         }
 
         public int ExecuteAndGetGeneratedId(
-            string sql, object param,string generatedIdName)
+            string sql, object param, string generatedIdName)
         {
             var dynamicParameters = new DynamicParameters(param);
             dynamicParameters.Add(generatedIdName,
@@ -69,28 +65,6 @@ namespace Uncas.BuildPipeline.Repositories
                                   direction: ParameterDirection.Output);
             Execute(sql, dynamicParameters);
             return dynamicParameters.Get<int>(generatedIdName);
-        }
-
-        public TResult Execute<TResult>(
-            Func<DbConnection, DbTransaction, TResult> task,
-            IsolationLevel isolationLevel = IsolationLevel.ReadUncommitted)
-        {
-            if (task == null) throw new ArgumentNullException("task");
-            using (DbConnection conn = Open())
-            using (DbTransaction tran = conn.BeginTransaction(isolationLevel))
-            {
-                try
-                {
-                    TResult result = task(conn, tran);
-                    tran.Commit();
-                    return result;
-                }
-                catch
-                {
-                    tran.Rollback();
-                    throw;
-                }
-            }
         }
 
         public DbConnection Open()

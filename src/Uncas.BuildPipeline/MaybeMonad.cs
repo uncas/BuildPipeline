@@ -18,13 +18,16 @@ namespace Uncas.BuildPipeline
             return get(item);
         }
 
-        public static TU Maybe<T, TU>(this IEnumerable items, Func<T, TU> get, Func<TU> fallback)
+        public static TU Maybe<T, TU>(this IEnumerable items, Func<T, TU> get,
+                                      Func<TU> fallback)
         {
             return items.OfType<T>().FirstOrDefault().Maybe(get, fallback);
         }
 
         public static TU Maybe<T, TU>(this IEnumerable items, Func<T, TU> get)
         {
+            if (items == null)
+                return default(TU);
             return items.OfType<T>().FirstOrDefault().Maybe(get);
         }
     }

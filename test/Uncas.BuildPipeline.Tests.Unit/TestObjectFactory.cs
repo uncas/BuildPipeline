@@ -4,6 +4,7 @@ using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoMoq;
 using Ploeh.AutoFixture.Dsl;
 using Ploeh.AutoFixture.Kernel;
+using Uncas.BuildPipeline.Models;
 
 namespace Uncas.BuildPipeline.Tests.Unit
 {
@@ -14,7 +15,9 @@ namespace Uncas.BuildPipeline.Tests.Unit
         private TestObjectFactory()
         {
             _fixture = new Fixture()
-                .Customize(new AutoMoqCustomization());
+                .Customize(new AutoMoqCustomization())
+                .Customize(new AspNetMvcCustomization());
+            _fixture.Customize<Pipeline>(x => x.FromFactory(_fixture.CreatePipeline));
         }
 
         #region IFixture Members
@@ -29,7 +32,8 @@ namespace Uncas.BuildPipeline.Tests.Unit
             return _fixture.Customize(customization);
         }
 
-        public void Customize<T>(Func<ICustomizationComposer<T>, ISpecimenBuilder> composerTransformation)
+        public void Customize<T>(
+            Func<ICustomizationComposer<T>, ISpecimenBuilder> composerTransformation)
         {
             _fixture.Customize(composerTransformation);
         }

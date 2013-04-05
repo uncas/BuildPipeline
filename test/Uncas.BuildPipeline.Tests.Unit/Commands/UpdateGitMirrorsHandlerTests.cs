@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using Uncas.BuildPipeline.Commands;
+using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Utilities;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.Core.Data;
@@ -14,14 +15,15 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
     {
         private int AddPipeline()
         {
-            var pipeline = new Pipeline(1,
-                                        "Bla",
-                                        "1",
-                                        "bla",
-                                        DateTime.Now,
-                                        "bla");
+            var pipeline = Fixture.Create<Pipeline>();
             Resolve<IPipelineRepository>().AddPipeline(pipeline);
             return pipeline.PipelineId;
+        }
+
+        [Test]
+        public void AddDeployment_Null_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => Sut.AddDeployment(null));
         }
 
         [Test]
@@ -47,6 +49,12 @@ namespace Uncas.BuildPipeline.Tests.Integration.Repositories
         public void GetDueDeployments_X()
         {
             Sut.GetDueDeployments(new PagingInfo(10));
+        }
+
+        [Test]
+        public void UpdateDeployment_Null_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => Sut.UpdateDeployment(null));
         }
 
         [Test]

@@ -8,6 +8,8 @@ namespace Uncas.BuildPipeline.Repositories
 {
     public class DeploymentRepository : IDeploymentRepository
     {
+        private const int DefaultPageSize = 10;
+
         private readonly BuildPipelineConnection _connection =
             new BuildPipelineConnection();
 
@@ -16,9 +18,7 @@ namespace Uncas.BuildPipeline.Repositories
         public void AddDeployment(Deployment deployment)
         {
             if (deployment == null)
-            {
                 throw new ArgumentNullException("deployment");
-            }
 
             const string sql = @"
 INSERT INTO Deployment
@@ -83,11 +83,6 @@ ORDER BY Created ASC";
 
         public IEnumerable<Deployment> GetDueDeployments(PagingInfo pagingInfo)
         {
-            if (pagingInfo == null)
-            {
-                throw new ArgumentNullException("pagingInfo");
-            }
-
             const string sql = @"
 SELECT TOP (@PageSize)
     DeploymentId
@@ -100,22 +95,23 @@ FROM Deployment
 WHERE Started IS NULL 
     OR Completed IS NULL
 ORDER BY Created ASC";
-            return _connection.Query<Deployment>(sql, new {pagingInfo.PageSize});
+            int pageSize = pagingInfo.Maybe(x => x.PageSize, () => DefaultPageSize);
+            var param = new {pageSize};
+            return _connection.Query<Deployment>(sql, param);
         }
 
         public void UpdateDeployment(Deployment deployment)
         {
             if (deployment == null)
-            {
                 throw new ArgumentNullException("deployment");
-            }
 
             const string sql = @"
 UPDATE Deployment
 SET Started = @Started
     , Completed = @Completed
 WHERE DeploymentId = @DeploymentId";
-            var param = new {deployment.Started, deployment.Completed, deployment.DeploymentId};
+            var param =
+                new {deployment.Started, deployment.Completed, deployment.DeploymentId};
             _connection.Execute(sql, param);
         }
 

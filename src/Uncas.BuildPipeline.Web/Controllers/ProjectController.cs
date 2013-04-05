@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 
 namespace Uncas.BuildPipeline.Web.Controllers
