@@ -1,0 +1,34 @@
+﻿http://stackoverflow.com/questions/1867385/upload-files-with-ftp-using-powershell
+http://gallery.technet.microsoft.com/scriptcenter/PowerShell-FTP-Client-db6fe0cb
+
+=====
+
+http://forrst.com/posts/Sync_Folder_To_Ftp_Powershell-HiA:
+
+$a = (Get-Host).UI.RawUI
+$a.WindowTitle = "Sync Folder To Ftp"
+
+$ftp = "ftp://yourwebsite.com/"
+$localDirectory = "C:\temp\"
+$user = "ftp_user_login"
+$pass = "password"
+
+$webclient = New-Object System.Net.WebClient 
+$webclient.Credentials = New-Object System.Net.NetworkCredential($user,$pass)  
+$Files = get-childitem $localDirectory -recurse -force 
+foreach ($File in $Files)
+{
+    $LocalFile = $File.FullName
+
+    $RemoveDirectory = $LocalFile.Replace($localDirectory,"")
+    $ChangeSlashes = $RemoveDirectory.Replace('\', '/')
+    $RemoveSpaces = $ChangeSlashes.Trim()
+    $RemoteFile = $ftp+$RemoveSpaces
+    $uri = New-Object System.Uri($RemoteFile) 
+    $webclient.UploadFile($uri, $LocalFile)
+    
+    Write-Host "Getting $File from $localDirectory" -Foreground "Red"
+    Write-Host "Puting $File to $ftp" -Foreground "Yellow"
+} 
+
+Write-Host "Finished Sync to $ftp" -Foreground "Green"

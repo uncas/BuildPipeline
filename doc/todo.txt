@@ -1,5 +1,6 @@
 ﻿Current priorities:
 - Deployment metod: FTP
+- Install script ('build.ps1 install')
 - Configure which environments are available for each project.
 - Display build stages + deployment stages on front page
 - Attach release notes to commits.
@@ -16,10 +17,10 @@ Feature ideas:
 
 Infrastructure / minor things:
 - Tests of existing logic, specs
-- Cleanup in dependencies Uncas.Core.*
 - Display full version including short hash in footer on website.
 - Logging: Take file name + line number from inner-most exception.
 - TopShelf service instead of home-brewed service...
+- Use twitter bootstrap
 
 Architecture:
 - Events & readmodels
