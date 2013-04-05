@@ -9,6 +9,13 @@ namespace Uncas.BuildPipeline.Utilities
 {
     public class GitUtility : IGitUtility
     {
+        private readonly ILogger _logger;
+
+        public GitUtility(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         #region IGitUtility Members
 
         public IEnumerable<string> GetBranchesMerged(
@@ -177,6 +184,14 @@ namespace Uncas.BuildPipeline.Utilities
                 standardOutput = gitProcess.StandardOutput.ReadToEnd();
                 gitProcess.WaitForExit();
                 exitCode = gitProcess.ExitCode;
+                if (!gitProcess.HasExited)
+                {
+                    gitProcess.Kill();
+                    _logger.Error(
+                        "Git was hanging with the command '{0}' on repository '{1}'.",
+                        command, repository);
+                }
+
                 gitProcess.Close();
             }
 

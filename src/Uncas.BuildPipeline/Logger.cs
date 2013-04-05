@@ -21,19 +21,27 @@ namespace Uncas.BuildPipeline
             LogNoException(LogType.Info, 2, descriptionFormat, args);
         }
 
-        public void Error(Exception exception, string descriptionFormat, params object[] args)
+        public void Error(string descriptionFormat, params object[] args)
+        {
+            LogNoException(LogType.Error, 2, descriptionFormat, args);
+        }
+
+        public void Error(Exception exception, string descriptionFormat,
+                          params object[] args)
         {
             var stackTraceWithFileInfo = new StackTrace(exception, true);
             var stackTraceWithoutFileInfo = new StackTrace(exception, false);
             string exceptionType = exception.GetType().ToString();
-            Log(LogType.Error, GetDescription(descriptionFormat, args), stackTraceWithFileInfo,
+            Log(LogType.Error, GetDescription(descriptionFormat, args),
+                stackTraceWithFileInfo,
                 stackTraceWithoutFileInfo, exceptionType,
                 exception.Message, exception.ToString());
         }
 
         #endregion
 
-        private void LogNoException(LogType logType, int skipFrames, string descriptionFormat, object[] args)
+        private void LogNoException(LogType logType, int skipFrames,
+                                    string descriptionFormat, object[] args)
         {
             var stackTraceWithFileInfo = new StackTrace(skipFrames, true);
             var stackTraceWithoutFileInfo = new StackTrace(skipFrames, false);
@@ -41,20 +49,25 @@ namespace Uncas.BuildPipeline
                 stackTraceWithoutFileInfo);
         }
 
-        private static string GetDescription(string descriptionFormat, params object[] args)
+        private static string GetDescription(string descriptionFormat,
+                                             params object[] args)
         {
             return string.Format(descriptionFormat, args);
         }
 
-        private void Log(LogType logType, string description, StackTrace withFileInfo, StackTrace withoutFileInfo,
-                         string exceptionType = null, string exceptionMessage = null, string fullException = null)
+        private void Log(LogType logType, string description, StackTrace withFileInfo,
+                         StackTrace withoutFileInfo,
+                         string exceptionType = null, string exceptionMessage = null,
+                         string fullException = null)
         {
             int serviceId = ConfigurationAppSetting.Int32("ServiceId", 0);
             string version = ApplicationVersion.GetVersion(GetType().Assembly);
             StackFrame stackFrame = withFileInfo.GetFrame(0);
             string relativeFileName = GetFileName(stackFrame);
             int? lineNumber =
-                string.IsNullOrWhiteSpace(relativeFileName) ? (int?) null : stackFrame.GetFileLineNumber();
+                string.IsNullOrWhiteSpace(relativeFileName)
+                    ? (int?) null
+                    : stackFrame.GetFileLineNumber();
             string stackTrace = withFileInfo.ToString();
             string simpleStackTrace = withoutFileInfo.ToString();
             var connection = new BuildPipelineConnection();
@@ -91,7 +104,9 @@ VALUES
             string fileName = stackFrame.GetFileName();
             if (string.IsNullOrWhiteSpace(fileName))
                 return null;
-            return fileName.Split(new[] {@"\src\"}, StringSplitOptions.RemoveEmptyEntries).Last();
+            return
+                fileName.Split(new[] {@"\src\"}, StringSplitOptions.RemoveEmptyEntries).
+                    Last();
         }
     }
 }
