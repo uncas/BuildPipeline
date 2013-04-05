@@ -100,10 +100,6 @@
     <Reference Include="Uncas.Core">
       <HintPath>..\..\packages\Uncas.Core.1.1.0.154\lib\net40\Uncas.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Uncas.Core.External">
-      <HintPath>..\..\packages\Uncas.Core.External.1.1.0.154\lib\net40\Uncas.Core.External.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="UnityConfiguration">
       <HintPath>..\..\packages\UnityConfiguration.1.4.1\lib\net35\UnityConfiguration.dll</HintPath>
     </Reference>
