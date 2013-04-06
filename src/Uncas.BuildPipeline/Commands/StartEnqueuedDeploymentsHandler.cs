@@ -10,10 +10,9 @@ using Environment = Uncas.BuildPipeline.Models.Environment;
 
 namespace Uncas.BuildPipeline.Commands
 {
-    public class StartEnqueuedDeploymentsHandler : ICommandHandler<StartEnqueuedDeployments>
+    public class StartEnqueuedDeploymentsHandler :
+        ICommandHandler<StartEnqueuedDeployments>
     {
-        private const string WorkingDirectory = @"C:\temp\DeploymentWork";
-
         private readonly IDeploymentRepository _deploymentRepository;
         private readonly IDeploymentUtility _deploymentUtility;
         private readonly IEnvironmentRepository _environmentRepository;
@@ -47,9 +46,10 @@ namespace Uncas.BuildPipeline.Commands
             _logger.Info("Starting '{0}' deployments.", dueDeployments.Count());
             foreach (Deployment deployment in dueDeployments)
             {
-                _logger.Debug("Starting deployment of pipeline ID '{0}' to environment ID '{1}'.",
-                              deployment.PipelineId,
-                              deployment.EnvironmentId);
+                _logger.Debug(
+                    "Starting deployment of pipeline ID '{0}' to environment ID '{1}'.",
+                    deployment.PipelineId,
+                    deployment.EnvironmentId);
                 deployment.MarkAsStarted();
                 _deploymentRepository.UpdateDeployment(deployment);
                 Deploy(
@@ -57,9 +57,10 @@ namespace Uncas.BuildPipeline.Commands
                     deployment.EnvironmentId);
                 deployment.MarkAsCompleted();
                 _deploymentRepository.UpdateDeployment(deployment);
-                _logger.Debug("Completed deployment of pipeline ID '{0}' to environment ID '{1}'.",
-                              deployment.PipelineId,
-                              deployment.EnvironmentId);
+                _logger.Debug(
+                    "Completed deployment of pipeline ID '{0}' to environment ID '{1}'.",
+                    deployment.PipelineId,
+                    deployment.EnvironmentId);
             }
         }
 
@@ -86,17 +87,18 @@ namespace Uncas.BuildPipeline.Commands
             ProjectReadModel project = _projectReadStore.GetProjectById(pipeline.ProjectId);
             if (project == null)
                 throw new InvalidOperationException("Cannot deploy without a project.");
-            string packagePath = Path.Combine(DeploymentUtility.PackageFolder, pipeline.PackagePath);
+            string packagePath = Path.Combine(DeploymentUtility.PackageFolder,
+                                              pipeline.PackagePath);
             string deploymentScript = project.DeploymentScript;
             if (string.IsNullOrWhiteSpace(deploymentScript))
             {
-                _logger.Debug("No deployment script for project '{0}'.", project.ProjectName);
+                _logger.Debug("No deployment script for project '{0}'.",
+                              project.ProjectName);
                 return;
             }
 
             _deploymentUtility.Deploy(
                 packagePath,
-                WorkingDirectory,
                 environment,
                 deploymentScript);
         }

@@ -11,7 +11,8 @@ using Uncas.Core.Data;
 namespace Uncas.BuildPipeline.Tests.Unit.Commands
 {
     [TestFixture]
-    public class StartEnqueuedDeploymentsHandlerTests : WithFixture<StartEnqueuedDeploymentsHandler>
+    public class StartEnqueuedDeploymentsHandlerTests :
+        WithFixture<StartEnqueuedDeploymentsHandler>
     {
         private void SetupRepositories(
             int pipelineId,
@@ -20,15 +21,18 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             var environment = new Environment();
             Fixture.Inject(pipelineId);
             var pipeline = Fixture.Create<Pipeline>();
-            Mock<IEnvironmentRepository> environmentRepositoryMock = Fixture.FreezeMock<IEnvironmentRepository>();
+            Mock<IEnvironmentRepository> environmentRepositoryMock =
+                Fixture.FreezeMock<IEnvironmentRepository>();
             environmentRepositoryMock.Setup(
                 er => er.GetEnvironment(environmentId)).Returns(
                     environment);
-            Mock<IPipelineRepository> pipelineRepositoryMock = Fixture.FreezeMock<IPipelineRepository>();
+            Mock<IPipelineRepository> pipelineRepositoryMock =
+                Fixture.FreezeMock<IPipelineRepository>();
             pipelineRepositoryMock.Setup(
                 pr => pr.GetPipeline(pipelineId)).Returns(
                     pipeline);
-            Mock<IProjectReadStore> projectReadStoreMock = Fixture.FreezeMock<IProjectReadStore>();
+            Mock<IProjectReadStore> projectReadStoreMock =
+                Fixture.FreezeMock<IProjectReadStore>();
             projectReadStoreMock.Setup(x => x.GetProjectById(It.IsAny<int>())).Returns(new ProjectReadModel
                 {DeploymentScript = "bla"});
         }
@@ -36,7 +40,8 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
         private void WithDeployments(
             params Deployment[] deployments)
         {
-            Mock<IDeploymentRepository> deploymentRepositoryMock = Fixture.FreezeMock<IDeploymentRepository>();
+            Mock<IDeploymentRepository> deploymentRepositoryMock =
+                Fixture.FreezeMock<IDeploymentRepository>();
             deploymentRepositoryMock.Setup(
                 dr => dr.GetDueDeployments(It.IsAny<PagingInfo>()))
                 .Returns(new List<Deployment>(deployments));
@@ -45,19 +50,22 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
         [Test]
         public void DeployDueDeployments_NoDue_DeploysNone()
         {
-            Mock<IDeploymentUtility> deploymentUtilityMock = Fixture.FreezeMock<IDeploymentUtility>();
+            Mock<IDeploymentUtility> deploymentUtilityMock =
+                Fixture.FreezeMock<IDeploymentUtility>();
 
             Sut.Handle(new StartEnqueuedDeployments());
 
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
+                du =>
+                du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
                 Times.Never());
         }
 
         [Test]
         public void DeployDueDeployments_WhenCalledSecondTime_DeploysNoneSecondTime()
         {
-            Mock<IDeploymentUtility> deploymentUtilityMock = Fixture.FreezeMock<IDeploymentUtility>();
+            Mock<IDeploymentUtility> deploymentUtilityMock =
+                Fixture.FreezeMock<IDeploymentUtility>();
             const int pipelineId = 1;
             const int environmentId = 1;
             var deployment = new Deployment(
@@ -67,21 +75,26 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             WithDeployments(deployment);
             Sut.Handle(new StartEnqueuedDeployments());
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
+                du =>
+                du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(),
+                          It.IsAny<string>()),
                 Times.Once());
             WithDeployments();
 
             Sut.Handle(new StartEnqueuedDeployments());
 
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
+                du =>
+                du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(),
+                          It.IsAny<string>()),
                 Times.Once());
         }
 
         [Test]
         public void DeployDueDeployments_WhenContainsOne_DeploysOne()
         {
-            Mock<IDeploymentUtility> deploymentUtilityMock = Fixture.FreezeMock<IDeploymentUtility>();
+            Mock<IDeploymentUtility> deploymentUtilityMock =
+                Fixture.FreezeMock<IDeploymentUtility>();
             const int pipelineId = 1;
             const int environmentId = 1;
             var deployment = new Deployment(
@@ -93,7 +106,9 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             Sut.Handle(new StartEnqueuedDeployments());
 
             deploymentUtilityMock.Verify(
-                du => du.Deploy(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
+                du =>
+                du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(),
+                          It.IsAny<string>()),
                 Times.Once());
         }
     }

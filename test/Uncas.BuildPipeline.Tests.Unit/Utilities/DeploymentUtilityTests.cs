@@ -12,7 +12,6 @@ namespace Uncas.BuildPipeline.Tests.Unit.Utilities
         {
             Sut.Deploy(
                 Fixture.Create<string>(),
-                Fixture.Create<string>(),
                 Fixture.Create<Environment>(),
                 Fixture.Create<string>());
         }

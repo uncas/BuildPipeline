@@ -6,7 +6,6 @@ namespace Uncas.BuildPipeline.Utilities
     {
         void Deploy(
             string packagePath,
-            string workingDirectory,
             Environment environment,
             string customScript);
     }
