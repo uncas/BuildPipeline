@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Ploeh.AutoFixture;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Utilities;
 
@@ -14,7 +15,8 @@ namespace Uncas.BuildPipeline.Tests.Integration.Utilities
             const string packagePath =
                 @"C:\Builds\BuildPipeline\Artifacts\Unit\packages\Uncas.BuildPipeline-0.1.35.966.zip";
 
-            Sut.Deploy(packagePath, new Environment(), "Write-Host Hello");
+            Sut.Deploy(packagePath, Fixture.Create<Environment>(),
+                       Fixture.Create<ProjectReadModel>());
         }
     }
 }

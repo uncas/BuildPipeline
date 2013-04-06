@@ -7,6 +7,6 @@ namespace Uncas.BuildPipeline.Utilities
         void Deploy(
             string packagePath,
             Environment environment,
-            string customScript);
+            ProjectReadModel project);
     }
 }

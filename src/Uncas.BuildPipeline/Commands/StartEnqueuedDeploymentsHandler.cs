@@ -89,18 +89,11 @@ namespace Uncas.BuildPipeline.Commands
                 throw new InvalidOperationException("Cannot deploy without a project.");
             string packagePath = Path.Combine(DeploymentUtility.PackageFolder,
                                               pipeline.PackagePath);
-            string deploymentScript = project.DeploymentScript;
-            if (string.IsNullOrWhiteSpace(deploymentScript))
-            {
-                _logger.Debug("No deployment script for project '{0}'.",
-                              project.ProjectName);
-                return;
-            }
 
             _deploymentUtility.Deploy(
                 packagePath,
                 environment,
-                deploymentScript);
+                project);
         }
     }
 }

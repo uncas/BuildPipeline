@@ -57,7 +57,8 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
 
             deploymentUtilityMock.Verify(
                 du =>
-                du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(), It.IsAny<string>()),
+                du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(),
+                          It.IsAny<ProjectReadModel>()),
                 Times.Never());
         }
 
@@ -77,7 +78,7 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             deploymentUtilityMock.Verify(
                 du =>
                 du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(),
-                          It.IsAny<string>()),
+                          It.IsAny<ProjectReadModel>()),
                 Times.Once());
             WithDeployments();
 
@@ -86,7 +87,7 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             deploymentUtilityMock.Verify(
                 du =>
                 du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(),
-                          It.IsAny<string>()),
+                          It.IsAny<ProjectReadModel>()),
                 Times.Once());
         }
 
@@ -108,7 +109,7 @@ namespace Uncas.BuildPipeline.Tests.Unit.Commands
             deploymentUtilityMock.Verify(
                 du =>
                 du.Deploy(It.IsAny<string>(), It.IsAny<Environment>(),
-                          It.IsAny<string>()),
+                          It.IsAny<ProjectReadModel>()),
                 Times.Once());
         }
     }

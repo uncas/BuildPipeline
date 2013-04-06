@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using Uncas.BuildPipeline.Models;
 using Environment = Uncas.BuildPipeline.Models.Environment;
 
 namespace Uncas.BuildPipeline.Utilities
@@ -14,17 +15,20 @@ namespace Uncas.BuildPipeline.Utilities
             @"C:\Temp\DeploymentPackages";
 
         private readonly IFileUtility _fileUtility;
+        private readonly ILogger _logger;
         private readonly IPowershellUtility _powershellUtility;
         private readonly IZipUtility _zipUtility;
 
         public DeploymentUtility(
             IZipUtility zipUtility,
             IPowershellUtility powershellUtility,
-            IFileUtility fileUtility)
+            IFileUtility fileUtility,
+            ILogger logger)
         {
             _zipUtility = zipUtility;
             _powershellUtility = powershellUtility;
             _fileUtility = fileUtility;
+            _logger = logger;
         }
 
         #region IDeploymentUtility Members
@@ -32,8 +36,16 @@ namespace Uncas.BuildPipeline.Utilities
         public void Deploy(
             string packagePath,
             Environment environment,
-            string customScript)
+            ProjectReadModel project)
         {
+            string customScript = project.DeploymentScript;
+            if (string.IsNullOrWhiteSpace(customScript))
+            {
+                _logger.Debug("No deployment script for project '{0}'.",
+                              project.ProjectName);
+                return;
+            }
+
             _zipUtility.ExtractZipFile(packagePath, WorkingDirectory);
             string scriptContents = string.Format(@"
 param ($environmentName)
