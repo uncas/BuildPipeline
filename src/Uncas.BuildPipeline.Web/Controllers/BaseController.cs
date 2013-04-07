@@ -1,7 +1,7 @@
-﻿namespace Uncas.BuildPipeline.Web.Controllers
-{
-    using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
+namespace Uncas.BuildPipeline.Web.Controllers
+{
     /// <summary>
     /// Base controller for the web site.
     /// </summary>
@@ -11,8 +11,7 @@
             ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            ViewData["Version"] =
-                GetType().Assembly.GetName().Version.ToString();
+            ViewData["Version"] = ApplicationVersion.GetVersion(GetType().Assembly);
         }
     }
 }
