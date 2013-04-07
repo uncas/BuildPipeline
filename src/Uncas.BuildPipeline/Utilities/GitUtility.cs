@@ -88,13 +88,26 @@ namespace Uncas.BuildPipeline.Utilities
 
         public void Mirror(string remoteUrl, string mirrorsFolder, string mirrorName)
         {
+            _logger.Debug("Mirroring to '{0}' from '{1}'.", mirrorsFolder, remoteUrl);
             if (!Directory.Exists(mirrorsFolder))
                 Directory.CreateDirectory(mirrorsFolder);
             string mirrorFolder = Path.Combine(mirrorsFolder, mirrorName);
             if (Directory.Exists(mirrorFolder))
+            {
+                _logger.Debug(
+                    "Updating mirror at '{0}' from '{1}'.",
+                    mirrorsFolder,
+                    remoteUrl);
                 UpdateMirror(mirrorFolder, remoteUrl);
+            }
             else
+            {
+                _logger.Debug(
+                    "Creating mirror at '{0}' from '{1}'.",
+                    mirrorsFolder,
+                    remoteUrl);
                 CreateMirror(remoteUrl, mirrorsFolder, mirrorName);
+            }
         }
 
         #endregion
@@ -112,13 +125,21 @@ namespace Uncas.BuildPipeline.Utilities
         {
             UpdateRemoteUrl(mirrorFolder, remoteUrl);
             const string command = "remote update";
-            ExecuteGitCommand(mirrorFolder, command);
+            int exitCode = ExecuteGitCommandAndGetResults(mirrorFolder, command).ExitCode;
+            if (exitCode != 0)
+                _logger.Error(
+                    "Exit code '{0}' when updating mirror of '{2}' located in folder '{1}'.",
+                    exitCode, mirrorFolder, remoteUrl);
         }
 
         private void UpdateRemoteUrl(string mirrorFolder, string remoteUrl)
         {
             string command = string.Format("remote set-url origin {0}", remoteUrl);
-            ExecuteGitCommand(mirrorFolder, command);
+            int exitCode = ExecuteGitCommandAndGetResults(mirrorFolder, command).ExitCode;
+            if (exitCode != 0)
+                _logger.Error(
+                    "Exit code '{0}' when updating remote URL of '{1}' to '{2}'.",
+                    exitCode, mirrorFolder, remoteUrl);
         }
 
         private static string SanatizeOutput(string output)
