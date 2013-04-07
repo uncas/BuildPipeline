@@ -12,5 +12,10 @@ namespace Uncas.BuildPipeline.Configuration
                 return result;
             return defaultValue;
         }
+
+        public static string String(string name, string defaultValue)
+        {
+            return ConfigurationManager.AppSettings[name] ?? defaultValue;
+        }
     }
 }

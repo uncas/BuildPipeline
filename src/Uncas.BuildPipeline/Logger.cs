@@ -68,6 +68,12 @@ namespace Uncas.BuildPipeline
                          string exceptionType = null, string exceptionMessage = null,
                          string fullException = null)
         {
+            var logLevel =
+                (LogType)
+                Enum.Parse(typeof (LogType),
+                           ConfigurationAppSetting.String("LogLevel", "Info"));
+            if (logType < logLevel)
+                return;
             int serviceId = ConfigurationAppSetting.Int32("ServiceId", 0);
             string version = ApplicationVersion.GetVersion(GetType().Assembly);
             StackFrame stackFrame = withFileInfo.GetFrame(0);
