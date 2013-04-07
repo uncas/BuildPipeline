@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using Moq;
 using Ploeh.AutoFixture;
 
@@ -11,8 +10,6 @@ namespace Uncas.BuildPipeline.Tests.Unit
 
         public void Customize(IFixture fixture)
         {
-            if (fixture == null)
-                throw new ArgumentNullException("fixture");
             SetupContext(fixture);
         }
 

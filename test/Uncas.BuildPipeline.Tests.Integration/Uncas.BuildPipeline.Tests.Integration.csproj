@@ -120,7 +120,6 @@
     <Compile Include="Utilities\GitUtilityTests.cs" />
     <Compile Include="Utilities\PowershellUtilityTests.cs" />
     <Compile Include="Utilities\ZipUtilityTests.cs" />
-    <Compile Include="Utilities\DeploymentMethodTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\PipelineRepositoryTests.cs" />
     <Compile Include="WithBootstrapping.cs" />

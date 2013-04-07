@@ -34,8 +34,9 @@ namespace Uncas.BuildPipeline.Tests.Integration.Utilities
         {
             const string sourceFilesPath = @"C:\Temp\testzipsource";
             const string zipFilePath = @"C:\Temp\testzip.zip";
-            if (!Directory.Exists(sourceFilesPath))
-                Directory.CreateDirectory(sourceFilesPath);
+            if (Directory.Exists(sourceFilesPath))
+                Directory.Delete(sourceFilesPath, true);
+            Directory.CreateDirectory(sourceFilesPath);
             File.WriteAllText(Path.Combine(sourceFilesPath, "test.txt"), "bla bla");
             string subFolderPath = Path.Combine(sourceFilesPath, "SubItems");
             if (!Directory.Exists(subFolderPath))
