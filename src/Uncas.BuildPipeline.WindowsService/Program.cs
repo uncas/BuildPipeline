@@ -40,6 +40,7 @@ namespace Uncas.BuildPipeline.WindowsService
         /// <param name="args">The command-line arguments.</param>
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             var logger = Bootstrapper.Resolve<ILogger>();
             logger.Info("Starting Windows service.");
             var programRunner = new ProgramRunner(
@@ -53,10 +54,22 @@ namespace Uncas.BuildPipeline.WindowsService
             }
             catch (Exception e)
             {
-                logger.Error(e, "Unhandled exception in Windows service.");
+                logger.Error(e, "Exception bubbling up in Windows service.");
             }
 
             logger.Info("Stopping Windows service.");
+        }
+
+        private static void CurrentDomain_UnhandledException(
+            object sender,
+            UnhandledExceptionEventArgs e)
+        {
+            var logger = Bootstrapper.Resolve<ILogger>();
+            var exceptionObject = e.ExceptionObject as Exception;
+            if (exceptionObject != null)
+                logger.Error(exceptionObject, "Unhandled exception in Windows service.");
+            else
+                logger.Error("Unhandled exception in Windows service.");
         }
     }
 }
