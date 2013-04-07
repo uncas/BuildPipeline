@@ -9,14 +9,14 @@ namespace Uncas.BuildPipeline.Tests.Integration
         #region Setup/Teardown
 
         [SetUp]
-        public void BeforeEach()
+        public void SetUpBootstrapping()
         {
             _scope = new TransactionScope();
             _sut = null;
         }
 
         [TearDown]
-        public void AfterEach()
+        public void TearDownBootstrapping()
         {
             _scope.Dispose();
             _sut = null;

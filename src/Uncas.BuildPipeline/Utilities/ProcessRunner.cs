@@ -67,13 +67,14 @@ namespace Uncas.BuildPipeline.Utilities
                 }
             }
 
-            if (exitCode != 0)
+            string errorString = error.ToString();
+            if (exitCode != 0 || !string.IsNullOrWhiteSpace(errorString))
             {
                 // TODO: Consider throwing exception instead...
                 string errorMessage = string.Format(
                     "Exit code {0}; error message: {1}",
                     exitCode,
-                    error);
+                    errorString);
                 actionOnError(errorMessage);
             }
 

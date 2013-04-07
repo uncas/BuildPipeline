@@ -41,6 +41,12 @@ namespace Uncas.BuildPipeline.Tests.Integration.Utilities
         }
 
         [Test]
+        public void GetBranchesMerged_ExcludeMaster()
+        {
+            Sut.GetBranchesMerged(RepoWithMerges, FromRevision, ToRevision, "master");
+        }
+
+        [Test]
         public void GetChangedFiles()
         {
             Sut.GetChangedFiles(RepoWithMerges, FromRevision, ToRevision);
@@ -50,11 +56,11 @@ namespace Uncas.BuildPipeline.Tests.Integration.Utilities
         public void GetLogs()
         {
             Sut.GetLogs(
+                RepoWithMerges,
+                FromRevision,
+                ToRevision,
                 It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<int>(),
+                1,
                 It.IsAny<bool>());
         }
 

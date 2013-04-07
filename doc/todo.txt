@@ -1,4 +1,5 @@
 ﻿Current priorities:
+- Git log: Do not log as error when revision not found...
 - Deployment metod: FTP
 -- Different deployment method per (ProjectId, EnvironmentId)
 - Install script ('build.ps1 install')

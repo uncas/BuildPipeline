@@ -55,7 +55,7 @@ namespace Uncas.BuildPipeline.Utilities
   {0}
 </entries>
 </gitlog>", output);
-            return Deserialize(xml, gitHubUrl);
+            return Deserialize(xml, gitHubUrl).ToList();
         }
 
         public string GetShortLog(string repository, string from, string to)
