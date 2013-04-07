@@ -109,7 +109,7 @@
     <Compile Include="Controllers\EnvironmentControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
     <Compile Include="MaybeTests.cs" />
-    <Compile Include="Utilities\DeploymentUtilityTests.cs" />
+    <Compile Include="DomainServices\PowershellDeploymentTests.cs" />
     <Compile Include="FixtureExtensions.cs" />
     <Compile Include="LoggerTests.cs" />
     <Compile Include="Models\PipelineTests.cs" />

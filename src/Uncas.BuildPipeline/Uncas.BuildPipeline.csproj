@@ -151,12 +151,14 @@
     <Compile Include="Repositories\IEnvironmentRepository.cs" />
     <Compile Include="Repositories\IPipelineRepository.cs" />
     <Compile Include="Repositories\PipelineRepository.cs" />
-    <Compile Include="Utilities\DeploymentUtility.cs" />
+    <Compile Include="DomainServices\DeploymentMethodFactory.cs" />
+    <Compile Include="DomainServices\PowershellDeployment.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\GitHubLink.cs" />
     <Compile Include="Utilities\GitLog.cs" />
     <Compile Include="Utilities\GitUtility.cs" />
-    <Compile Include="Utilities\IDeploymentUtility.cs" />
+    <Compile Include="DomainServices\IDeploymentMethodFactory.cs" />
+    <Compile Include="DomainServices\IDeploymentMethod.cs" />
     <Compile Include="Utilities\IFileUtility.cs" />
     <Compile Include="Utilities\IGitUtility.cs" />
     <Compile Include="Utilities\IPowershellUtility.cs" />

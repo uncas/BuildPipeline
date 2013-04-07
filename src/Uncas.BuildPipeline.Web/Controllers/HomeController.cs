@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Uncas.BuildPipeline.Commands;
+using Uncas.BuildPipeline.DomainServices;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Utilities;
@@ -105,7 +106,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
         [HttpGet]
         public ActionResult Download(string id)
         {
-            string filePath = Path.Combine(DeploymentUtility.PackageFolder, id);
+            string filePath = Path.Combine(PowershellDeployment.PackageFolder, id);
             if (!_fileUtility.FileExists(filePath))
                 return HttpNotFound("File not found.");
             return new FilePathResult(filePath, "application/zip");

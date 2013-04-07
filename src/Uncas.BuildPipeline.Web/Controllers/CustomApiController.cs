@@ -2,7 +2,7 @@
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-using Uncas.BuildPipeline.Utilities;
+using Uncas.BuildPipeline.DomainServices;
 
 namespace Uncas.BuildPipeline.Web.Controllers
 {
@@ -11,7 +11,7 @@ namespace Uncas.BuildPipeline.Web.Controllers
         [HttpPost]
         public ActionResult Packages(string id)
         {
-            string packageFolder = DeploymentUtility.PackageFolder;
+            string packageFolder = PowershellDeployment.PackageFolder;
             HttpFileCollectionBase files = Request.Files;
             if (files.Maybe(x => x.Count) == 0)
                 throw new InvalidOperationException("No file...");

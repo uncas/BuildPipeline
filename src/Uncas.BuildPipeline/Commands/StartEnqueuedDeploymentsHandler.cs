@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Uncas.BuildPipeline.DomainServices;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
-using Uncas.BuildPipeline.Utilities;
 using Uncas.Core.Data;
 using Environment = Uncas.BuildPipeline.Models.Environment;
 
@@ -13,8 +13,8 @@ namespace Uncas.BuildPipeline.Commands
     public class StartEnqueuedDeploymentsHandler :
         ICommandHandler<StartEnqueuedDeployments>
     {
+        private readonly IDeploymentMethodFactory _deploymentMethodFactory;
         private readonly IDeploymentRepository _deploymentRepository;
-        private readonly IDeploymentUtility _deploymentUtility;
         private readonly IEnvironmentRepository _environmentRepository;
         private readonly ILogger _logger;
         private readonly IPipelineRepository _pipelineRepository;
@@ -24,14 +24,14 @@ namespace Uncas.BuildPipeline.Commands
             IEnvironmentRepository environmentRepository,
             IPipelineRepository pipelineRepository,
             IDeploymentRepository deploymentRepository,
-            IDeploymentUtility deploymentUtility,
+            IDeploymentMethodFactory deploymentMethodFactory,
             IProjectReadStore projectReadStore,
             ILogger logger)
         {
             _environmentRepository = environmentRepository;
             _pipelineRepository = pipelineRepository;
             _deploymentRepository = deploymentRepository;
-            _deploymentUtility = deploymentUtility;
+            _deploymentMethodFactory = deploymentMethodFactory;
             _projectReadStore = projectReadStore;
             _logger = logger;
         }
@@ -87,10 +87,12 @@ namespace Uncas.BuildPipeline.Commands
             ProjectReadModel project = _projectReadStore.GetProjectById(pipeline.ProjectId);
             if (project == null)
                 throw new InvalidOperationException("Cannot deploy without a project.");
-            string packagePath = Path.Combine(DeploymentUtility.PackageFolder,
+            string packagePath = Path.Combine(PowershellDeployment.PackageFolder,
                                               pipeline.PackagePath);
 
-            _deploymentUtility.Deploy(
+            IDeploymentMethod deploymentMethod =
+                _deploymentMethodFactory.CreateDeploymentMethod(project, environment);
+            deploymentMethod.Deploy(
                 packagePath,
                 environment,
                 project);

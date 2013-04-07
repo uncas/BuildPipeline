@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Uncas.BuildPipeline.Models;
 using Uncas.BuildPipeline.Repositories;
 using Uncas.BuildPipeline.Web.ViewModels;
 using Uncas.Core.Data;
-using Environment = Uncas.BuildPipeline.Models.Environment;
 
 namespace Uncas.BuildPipeline.Web.Controllers
 {
@@ -46,12 +44,6 @@ namespace Uncas.BuildPipeline.Web.Controllers
             IList<EnvironmentIndexViewModel> viewModels,
             Environment environment)
         {
-            if (environment == null)
-                throw new ArgumentNullException("environment");
-
-            if (viewModels == null)
-                throw new ArgumentNullException("viewModels");
-
             IEnumerable<Deployment> deployments =
                 _deploymentRepository.GetByEnvironment(
                     environment.Id);
