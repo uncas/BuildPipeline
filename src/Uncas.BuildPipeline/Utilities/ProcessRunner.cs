@@ -70,7 +70,10 @@ namespace Uncas.BuildPipeline.Utilities
             if (exitCode != 0)
             {
                 // TODO: Consider throwing exception instead...
-                string errorMessage = error.ToString();
+                string errorMessage = string.Format(
+                    "Exit code {0}; error message: {1}",
+                    exitCode,
+                    error);
                 actionOnError(errorMessage);
             }
 

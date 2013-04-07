@@ -59,6 +59,18 @@ namespace Uncas.BuildPipeline.Tests.Integration.Utilities
         }
 
         [Test]
+        public void GetLogs_NonExistingSha()
+        {
+            Sut.GetLogs(
+                @"C:\Temp\Mirrors\BuildPipeline",
+                "abc",
+                "def",
+                It.IsAny<string>(),
+                1,
+                It.IsAny<bool>());
+        }
+
+        [Test]
         public void GetShortLog()
         {
             Sut.GetShortLog(
