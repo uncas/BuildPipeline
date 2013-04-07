@@ -17,10 +17,11 @@
                 workingDirectory,
                 @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
                 arguments,
-                () => _logger.Error(
-                    "Powershell was hanging with the arguments '{0}' in directory '{1}'.",
+                error => _logger.Error(
+                    "Powershell was hanging with the arguments '{0}' in directory '{1}': {2}",
                     arguments,
-                    workingDirectory));
+                    workingDirectory,
+                    error));
         }
 
         #endregion

@@ -200,9 +200,9 @@ namespace Uncas.BuildPipeline.Utilities
                 repository,
                 @"C:\Program Files (x86)\Git\bin\git.exe",
                 command,
-                () => _logger.Error(
-                    "Git was hanging with the command '{0}' on repository '{1}'.",
-                    command, repository));
+                error => _logger.Error(
+                    "Git was hanging with the command '{0}' on repository '{1}': {2}",
+                    command, repository, error));
         }
 
         #region Nested type: GitLogXmlEntry

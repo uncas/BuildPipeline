@@ -1,52 +1,83 @@
 using System;
 using System.Diagnostics;
+using System.Text;
+using System.Threading;
 
 namespace Uncas.BuildPipeline.Utilities
 {
     public static class ProcessRunner
     {
+        /// <remarks>
+        ///     See http://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why
+        /// </remarks>
         public static ProcessResult ExecuteCommandAndGetResults(
             string workingDirectory,
             string fileName,
-            string arguments, Action actionOnError)
+            string arguments,
+            Action<string> actionOnError)
         {
+            const int millisecondsTimeout = 1000*10;
             int exitCode;
-            string standardOutput;
-            using (Process process = GetProcess(workingDirectory, fileName, arguments))
-            {
-                process.Start();
-                standardOutput = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-                exitCode = process.ExitCode;
-                if (!process.HasExited)
-                {
-                    process.Kill();
-                    actionOnError();
-                }
+            var output = new StringBuilder();
+            var error = new StringBuilder();
 
-                process.Close();
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = fileName;
+                process.StartInfo.Arguments = arguments;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.WorkingDirectory = workingDirectory;
+
+                using (var outputWaitHandle = new AutoResetEvent(false))
+                using (var errorWaitHandle = new AutoResetEvent(false))
+                {
+                    process.OutputDataReceived += (sender, e) =>
+                        {
+                            if (e.Data == null)
+                                outputWaitHandle.Set();
+                            else
+                                output.AppendLine(e.Data);
+                        };
+                    process.ErrorDataReceived += (sender, e) =>
+                        {
+                            if (e.Data == null)
+                                errorWaitHandle.Set();
+                            else
+                                error.AppendLine(e.Data);
+                        };
+
+                    process.Start();
+
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+
+                    if (process.WaitForExit(millisecondsTimeout) &&
+                        outputWaitHandle.WaitOne(millisecondsTimeout) &&
+                        errorWaitHandle.WaitOne(millisecondsTimeout))
+                    {
+                        exitCode = process.ExitCode;
+                    }
+                    else
+                    {
+                        exitCode = -1;
+                    }
+                }
             }
+
+            if (exitCode != 0)
+            {
+                // TODO: Consider throwing exception instead...
+                string errorMessage = error.ToString();
+                actionOnError(errorMessage);
+            }
+
+            string standardOutput = output.ToString();
 
             return new ProcessResult
                 {ExitCode = exitCode, StandardOutput = standardOutput};
-        }
-
-        private static Process GetProcess(
-            string workingDirectory,
-            string fileName,
-            string arguments)
-        {
-            var startInfo = new ProcessStartInfo
-                {
-                    CreateNoWindow = true,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    FileName = fileName,
-                    UseShellExecute = false,
-                    Arguments = arguments,
-                    WorkingDirectory = workingDirectory
-                };
-            return new Process {StartInfo = startInfo};
         }
     }
 }
