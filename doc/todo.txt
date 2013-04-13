@@ -1,4 +1,5 @@
 ﻿Current priorities:
+- Upgrade to .NET 4.5
 - Deployment metod: FTP
 -- Environments per project
 -- Different deployment method per (ProjectId, EnvironmentId)

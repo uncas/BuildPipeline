@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using System.Web.Mvc;
 using Moq;
 using Ploeh.AutoFixture;
 
@@ -22,6 +23,7 @@ namespace Uncas.BuildPipeline.Tests.Unit
             Mock<HttpResponseBase> responseMock = GetResponseMock(fixture);
             httpContext.SetupGet(x => x.Request).Returns(requestMock.Object);
             httpContext.SetupGet(x => x.Response).Returns(responseMock.Object);
+            fixture.Customize<ControllerContext>(c => c.Without(x => x.DisplayMode));
         }
 
         private static Mock<HttpResponseBase> GetResponseMock(IFixture fixture)
