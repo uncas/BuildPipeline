@@ -96,6 +96,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\AutoFixture.AutoMoq.3.0.3\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Common, Version=3.9.42.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ServiceStack.Common.3.9.42\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.42.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ServiceStack.Common.3.9.42\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
@@ -108,6 +116,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\UnityContainerAdapterTests.cs" />
+    <Compile Include="Configuration\WebBootstrapperTests.cs" />
     <Compile Include="DomainServices\DeploymentMethodFactoryTests.cs" />
     <Compile Include="QueryServices\PipelineQueryServiceTests.cs" />
     <Compile Include="Repositories\CommitRepositoryTests.cs" />

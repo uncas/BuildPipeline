@@ -33,7 +33,7 @@ namespace Uncas.BuildPipeline.Models
         {
             if (!Started.HasValue)
             {
-                throw new NotSupportedException(
+                throw new InvalidOperationException(
                     "A deployment must be started before it can be completed.");
             }
 

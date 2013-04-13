@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Moq;
 using NUnit.Framework;
 using Uncas.BuildPipeline.Utilities;
@@ -37,19 +38,28 @@ namespace Uncas.BuildPipeline.Tests.Integration.Utilities
         [Test]
         public void GetBranchesMerged()
         {
-            Sut.GetBranchesMerged(RepoWithMerges, FromRevision, ToRevision);
+            IEnumerable<string> branchesMerged =
+                Sut.GetBranchesMerged(RepoWithMerges, FromRevision, ToRevision);
+
+            CollectionAssert.IsNotEmpty(branchesMerged);
         }
 
         [Test]
         public void GetBranchesMerged_ExcludeMaster()
         {
-            Sut.GetBranchesMerged(RepoWithMerges, FromRevision, ToRevision, "master");
+            IEnumerable<string> branchesMerged =
+                Sut.GetBranchesMerged(RepoWithMerges, FromRevision, ToRevision, "master");
+
+            CollectionAssert.IsNotEmpty(branchesMerged);
         }
 
         [Test]
         public void GetChangedFiles()
         {
-            Sut.GetChangedFiles(RepoWithMerges, FromRevision, ToRevision);
+            IEnumerable<string> changedFiles =
+                Sut.GetChangedFiles(RepoWithMerges, FromRevision, ToRevision);
+
+            CollectionAssert.IsNotEmpty(changedFiles);
         }
 
         [Test]

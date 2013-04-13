@@ -112,7 +112,9 @@
     <Compile Include="DomainServices\PowershellDeploymentTests.cs" />
     <Compile Include="FixtureExtensions.cs" />
     <Compile Include="LoggerTests.cs" />
+    <Compile Include="Models\DeploymentTests.cs" />
     <Compile Include="Models\PipelineTests.cs" />
+    <Compile Include="Models\RevisionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestObjectFactory.cs" />
     <Compile Include="TestObjectFactoryExtensions.cs" />

@@ -1,9 +1,17 @@
 ﻿Current priorities:
-- Git log: Do not log as error when revision not found...
 - Deployment metod: FTP
+-- Environments per project
 -- Different deployment method per (ProjectId, EnvironmentId)
-- Install script ('build.ps1 install')
+-- SQL table: DeploymentMethod(ProjectId NOT NULL, EnvironmentId NULL, DeploymentMethodType, Data)
+    - DeploymentMethodType: 
+    - Powershell: 
+    - FTP: 
+-- Or EventStore(EventId, EventTime, EventType, EventData, AggregateType, AggregateId, SequenceNumber)
+       Events: PowershellDeploymentConfigured, FtpDeploymentConfigured
 - Configure which environments are available for each project.
+
+- Git log: Do not log as error when revision not found...
+- Install script ('build.ps1 install')
 - Display build stages + deployment stages on front page
 - Attach release notes to commits.
 - Show commits and release notes per deployment (via local mirror).
@@ -22,6 +30,21 @@ Infrastructure / minor things:
 - Logging: Take file name + line number from inner-most exception.
 - TopShelf service instead of home-brewed service...
 - Use twitter bootstrap
+
+Logging: Display newest logs and when they were first encountered
+- Service: Run through logs continuously, and update aggregate table
+- Aggregate table:
+-- Group by: ExceptionType, LogType, ServiceId, SimpleStackTrace
+        , FileName, LineNumber, Version, StackTrace
+        , CAST(LogTime AS date) AS LogDate, Hour(LogTime) AS LogHour
+-- Aggregate: FirstEntry, LastEntry, DescriptionExample
+        , ExceptionMessageExample, FullExceptionExample, NumberOfEntries
+-- Log hash calculated from: ServiceId, LogType, FileName, LineNumber, SimpleStackTrace, ExceptionType
+- List logs by type (exception type, log type, service id
+        , simple stack trace, filename, line number)
+- For each log entry: Display time of last entry, time of first entry
+        , version of last entry, version of first entry, total count
+        , description example, exception message example, full exception example, number of entries
 
 Architecture:
 - Events & readmodels
